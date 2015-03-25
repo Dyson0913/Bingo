@@ -1,5 +1,6 @@
 package 
 {
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import org.spicefactory.parsley.core.context.Context;
@@ -9,15 +10,21 @@ package
 	
 	import com.hexagonstar.util.debug.Debug;
 	import View.componentLib.util.utilFun;
+	import View.GameView.*;
 	
 	
 	/**
 	 * ...
 	 * @author hhg
 	 */
-	public class Main extends Sprite 
+	public class Main extends MovieClip 
 	{
 		private var _context:Context;
+		
+		//[ObjectDefinition(id="Enter")]
+		//public var _LoadingView:LoadingView
+		
+		
 		
 		public function Main():void 
 		{
@@ -33,7 +40,9 @@ package
 			Debug.monitor(stage);
 			utilFun.Log("welcome to alcon");
 			
-			_context  = ActionScriptContextBuilder.build(appConfig, this);
+			
+			
+			_context  = ActionScriptContextBuilder.build(appConfig, stage);
 			
 			//託管類別
 			_context.addEventListener(ContextEvent.CONFIGURED, ConfigOK);
@@ -41,12 +50,14 @@ package
 			_context.addEventListener(ContextEvent.DESTROYED, DestoryOK);
 			
 			
-			//addChild(_context.getObjectByType(MyMain) as MyMain);
-			//addChild(_context.getObjectByType(Mysecond) as Mysecond);
+			addChild(_context.getObjectByType(LoadingView) as LoadingView);
+			addChild(_context.getObjectByType(LobbView) as LobbView);
+			addChild(_context.getObjectByType(betView) as betView);
+			addChild(_context.getObjectByType(HudView) as HudView);
 			
-			
-			//var Enter:MyMain = _context.getObject("Enter") as MyMain;
-			//Enter.FirstLoad();
+			var Enter:LoadingView = _context.getObject("Enter") as LoadingView;
+			utilFun.Log("Enter = "+Enter);
+			Enter.FirstLoad();
 		}
 		
 		

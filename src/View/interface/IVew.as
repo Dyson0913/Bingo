@@ -1,4 +1,4 @@
-package View.interface 
+package View.InterFace 
 {
 	
 	/**
