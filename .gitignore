@@ -6,7 +6,7 @@ bin-release/
 # Other files and folders
 .settings/
 *.swf
-flashDevloper/obj/*
+obj/*
 
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
