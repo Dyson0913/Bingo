@@ -2,6 +2,7 @@ package View.GameView
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import View.componentLib.ViewBase.ViewBase;
 	
 	import View.InterFace.IVew;
 	import View.componentLib.util.utilFun;
@@ -10,23 +11,31 @@ package View.GameView
 	 * ...
 	 * @author hhg
 	 */
-	public class HudView extends Sprite implements IVew
+	public class HudView extends ViewBase// implements IVew
 	{
 		
-		public var Hud:MovieClip;
+		public var _TopBar:MovieClip;
+		public var _DownBar:MovieClip;
 		
 		public function HudView()  
 		{
 			utilFun.Log("HudView");
 		}
 		
-		public function EnterView (View:int):void
+		[MessageHandler(selector="add")] 
+		override public function EnterView (View:ViewState):void
 		{
-			Hud = utilFun.GetClassByString("mc_transparent");
-			addChild(Hud);
+			if (View._view != ViewState.Hud) return;
+			
+			_TopBar = utilFun.GetClassByString("TopBar");
+			_DownBar  = utilFun.GetClassByString("ButtonBar");
+			
+			addChild( _TopBar);
+			addChild( _DownBar );
+			
 		}
 		
-		public function ExitView():void
+		override public function ExitView(View:ViewState):void
 		{
 			
 		}

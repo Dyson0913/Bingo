@@ -2,70 +2,59 @@ package View.GameView
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import Model.PlayerModel;
+	import View.componentLib.ViewBase.ViewBase;
+	import ConnectModule.websocket.WebSoketComponent
+	
 	
 	import View.InterFace.IVew;
 	import View.componentLib.util.utilFun;
+	import caurina.transitions.Tweener;
 	/**
 	 * ...
 	 * @author hhg
 	 */
-	public class LoadingView extends Sprite implements IVew
-	{
-		//主容器
-		public var BgContainer:MovieClip;
-		
-		
+
+	public class LoadingView extends ViewBase// implements IVew
+	{	
 		public var _LoadingView:MovieClip;		
 		
-		
-			//[MessageDispatcher]
-        //public var dispatcher:Function;
-		//
-		//[MessageBinding(messageProperty="_View",type="ViewEnum")]
-		//public var user:int = 0;
+		[Inject]
+		public var _socket:WebSoketComponent;
 		
 		public function LoadingView()  
 		{
-			utilFun.Log("first load");
-			BgContainer = utilFun.GetClassByString("mc_BgContainer");
-			addChild(BgContainer);
-			_LoadingView = utilFun.GetClassByString("Loadingbg");
-			BgContainer.addChild(_LoadingView);
-			utilFun.Log("first load 2");
-			utilFun.Log("LoadingView");
+			
 		}
 		
+			
 		public function FirstLoad():void
 		{
-			
-			
+			dispatcher(new ViewState(ViewState.Loading,ViewState.ENTER) );
 		}
 		
-		//[MessageHandler(type = "ViewEnum", messageProperties = "_View")]
-		//public function handleMessage4(msg:int):void
-        //{
-            //Debug.trace("msg 1-3=" + msg);
-        //}
-		//
-		//[MessageHandler(type="ViewEnum")]
-		//public function handleMessage2(msg:ViewEnum):void
-        //{
-            //Debug.trace("msg 1-2=" + msg._View);
-        //}
-		
-		//[MessageHandler]
-		//
-		public function EnterView (View:int):void
+		[MessageHandler(selector="Enter")] 
+		override public function EnterView (View:ViewState):void
 		{
+			if (View._view != ViewState.Loading) return;
 			
+			_LoadingView = utilFun.GetClassByString("Loadingbg");
+			addChild(_LoadingView);
 			
-			
-			
+			Tweener.addCaller(this, { time:2 , count: 1, onUpdate: this.connet } );
 		}
 		
-		public function ExitView():void
+		private function connet():void
+		{	
+			_socket.Connect();
+		}
+		
+		[MessageHandler(selector="Leave")]
+		override public function ExitView(View:ViewState):void
 		{
-			
+			if (View._view != ViewState.Loading) return;
+			utilFun.ClearContainerChildren(_LoadingView);
+			utilFun.Log("LoadingView ExitView");
 		}
 		
 		

@@ -77,10 +77,15 @@ package View.componentLib.util
 		//list滑鼠監聽
 		public static function AddMultiMouseListen(Itemlist:Array,listen:Function):void
 		{
-			for each( var i:int in Itemlist)
+			var N:int =  Itemlist.length;
+			for (var i:int = 0 ;  i < N ;  i++)
 			{
-				AddMouseListen(Itemlist[i], listen);
-			}
+				Itemlist[i].addEventListener(MouseEvent.CLICK,listen);
+				Itemlist[i].addEventListener(MouseEvent.ROLL_OUT,listen);
+				Itemlist[i].addEventListener(MouseEvent.ROLL_OVER, listen);
+				Itemlist[i].addEventListener(MouseEvent.MOUSE_DOWN,listen);
+				Itemlist[i].addEventListener(MouseEvent.MOUSE_UP, listen);
+			}			
 		}
 		
 		//移除滑鼠監聽
@@ -96,10 +101,15 @@ package View.componentLib.util
 		//list移除滑鼠監聽
 		public static function ReMoveMultiMouseListen(Itemlist:Array,listen:Function):void
 		{			
-			for each( var i:int in Itemlist)
+			var N:int =  Itemlist.length;
+			for (var i:int = 0 ;  i < N ;  i++)
 			{
-				ReMoveMouseListen(Itemlist[i], listen);
-			}
+				Itemlist[i].removeEventListener(MouseEvent.CLICK,listen);
+				Itemlist[i].removeEventListener(MouseEvent.ROLL_OUT,listen);
+				Itemlist[i].removeEventListener(MouseEvent.ROLL_OVER, listen);
+				Itemlist[i].removeEventListener(MouseEvent.MOUSE_DOWN,listen);
+				Itemlist[i].removeEventListener(MouseEvent.MOUSE_UP, listen);
+			}			
 		}
 		
 		//條件 0 base (flash為1base 影格 , CurFrame -1和 Frame + 1在於調整為0 base 

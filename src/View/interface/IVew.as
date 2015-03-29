@@ -1,5 +1,6 @@
 package View.InterFace 
 {
+	import View.GameView.ViewState;
 	
 	/**
 	 * ...
@@ -7,7 +8,8 @@ package View.InterFace
 	 */
 	public interface IVew 
 	{
-		function EnterView (View:int):void;
+		
+		function EnterView (View:ViewState):void;
 		
 		function ExitView():void;
 	}

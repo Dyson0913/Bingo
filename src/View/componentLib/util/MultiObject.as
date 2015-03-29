@@ -10,6 +10,7 @@ package View.componentLib.util
 	 */
 	public class MultiObject 
 	{
+		public var _Container:MovieClip;
 		//元件列表
 		public var _ItemList:Array = [];
 		
@@ -52,8 +53,9 @@ package View.componentLib.util
 				
 				mc.name = ItemName + i;
 				_ItemList.push(mc);
-				Container.addChild(mc);							
+				Container.addChild(mc);
 			}
+			_Container = Container;
 		}
 		
 		public function FlushObject():void
@@ -69,7 +71,13 @@ package View.componentLib.util
 		
 		public function CleanList():void
 		{			
-			_ItemList.length = 0;			
+			var cnt:int = _ItemList.length;
+			for ( var i:int = 0; i < cnt; i++)
+			{
+				_Container.removeChild(_ItemList[i]);
+			}
+			
+			_ItemList.length = 0;
 		}
 		
 	}

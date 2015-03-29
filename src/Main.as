@@ -24,7 +24,7 @@ package
 		//[ObjectDefinition(id="Enter")]
 		//public var _LoadingView:LoadingView
 		
-		
+		private var _appconfig:appConfig = new appConfig();
 		
 		public function Main():void 
 		{
@@ -51,15 +51,17 @@ package
 			
 			
 			addChild(_context.getObjectByType(LoadingView) as LoadingView);
-			addChild(_context.getObjectByType(LobbView) as LobbView);
+			addChild(_context.getObjectByType(Lobby) as Lobby);
 			addChild(_context.getObjectByType(betView) as betView);
 			addChild(_context.getObjectByType(HudView) as HudView);
+			addChild(_context.getObjectByType(OpenBallView) as OpenBallView);
 			
 			var Enter:LoadingView = _context.getObject("Enter") as LoadingView;
 			utilFun.Log("Enter = "+Enter);
 			Enter.FirstLoad();
+			
+			
 		}
-		
 		
 		
 		
