@@ -24,6 +24,11 @@ package Model
 		//100,200,300,500,1000,1500,2000
 		public var BetList:Array = [0,100, 200, 300, 500, 1000];
 		
+		public var _BetTableid:int = 0;
+		public var _Betcredit:int = 0;
+		public var _Bet_room_no:int = 0;
+		public var _Bet_result:int = 0;
+		
 		public function BetModel() 
 		{
 			

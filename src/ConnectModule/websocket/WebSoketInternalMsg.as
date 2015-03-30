@@ -6,13 +6,12 @@ package ConnectModule.websocket
 	 */
 	public class WebSoketInternalMsg 
 	{
-		//public var chooseRoom:Function;
-		//public var EnterBetView:Function;
 		//public var stopBetView:Function;
-		//public var OpenBallView:Function;
+	
 		//public var HalfEnterInit:Function;
 		//public var UpdataBallInfo:Function;
 		//public var UpdateBetInfo:Function;
+		
 		//public var BetResult:Function;
 		//public var cleanResult:Function;
 		//public var UpTableBetInfo:Function;
@@ -21,6 +20,9 @@ package ConnectModule.websocket
 		
 		
 		public static const CHOOSE_ROOM:String = "chooseRoom";
+		public static const BET:String = "Bet";
+		public static const BETRESULT:String = "Betresult";
+		
 		
 		[Selector]
 		public var selector:String

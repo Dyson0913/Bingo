@@ -11,6 +11,7 @@ package ConnectModule.websocket
 	import flash.net.registerClassAlias;
 	import flash.utils.ByteArray;
 	import flash.system.Security;
+	import Model.BetModel;
 	import Model.LobbyModel;
 	
 	import Model.valueObject.StringObject;
@@ -36,6 +37,8 @@ package ConnectModule.websocket
 		[Inject]
 		public var _LobbyModel:LobbyModel;
 		
+		[Inject]
+		public var _BetModel:BetModel;
 		
 		public var EnterBetView:Function;
 		public var stopBetView:Function;
@@ -77,7 +80,7 @@ package ConnectModule.websocket
 		
 		public function Connect():void
 		{
-			websocket = new WebSocket("ws://106.186.116.216:8888/gamesocket", "");
+			websocket = new WebSocket("ws://106.186.116.216:6000/gamesocket", "");
 			websocket.addEventListener(WebSocketEvent.OPEN, handleWebSocket);
 			websocket.addEventListener(WebSocketEvent.CLOSED, handleWebSocket);			
 			websocket.addEventListener(WebSocketErrorEvent.CONNECTION_FAIL, handleConnectionFail);
@@ -152,10 +155,7 @@ package ConnectModule.websocket
 						dispatcher(roomplayer);
 						
 						//載入選桌大廳
-						//dispatcher(new WebSoketInternalMsg(WebSoketInternalMsg.CHOOSE_ROOM));
 						dispatcher(new ViewState(ViewState.Lobb,ViewState.ENTER) );
-						//dispatcher(new ViewState(ViewState.Hud,ViewState.ADD) );
-						
 						dispatcher(new ViewState(ViewState.Loading,ViewState.LEAVE) );
 						
 						break;
@@ -207,15 +207,12 @@ package ConnectModule.websocket
 					}
 					case Message.MSG_TYPE_BET:
 					{
-						//utilFun.Log("recv MSG_TYPE_BET=");
 						var room_no:int =  result.room_no;
 						var Betresult:int = result.result;
-						//utilFun.Log("room_no = "+room_no);
-						//utilFun.Log("result = " + Betresult);
 						
-						//結束押盤
-						
-						
+						//TODO 用int objec 解偶
+						_BetModel._Bet_room_no = room_no;
+						_BetModel._Bet_result = Betresult;
 						
 						if ( _CleanAllbet >=1)
 						{
@@ -228,7 +225,8 @@ package ConnectModule.websocket
 						}
 						else
 						{							
-							BetResult(room_no, Betresult);
+							//BetResult(room_no, Betresult);
+							dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
 						}
 						
 						break;
@@ -363,11 +361,11 @@ package ConnectModule.websocket
 				 
 		}
 		
-		public function SendBet(TableNo:int,betamount:int):void
+		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="Bet")]
+		public function SendBet():void
 		{
-			var dd:Object = {"message_type":Message.MSG_TYPE_BET,"table_no":TableNo, "amount":betamount};
-			var jsonString:String = JSON.encode(dd);
-			websocket.sendUTF(jsonString);
+			var bet:Object = { "message_type":Message.MSG_TYPE_BET, "table_no":_BetModel._BetTableid, "amount":_BetModel._Betcredit };
+			SendMsg(bet);
 		}
 		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="chooseRoom")]

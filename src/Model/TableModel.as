@@ -8,19 +8,19 @@ package Model
 	public class TableModel 
 	{
 		[MessageBinding(type="Model.valueObject.ArrayObject",messageProperty="array",selector="table")]
-		private var _TableNo:Array
+		public var _TableNo:Array
 		
 		
 		[MessageBinding(type="Model.valueObject.ArrayObject",messageProperty="array",selector="is_betarr")]
-		private var _isBet:Array = [];
+		public var _isBet:Array = [];
 		
 		[MessageBinding(type="Model.valueObject.ArrayObject",messageProperty="array",selector="ballarr")]
-		private var _BallList:Array = [];
+		public var _BallList:Array = [];
 		
 		private var _BetCnt:int = 0;
 		
 		[MessageBinding(type="Model.valueObject.Intobject",messageProperty="InterValue",selector="remainTime")]
-		private var _remainTime:int 
+		public var _remainTime:int 
 		
 		public function TableModel() 
 		{
