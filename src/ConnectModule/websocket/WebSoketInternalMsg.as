@@ -22,6 +22,7 @@ package ConnectModule.websocket
 		public static const CHOOSE_ROOM:String = "chooseRoom";
 		public static const BET:String = "Bet";
 		public static const BETRESULT:String = "Betresult";
+		public static const BET_STATE_UPDATE:String = "betstateupdate";
 		
 		
 		[Selector]

@@ -60,7 +60,8 @@ package View.componentLib.util
 		
 		public function FlushObject():void
 		{
-			for each(var i:int in _ItemList)
+			var cnt:int = _ItemList.length;
+			for ( var i:int = 0; i < cnt; i++)
 			{
 				if (CustomizedFun != null)
 				{

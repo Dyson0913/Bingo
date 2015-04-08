@@ -80,7 +80,7 @@ package ConnectModule.websocket
 		
 		public function Connect():void
 		{
-			websocket = new WebSocket("ws://106.186.116.216:6000/gamesocket", "");
+			websocket = new WebSocket("ws://192.168.1.27:8888/gamesocket", "");
 			websocket.addEventListener(WebSocketEvent.OPEN, handleWebSocket);
 			websocket.addEventListener(WebSocketEvent.CLOSED, handleWebSocket);			
 			websocket.addEventListener(WebSocketErrorEvent.CONNECTION_FAIL, handleConnectionFail);
@@ -246,7 +246,15 @@ package ConnectModule.websocket
 							TableNo.push(Table);
 							is_betarr.push(is_bet);
 						}
-						UpTableBetInfo(TableNo, is_betarr,ballarr);
+						
+						var table:ArrayObject = new ArrayObject(TableNo, "table");
+						dispatcher(table);
+							
+						var bet:ArrayObject = new ArrayObject(is_betarr, "is_betarr");						
+						dispatcher(bet);
+						
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
+						//UpTableBetInfo(TableNo, is_betarr,ballarr);
 							
 						break;
 					}

@@ -54,7 +54,7 @@ package View.GameView
 			utilFun.Log("betView");
 		}
 		
-		[MessageHandler]
+		[MessageHandler(selector="Enter")] 
 		override public function EnterView (View:ViewState):void
 		{
 			if (View._view != ViewState.Bet) return;
@@ -243,8 +243,7 @@ package View.GameView
 		
 		private function Bet(e:Event):void 
 		{
-			var sName:String = utilFun.Regex_CutPatten(e.currentTarget.name, new RegExp("Bet_", "i"));				
-			utilFun.Log(e.type);
+			var sName:String = utilFun.Regex_CutPatten(e.currentTarget.name, new RegExp("Bet_", "i"));
 			switch (e.type)
 			{
 				case "click":
@@ -253,9 +252,7 @@ package View.GameView
 				//1,無人 2為自己, 3自己最後一注,4,為他人
 				if ( e.currentTarget.currentFrame == 1)
 				{				
-					if ( _BetModel.GetBetTableNo().length > 11) return;					
-					//新增
-					//websocket.SendBet(parseInt(sName), 100);
+					if ( _BetModel.GetBetTableNo().length > 11) return;
 					_BetModel._BetTableid = parseInt(sName);
 					_BetModel._Betcredit = 100;
 					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
@@ -280,7 +277,6 @@ package View.GameView
 						utilFun.Log("Bet reduce To  0");
 						return;
 					}
-					//websocket.SendBet(_BetModel.GetSelectTable(), Bet);
 					_BetModel._BetTableid = _BetModel.GetSelectTable()
 					_BetModel._Betcredit =Bet;
 					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
@@ -301,7 +297,7 @@ package View.GameView
 		}
 		
 		public function BetListCustomizedFun(mc:MovieClip,idx:int,IsBetInfo:Array):void
-		{
+		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
 			var arr:Array = _BetModel.GetBetTableNo();
@@ -344,7 +340,6 @@ package View.GameView
 							return;
 						}
 						
-						//websocket.SendBet(betModel.GetSelectTable(), Bet);
 						_BetModel._BetTableid = _BetModel.GetSelectTable()
 						_BetModel._Betcredit =Bet;
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
@@ -382,7 +377,7 @@ package View.GameView
 			{
 				//新增押注
 				
-				var betSuccess:Boolean = _BetModel.AddBetInfo(_BetModel._Bet_room_no);				
+				var betSuccess:Boolean = _BetModel.AddBetInfo(_BetModel._Bet_room_no);
 				if (betSuccess)
 				{
 					//顥示新盤號
@@ -399,7 +394,32 @@ package View.GameView
 			}
 		}
 		
+		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstateupdate")]
+		public function UpdataTableBetInfo():void
+		{
+			BetList.CustomizedFun = BetListCustomizedFun;
+			BetList.CustomizedData = _TableModel.GetisBet();
+			BetList.FlushObject();
+			
+			//更新靜態資訊 TO HUD
+			//所押盤數更新
+			//ToolsFunction.SetText(Hud.getChildByName("ButtonBar")["BetOrder"], betModel.GetBetTableNo().length.toString());
+			//
+			//押分
+			//ToolsFunction.SetText(Hud.getChildByName("ButtonBar")["Bet"], betModel.GetBetTotal().toString());
+			//
+			//Credit
+			//ToolsFunction.SetText(Hud.getChildByName("ButtonBar")["Credit"], betModel._credit.toString() );
+			
+			//外盤 (有人押叫外盤)
+			utilFun.SetText(bet["outorder"], String(_TableModel.GetBetCnt()));
+			
+			//內盤 (沒人押叫內盤)
+			utilFun.SetText(bet["selforder"], String(_TableModel.GetNoOneBetCnt()));
+			
+		}
 		
+		[MessageHandler(selector="Leave")]
 		override public function ExitView(View:ViewState):void
 		{
 			
