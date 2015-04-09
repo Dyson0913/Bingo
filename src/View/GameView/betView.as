@@ -4,6 +4,7 @@ package View.GameView
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import View.componentLib.util.SingleObject;
 	
 	import Model.BetModel;
 	import Model.LobbyModel;
@@ -14,6 +15,7 @@ package View.GameView
 	
 	import View.InterFace.IVew;
 	import View.componentLib.util.utilFun;
+	import View.componentLib.util.MouseBehavior;
 	import caurina.transitions.Tweener;
 	/**
 	 * ...
@@ -48,6 +50,8 @@ package View.GameView
 		
 		//押分
 		private var BetPointList:MultiObject;
+		
+		private var cancelbet:SingleObject;
 		
 		public function betView()  
 		{
@@ -85,20 +89,23 @@ package View.GameView
 			BetList = new MultiObject();
 			BetList.CustomizedFun = BetListCustomizedFun;
 			BetList.CustomizedData = _TableModel.GetisBet();
+			BetList.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);
 			BetList.Create(100, "BetTableBtn", 106.55, 271.85, 10, 98, 66, "Bet_", bet);	
-			utilFun.AddMultiMouseListen(BetList._ItemList, Bet);
-			//
+			BetList.mousedown = BetPan;
+			
 			//盤號
 			OrderList = new MultiObject();
 			OrderList.CustomizedFun = OrderListCustomizedFun;
-			OrderList.Create(12, "OrderBtn", 1219.30,131.75, 1, 0, 50.55, "BetNum_", bet);
-			utilFun.AddMultiMouseListen(OrderList._ItemList, OrderBet);
-			//
+			OrderList.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);
+			OrderList.Create(12, "OrderBtn", 1219.30, 131.75, 1, 0, 50.55, "BetNum_", bet);
+			OrderList.mousedown = OrderBet;
+			
 			//押分
 			BetPointList = new MultiObject();
 			BetPointList.CustomizedFun = BetPointListCustomizedFun;
-			BetPointList.Create(12, "OrderBtn",1397.35 ,131.75 , 1, 0, 50.55, "BetPoint_", bet);
-			utilFun.AddMultiMouseListen(BetPointList._ItemList, BetPoint);
+			BetPointList.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);
+			BetPointList.Create(12, "OrderBtn", 1397.35 , 131.75 , 1, 0, 50.55, "BetPoint_", bet);
+			BetPointList.mousedown = BetPoint;
 			//
 			//剩於時間
 			utilFun.SetText(bet["betTime"], _TableModel._remainTime.toString());
@@ -108,19 +115,16 @@ package View.GameView
 			LoadingPan(0);
 			//
 			UpdatePanNumAndBet();
-			//
-			utilFun.AddMouseListen(bet["CancelBtn"], CencelAllBet);
 			
-			
+			cancelbet = new SingleObject()
+			cancelbet.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);
+			cancelbet.Create(bet["CancelBtn"]);
+			cancelbet.mousedown = CencelAllBet;
 		}
 		
 		private function CencelAllBet(e:Event):void 
 		{
-			switch (e.type)
-			{			
-				case "mouseDown":
-				{
-					//websocket._CleanAllbet = betModel.GetBetTableNo().length;
+				//websocket._CleanAllbet = betModel.GetBetTableNo().length;
 					//if (websocket._CleanAllbet != 0)
 					//{
 						//var arr:Array = _BetModel.GetBetTableNo();
@@ -129,22 +133,6 @@ package View.GameView
 							//websocket.SendBet(arr[i],0);
 						//}
 					//}
-					
-					e.currentTarget.gotoAndStop(2)	
-				}
-				break;
-				case "mouseUp":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
-				case "rollOut":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
-				
-			}
 		}
 		
 		private function UpdatePanNumAndBet():void
@@ -156,11 +144,6 @@ package View.GameView
 			BetPointList.CustomizedFun = CustomizedFun_ShowData;
 			BetPointList.CustomizedData =  _BetModel.GetBetamount();
 			BetPointList.FlushObject();
-			
-			//押注BTN 還原
-			//BetList.CustomizedFun = BTnBack;
-			//BetList.CustomizedData =  betModel.GetBetTableNo();
-			//BetList.FlushObject();
 			
 			//TODO 移到hud
 			//所押盤數更新
@@ -240,60 +223,31 @@ package View.GameView
 			utilFun.SetText( mc["theNum"], str);			
 		}
 		
-		
-		private function Bet(e:Event):void 
+		private function BetPan(e:Event,idx:int):void 
 		{
-			var sName:String = utilFun.Regex_CutPatten(e.currentTarget.name, new RegExp("Bet_", "i"));
-			switch (e.type)
+			//自己押注的盤會以紅色標示、別人押注的盤以黃色標示、無人押注的盤則以藍色標示。
+			//1,無人 2為自己, 3自己最後一注,4,為他人
+			if ( e.currentTarget.currentFrame == 1)
 			{
-				case "click":
-				//自己押注的盤會以紅色標示、別人押注的盤以黃色標示、無人押注的盤則以藍色標示。				
-					
-				//1,無人 2為自己, 3自己最後一注,4,為他人
-				if ( e.currentTarget.currentFrame == 1)
-				{				
-					if ( _BetModel.GetBetTableNo().length > 11) return;
-					_BetModel._BetTableid = parseInt(sName);
-					_BetModel._Betcredit = 100;
-					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
-				}				
-				
-				
-				break;				
-			}
+				if ( _BetModel.GetBetTableNo().length > 11) return;
+				_BetModel._BetTableid = idx;
+				_BetModel._Betcredit = 100;
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+			}				
 		}
 		
-		private function OrderBet(e:Event):void 
+		private function OrderBet(e:Event,idx:int):void 
 		{
-			var sName:String = utilFun.Regex_CutPatten(e.currentTarget.name,new RegExp("BetNum_", "i"));				
-			switch (e.type)
-			{				
-				case "mouseDown":
-				{
-					//減少押注
-					var Bet:int = _BetModel.request_for_Betamount_Reduce(parseInt(sName));
-					if (Bet == -1)
-					{
-						utilFun.Log("Bet reduce To  0");
-						return;
-					}
-					_BetModel._BetTableid = _BetModel.GetSelectTable()
-					_BetModel._Betcredit =Bet;
-					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
-					e.currentTarget.gotoAndStop(2);
-				}
-				break;
-				case "mouseUp":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
-				case "rollOut":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
+			//減少押注
+			var Bet:int = _BetModel.request_for_Betamount_Reduce(idx);
+			if (Bet == -1)
+			{
+				utilFun.Log("Bet reduce To  0");
+				return;
 			}
+			_BetModel._BetTableid = _BetModel.GetSelectTable()
+			_BetModel._Betcredit = Bet;
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
 		}
 		
 		public function BetListCustomizedFun(mc:MovieClip,idx:int,IsBetInfo:Array):void
@@ -325,38 +279,19 @@ package View.GameView
 			
 		}
 		
-		private function BetPoint(e:Event):void 
+		private function BetPoint(e:Event,idx:int):void
 		{
-			var sName:String = utilFun.Regex_CutPatten(e.currentTarget.name,new RegExp("BetPoint_", "i"));				
-				switch (e.type)
-				{
-					case "mouseDown":
-					{
-						//增加押注
-						var Bet:int = _BetModel.request_for_Betamount_add(parseInt(sName));
-						if (Bet == 0 )
-						{
-							utilFun.Log("no more Bet ");
-							return;
-						}
-						
-						_BetModel._BetTableid = _BetModel.GetSelectTable()
-						_BetModel._Betcredit =Bet;
-						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
-						e.currentTarget.gotoAndStop(2);
-					}
-					break;
-					case "mouseUp":
-					{
-						e.currentTarget.gotoAndStop(1)	
-					}
-					break;
-					case "rollOut":
-					{
-						e.currentTarget.gotoAndStop(1)	
-					}
-					break;
-				}
+			//增加押注
+			var Bet:int = _BetModel.request_for_Betamount_add(idx);
+			if (Bet == 0 )
+			{
+				utilFun.Log("no more Bet ");
+				return;
+			}
+			
+			_BetModel._BetTableid = _BetModel.GetSelectTable()
+			_BetModel._Betcredit =Bet;
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
 		}
 		
 		public function OrderListCustomizedFun(mc:MovieClip,idx:int,CustomizedData:Array):void
@@ -383,7 +318,6 @@ package View.GameView
 					//顥示新盤號
 					UpdatePanNumAndBet();
 					LoadingPan(_BetModel._Bet_room_no);
-					//e.currentTarget.gotoAndStop(2); TODO 
 					
 					//押注BTN更新
 					BetList.CustomizedFun = BetListCustomizedFun;

@@ -27,7 +27,7 @@ package View.GameView
 			
 		}
 		
-			
+		
 		public function FirstLoad():void
 		{
 			dispatcher(new ViewState(ViewState.Loading,ViewState.ENTER) );

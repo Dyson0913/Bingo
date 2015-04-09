@@ -4,18 +4,19 @@ package View.componentLib.util
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.MouseEvent;	
+	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.utils.getDefinitionByName;
 	import com.hexagonstar.util.debug.Debug;
-	import View.componentLib.util.DebugEnumMapping;	
+	import View.componentLib.util.DebugEnumMapping;
+	import View.componentLib.util.MouseBehavior;
 	
 	/**
 	 * 常用功能
 	 * @author hhg
 	 */
 	public class utilFun
-	{
+	{		
 		
 		public function utilFun() 
 		{
@@ -62,12 +63,11 @@ package View.componentLib.util
 		public static function SetText(Container:TextField,Text:String):void
 		{			
 			Container.text = Text;
-		}
+		}	
 		
 		//滑鼠監聽
 		public static function AddMouseListen(mc:DisplayObject,listen:Function):void
-		{
-			mc.addEventListener(MouseEvent.CLICK,listen);
+		{			
 			mc.addEventListener(MouseEvent.ROLL_OUT,listen);
 			mc.addEventListener(MouseEvent.ROLL_OVER, listen);
 			mc.addEventListener(MouseEvent.MOUSE_DOWN, listen);
@@ -75,23 +75,21 @@ package View.componentLib.util
 		}
 		
 		//list滑鼠監聽
-		public static function AddMultiMouseListen(Itemlist:Array,listen:Function):void
+		public static function AddMultiMouseListen(Itemlist:Array,listen:Function,mouseFrame:Array):void
 		{
 			var N:int =  Itemlist.length;
 			for (var i:int = 0 ;  i < N ;  i++)
 			{
-				Itemlist[i].addEventListener(MouseEvent.CLICK,listen);
-				Itemlist[i].addEventListener(MouseEvent.ROLL_OUT,listen);
-				Itemlist[i].addEventListener(MouseEvent.ROLL_OVER, listen);
-				Itemlist[i].addEventListener(MouseEvent.MOUSE_DOWN,listen);
-				Itemlist[i].addEventListener(MouseEvent.MOUSE_UP, listen);
+				if ( mouseFrame[0] != 0) Itemlist[i].addEventListener(MouseEvent.ROLL_OUT, listen);
+				if ( mouseFrame[1] != 0) Itemlist[i].addEventListener(MouseEvent.ROLL_OVER, listen);
+				if ( mouseFrame[2] != 0) Itemlist[i].addEventListener(MouseEvent.MOUSE_DOWN, listen);
+				if ( mouseFrame[3] != 0) Itemlist[i].addEventListener(MouseEvent.MOUSE_UP, listen);
 			}			
 		}
 		
 		//移除滑鼠監聽
 		public static function ReMoveMouseListen(mc:DisplayObject,listen:Function):void
-		{
-			mc.removeEventListener(MouseEvent.CLICK,listen);
+		{			
 			mc.removeEventListener(MouseEvent.ROLL_OUT,listen);
 			mc.removeEventListener(MouseEvent.ROLL_OVER, listen);
 			mc.removeEventListener(MouseEvent.MOUSE_DOWN, listen);
@@ -99,17 +97,34 @@ package View.componentLib.util
 		}
 		
 		//list移除滑鼠監聽
-		public static function ReMoveMultiMouseListen(Itemlist:Array,listen:Function):void
+		public static function ReMoveMultiMouseListen(Itemlist:Array,listen:Function,mouseFrame:Array):void
 		{			
 			var N:int =  Itemlist.length;
 			for (var i:int = 0 ;  i < N ;  i++)
-			{
-				Itemlist[i].removeEventListener(MouseEvent.CLICK,listen);
-				Itemlist[i].removeEventListener(MouseEvent.ROLL_OUT,listen);
-				Itemlist[i].removeEventListener(MouseEvent.ROLL_OVER, listen);
-				Itemlist[i].removeEventListener(MouseEvent.MOUSE_DOWN,listen);
-				Itemlist[i].removeEventListener(MouseEvent.MOUSE_UP, listen);
+			{				
+				if ( mouseFrame[0] != 0) Itemlist[i].removeEventListener(MouseEvent.ROLL_OUT,listen);
+				if ( mouseFrame[1] != 0) Itemlist[i].removeEventListener(MouseEvent.ROLL_OVER, listen);
+				if ( mouseFrame[2] != 0) Itemlist[i].removeEventListener(MouseEvent.MOUSE_DOWN,listen);
+				if ( mouseFrame[3] != 0) Itemlist[i].removeEventListener(MouseEvent.MOUSE_UP, listen);
 			}			
+		}
+		
+		public static function GotoAndStop(e:Event,frame:int):void
+		{			
+			if ( frame == 0 )
+			{				
+				return;
+			}			
+			e.currentTarget.gotoAndStop(frame);		
+		}
+		
+		public static function Frametype(type:int):Array
+		{
+			var BtnMouseFrame:Array;
+			if ( type == MouseBehavior.ClickBtn) BtnMouseFrame = [0, 0, 2, 0];
+			if ( type == MouseBehavior.SencetiveBtn) BtnMouseFrame = [1, 2, 2, 1];
+			
+			return BtnMouseFrame;
 		}
 		
 		//條件 0 base (flash為1base 影格 , CurFrame -1和 Frame + 1在於調整為0 base 

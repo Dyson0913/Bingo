@@ -8,10 +8,12 @@ package View.GameView
 	import Model.LobbyModel;
 	import Model.PlayerModel;
 	import View.componentLib.util.MultiObject;
+	import View.componentLib.util.SingleObject;
 	import View.componentLib.ViewBase.ViewBase;
 	
 	import View.InterFace.IVew;
 	import View.componentLib.util.utilFun;
+	import View.componentLib.util.MouseBehavior;
 	import caurina.transitions.Tweener
 	
 	/**
@@ -35,6 +37,9 @@ package View.GameView
 		//選桌列表
 		public var TableList:MultiObject;
 		
+		public var pageleft:SingleObject;
+		public var pagerihgt:SingleObject;
+		
 		public function Lobby()  
 		{
 			utilFun.Log("LobbView");
@@ -52,21 +57,44 @@ package View.GameView
 			//元件事件及畫面更新
 			_LobbyModel.UpDateModel();
 			
-			
 			//增加選桌大廳
 			TableList = new MultiObject();
-			TableList.CustomizedFun = TableInfoDisplay;
-			TableList.CustomizedData = _LobbyModel._pageModel.GetPageDate();
-			var PageAmount:int = _LobbyModel._pageModel.GetPageDate().length;
+			Tableinit();
 			
-			TableList.Create(PageAmount, "box", 180.8, 271, Math.min(PageAmount,5), 254.4, 200.65, "Table_", LobbView);
-			utilFun.AddMultiMouseListen(TableList._ItemList, CheckIN);
+			pageleft = new SingleObject()
+			pageleft.MouseFrame = utilFun.Frametype(MouseBehavior.SencetiveBtn);
+			pageleft.Create(LobbView["mc_left"]);
+			pageleft.mousedown = prepage
 			
-			utilFun.AddMouseListen( LobbView["mc_left"], pageLeft);
-			utilFun.AddMouseListen( LobbView["mc_right"], pageright);			
+			pagerihgt = new SingleObject()
+			pagerihgt.MouseFrame = utilFun.Frametype(MouseBehavior.SencetiveBtn);
+			pagerihgt.Create(LobbView["mc_right"]);
+			pagerihgt.mousedown = nextpage
 			
 			//page num
 			utilFun.SetText(LobbView["_Page"], _LobbyModel._pageModel.CurrentPage("/") );
+		}
+		
+		private function choseroom(e:Event,idx:int):void 
+		{
+			TableList.removeListen();
+			var roomNo:int = _LobbyModel._pageModel.GetOneDate(idx)["roomNo"];
+			utilFun.Log("enter room NO= " + roomNo);
+			_LobbyModel._currentRoomNum = roomNo;
+			
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.CHOOSE_ROOM));
+		}
+		
+		private function prepage(e:Event):void
+		{
+			_LobbyModel._pageModel.PrePage();
+			updatepage();
+		}
+		
+		private function nextpage(e:Event):void
+		{
+			_LobbyModel._pageModel.NextPage();
+			updatepage();
 		}
 		
 		public function TableInfoDisplay(mc:MovieClip, idx:int, RoomAndPlayer:Array):void
@@ -75,93 +103,23 @@ package View.GameView
 			utilFun.SetText(mc["Playernum"], String(RoomAndPlayer[idx]["PlayerNum"]) );
 		}
 		
-		private function CheckIN(e:Event):void 
-		{			
-			var sName:String = utilFun.Regex_CutPatten(e.currentTarget.name, new RegExp("Table_", "i"));		
-			switch (e.type)
-			{
-				case "click":
-					
-					utilFun.ReMoveMultiMouseListen(TableList._ItemList, CheckIN);
-					var roomNo:int = _LobbyModel._pageModel.GetOneDate(parseInt(sName))["roomNo"];
-					utilFun.Log("enter room NO= " + roomNo);
-					_LobbyModel._currentRoomNum = roomNo;
-					
-					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.CHOOSE_ROOM));
-					//websocket.enterRoom(roomNo);
-					e.currentTarget.gotoAndStop(2);
-					
-				case "rollOut":
-					e.currentTarget.gotoAndStop(1);
-					break;
-				case "rollOver":
-					e.currentTarget.gotoAndStop(2);
-				break;
-			}
-		}
-		
-		private function pageLeft(e:Event):void 
+		private function Tableinit():void
 		{
-			switch (e.type)
-			{
-				case "mouseDown":
-				{
-					utilFun.ReMoveMultiMouseListen(TableList._ItemList, CheckIN);
-					_LobbyModel._pageModel.PrePage();
-					updatepage();
-					e.currentTarget.gotoAndStop(2)	
-				}
-				break;
-				case "mouseUp":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
-				case "rollOut":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
-			}
-		}
-		
-		private function pageright(e:Event):void 
-		{
-			switch (e.type)
-			{
-				case "mouseDown":
-				{
-					utilFun.ReMoveMultiMouseListen(TableList._ItemList, CheckIN);
-					_LobbyModel._pageModel.NextPage();
-					updatepage();
-					e.currentTarget.gotoAndStop(2)
-				}
-				break;
-				case "mouseUp":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
-				case "rollOut":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
-			}
+			TableList.CustomizedFun = TableInfoDisplay;
+			TableList.CustomizedData = _LobbyModel._pageModel.GetPageDate();
+			var PageAmount:int = _LobbyModel._pageModel.GetPageDate().length;
+			
+			TableList.MouseFrame = utilFun.Frametype(MouseBehavior.SencetiveBtn);
+			TableList.Create(PageAmount, "box", 180.8, 271, Math.min(PageAmount,5), 254.4, 200.65, "Table_", LobbView);
+			TableList.mousedown = choseroom
 		}
 		
 		private function updatepage():void
 		{
-			//utilFun.Log("lover ="+LobbView.numChildren);
 			TableList.CleanList();
-			TableList.CustomizedData = _LobbyModel._pageModel.GetPageDate();
-			var PageAmount:int = _LobbyModel._pageModel.GetPageDate().length;
-			TableList.Create(PageAmount, "box", 180.8, 271, Math.min(PageAmount,5), 254.4, 200.65, "Table_", LobbView);
-			utilFun.AddMultiMouseListen(TableList._ItemList, CheckIN);
-			utilFun.SetText(LobbView["_Page"], _LobbyModel._pageModel.CurrentPage("/") );		
-			//utilFun.Log("lover ="+LobbView.numChildren);
+			Tableinit();
+			utilFun.SetText(LobbView["_Page"], _LobbyModel._pageModel.CurrentPage("/") );
 		}
-		
 		
 		[MessageHandler(selector="Leave")]
 		override public function ExitView(View:ViewState):void
@@ -170,8 +128,6 @@ package View.GameView
 			utilFun.ClearContainerChildren(LobbView);
 			utilFun.Log("lobby ExitView");
 		}
-		
-		
 	}
 
 }
