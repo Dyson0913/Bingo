@@ -4,6 +4,7 @@ package View.GameView
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import Model.valueObject.Intobject;
 	import View.componentLib.util.SingleObject;
 	
 	import Model.BetModel;
@@ -89,7 +90,7 @@ package View.GameView
 			BetList = new MultiObject();
 			BetList.CustomizedFun = BetListCustomizedFun;
 			BetList.CustomizedData = _TableModel.GetisBet();
-			BetList.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);
+			BetList.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,1,0]);
 			BetList.Create(100, "BetTableBtn", 106.55, 271.85, 10, 98, 66, "Bet_", bet);	
 			BetList.mousedown = BetPan;
 			
@@ -122,17 +123,20 @@ package View.GameView
 			cancelbet.mousedown = CencelAllBet;
 		}
 		
-		private function CencelAllBet(e:Event):void 
+		private function CencelAllBet(e:Event):Boolean 
 		{
-				//websocket._CleanAllbet = betModel.GetBetTableNo().length;
-					//if (websocket._CleanAllbet != 0)
-					//{
-						//var arr:Array = _BetModel.GetBetTableNo();
-						//for (var i:int = 0; i < arr.length ; i++)
-						//{
-							//websocket.SendBet(arr[i],0);
-						//}
-					//}
+			dispatcher(new Intobject(_BetModel.GetBetTableNo().length, "CleanAllBet"));
+			if( _LobbyModel._CleanAllbet != 0 )
+			{
+					var arr:Array = _BetModel.GetBetTableNo();
+					for (var i:int = 0; i < arr.length ; i++)
+					{
+					    _BetModel._BetTableid = arr[i];
+					    _BetModel._Betcredit = 0;
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+					}
+			}
+			return true;
 		}
 		
 		private function UpdatePanNumAndBet():void
@@ -145,15 +149,7 @@ package View.GameView
 			BetPointList.CustomizedData =  _BetModel.GetBetamount();
 			BetPointList.FlushObject();
 			
-			//TODO 移到hud
-			//所押盤數更新
-			//utilFun.SetText(Hud.getChildByName("ButtonBar")["BetOrder"], betModel.GetBetTableNo().length.toString());
-			//
-			//押分
-			//utilFun.SetText(Hud.getChildByName("ButtonBar")["Bet"], betModel.GetBetTotal().toString());
-			//
-			//Credit
-			//utilFun.SetText(Hud.getChildByName("ButtonBar")["Credit"], betModel._credit.toString() );
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.HUD_UPDATA));
 		}
 		
 		public function CustomizedFun_ShowData(mc:MovieClip,idx:int,CustomizedData:Array):void
@@ -223,31 +219,42 @@ package View.GameView
 			utilFun.SetText( mc["theNum"], str);			
 		}
 		
-		private function BetPan(e:Event,idx:int):void 
+		private function BetPan(e:Event,idx:int):Boolean 
 		{
 			//自己押注的盤會以紅色標示、別人押注的盤以黃色標示、無人押注的盤則以藍色標示。
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			if ( e.currentTarget.currentFrame == 1)
+			var arr:Array = _BetModel.GetBetTableNo();
+		   if ( arr.indexOf(idx) != -1)
+		   {
+			   utilFun.Log("already bet ");
+				return false;
+		   }
+		   
+			if ( _BetModel.GetBetTableNo().length > 11) 
 			{
-				if ( _BetModel.GetBetTableNo().length > 11) return;
-				_BetModel._BetTableid = idx;
-				_BetModel._Betcredit = 100;
-				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
-			}				
+				e.currentTarget.gotoAndStop(1);
+				utilFun.Log("Bet return");
+				return false;
+			}
+			_BetModel._BetTableid = idx;
+			_BetModel._Betcredit = 100;
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+			return false;
 		}
 		
-		private function OrderBet(e:Event,idx:int):void 
+		private function OrderBet(e:Event,idx:int):Boolean 
 		{
 			//減少押注
 			var Bet:int = _BetModel.request_for_Betamount_Reduce(idx);
 			if (Bet == -1)
 			{
 				utilFun.Log("Bet reduce To  0");
-				return;
+				return true;
 			}
 			_BetModel._BetTableid = _BetModel.GetSelectTable()
 			_BetModel._Betcredit = Bet;
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+			return true;
 		}
 		
 		public function BetListCustomizedFun(mc:MovieClip,idx:int,IsBetInfo:Array):void
@@ -258,8 +265,7 @@ package View.GameView
 			var cnt:int =  arr.length;
 			
 			//先調回無人下注
-			mc.gotoAndStop( (IsBetInfo[idx] + 1) );
-			
+			mc.gotoAndStop( 1 );
 			//有人下非自己,變黃
 			if ( IsBetInfo[idx] == 1)
 			{
@@ -267,8 +273,11 @@ package View.GameView
 				if ( MyBet != -1)
 				{
 					//紅
-					if(  MyBet == (cnt- 1))  mc.gotoAndStop( (IsBetInfo[idx]+2) ); 
-					else mc.gotoAndStop( (IsBetInfo[idx]+1) );
+					if (  MyBet == (cnt - 1))  
+					{
+						mc.gotoAndStop( (IsBetInfo[idx] + 2) );
+					}
+					else mc.gotoAndStop( (IsBetInfo[idx] + 1) );
 				}
 				else
 				{
@@ -279,19 +288,20 @@ package View.GameView
 			
 		}
 		
-		private function BetPoint(e:Event,idx:int):void
+		private function BetPoint(e:Event,idx:int):Boolean
 		{
 			//增加押注
 			var Bet:int = _BetModel.request_for_Betamount_add(idx);
 			if (Bet == 0 )
 			{
 				utilFun.Log("no more Bet ");
-				return;
+				return true;
 			}
 			
 			_BetModel._BetTableid = _BetModel.GetSelectTable()
 			_BetModel._Betcredit =Bet;
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+			return true;
 		}
 		
 		public function OrderListCustomizedFun(mc:MovieClip,idx:int,CustomizedData:Array):void
@@ -320,7 +330,7 @@ package View.GameView
 					LoadingPan(_BetModel._Bet_room_no);
 					
 					//押注BTN更新
-					BetList.CustomizedFun = BetListCustomizedFun;
+					BetList.CustomizedFun = BetListCustomizedFun;					
 					BetList.CustomizedData = _TableModel.GetisBet();
 					BetList.FlushObject();			
 					
@@ -328,22 +338,36 @@ package View.GameView
 			}
 		}
 		
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "clearnAllbet")]
+		public function cleanResult():void
+		{
+			//押注BTN 還原
+			BetList.CustomizedFun = BTnBack;
+			BetList.CustomizedData =  _BetModel.GetBetTableNo();
+			BetList.FlushObject();
+			
+			_BetModel.CleanAll();						
+			UpdatePanNumAndBet();		
+		}
+		
+		public function BTnBack(mc:MovieClip, idx:int, BetTableNo:Array):void
+		{
+			for each(var i:int in BetTableNo)
+			{				
+				if ( BetTableNo.indexOf(idx) != -1) mc.gotoAndStop(1);				
+			}
+		}
+		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstateupdate")]
 		public function UpdataTableBetInfo():void
-		{
-			BetList.CustomizedFun = BetListCustomizedFun;
+		{	
+			//比自己押注結果更早收到
+			//押注BTN更新
+			BetList.CustomizedFun = BetListCustomizedFun;					
 			BetList.CustomizedData = _TableModel.GetisBet();
 			BetList.FlushObject();
 			
-			//更新靜態資訊 TO HUD
-			//所押盤數更新
-			//ToolsFunction.SetText(Hud.getChildByName("ButtonBar")["BetOrder"], betModel.GetBetTableNo().length.toString());
-			//
-			//押分
-			//ToolsFunction.SetText(Hud.getChildByName("ButtonBar")["Bet"], betModel.GetBetTotal().toString());
-			//
-			//Credit
-			//ToolsFunction.SetText(Hud.getChildByName("ButtonBar")["Credit"], betModel._credit.toString() );
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.HUD_UPDATA));
 			
 			//外盤 (有人押叫外盤)
 			utilFun.SetText(bet["outorder"], String(_TableModel.GetBetCnt()));

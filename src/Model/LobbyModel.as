@@ -15,11 +15,14 @@ package Model
 		[MessageBinding(type="Model.valueObject.ArrayObject",messageProperty="array",selector="room_player")]		
 		public var _player:Array;
 		
+		[MessageBinding(type="Model.valueObject.Intobject",messageProperty="InterValue",selector="CleanAllBet")]
+		public var _CleanAllbet:int ;
+		
 		public var _currentRoomNum:int 
 		
 		public function LobbyModel() 
 		{
-			
+			_CleanAllbet = 0;
 		}
 		
 		public function UpDateModel():void

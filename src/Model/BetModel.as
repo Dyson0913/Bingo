@@ -48,7 +48,7 @@ package Model
 			//還錢
 			for each(var i:int in _Betamount)
 			{				
-				_credit += BetList[i ];
+				_credit += BetList[i];
 			}			
 			Clean();
 		}

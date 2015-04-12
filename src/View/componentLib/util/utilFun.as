@@ -118,11 +118,12 @@ package View.componentLib.util
 			e.currentTarget.gotoAndStop(frame);		
 		}
 		
-		public static function Frametype(type:int):Array
+		public static function Frametype(type:int,customized:Array = null):Array
 		{
 			var BtnMouseFrame:Array;
-			if ( type == MouseBehavior.ClickBtn) BtnMouseFrame = [0, 0, 2, 0];
+			if ( type == MouseBehavior.ClickBtn) BtnMouseFrame = [0, 0, 2, 1];
 			if ( type == MouseBehavior.SencetiveBtn) BtnMouseFrame = [1, 2, 2, 1];
+			if (type == MouseBehavior.Customized ) BtnMouseFrame = customized;
 			
 			return BtnMouseFrame;
 		}

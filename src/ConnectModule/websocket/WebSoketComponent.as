@@ -206,21 +206,20 @@ package ConnectModule.websocket
 						break;
 					}
 					case Message.MSG_TYPE_BET:
-					{
-						var room_no:int =  result.room_no;
-						var Betresult:int = result.result;
-						
+					{	
 						//TODO 用int objec 解偶
-						_BetModel._Bet_room_no = room_no;
-						_BetModel._Bet_result = Betresult;
+						_BetModel._Bet_room_no =  result.room_no;
+						_BetModel._Bet_result = result.result;
 						
-						if ( _CleanAllbet >=1)
+						if ( _LobbyModel._CleanAllbet >=1)
 						{
-							_CleanAllbet--;
+							_LobbyModel._CleanAllbet--;
 							//utilFun.Log("recv _CleanAllbet = " + _CleanAllbet + "Betresult = " + Betresult);
-							if ( _CleanAllbet == 0)
+							if ( _LobbyModel._CleanAllbet == 0)
 							{
-								cleanResult();
+								//cleanResult();
+								utilFun.Log("all retrun");
+								dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_CLEARN_ALL));
 							}
 						}
 						else

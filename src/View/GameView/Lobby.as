@@ -75,7 +75,7 @@ package View.GameView
 			utilFun.SetText(LobbView["_Page"], _LobbyModel._pageModel.CurrentPage("/") );
 		}
 		
-		private function choseroom(e:Event,idx:int):void 
+		private function choseroom(e:Event,idx:int):Boolean 
 		{
 			TableList.removeListen();
 			var roomNo:int = _LobbyModel._pageModel.GetOneDate(idx)["roomNo"];
@@ -83,18 +83,21 @@ package View.GameView
 			_LobbyModel._currentRoomNum = roomNo;
 			
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.CHOOSE_ROOM));
+			return true;
 		}
 		
-		private function prepage(e:Event):void
+		private function prepage(e:Event):Boolean
 		{
 			_LobbyModel._pageModel.PrePage();
 			updatepage();
+			return true;
 		}
 		
-		private function nextpage(e:Event):void
+		private function nextpage(e:Event):Boolean
 		{
 			_LobbyModel._pageModel.NextPage();
 			updatepage();
+			return true;
 		}
 		
 		public function TableInfoDisplay(mc:MovieClip, idx:int, RoomAndPlayer:Array):void

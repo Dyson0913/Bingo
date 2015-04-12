@@ -4,13 +4,15 @@ package View.GameView
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.display.StageDisplayState;
+	import mx.core.Singleton;
+	import View.componentLib.util.SingleObject;
 	
 	import Model.BetModel;
 	import View.component.Marquee.Marquee;
 	import View.componentLib.ViewBase.ViewBase;
 	
 	import View.InterFace.IVew;
-	import View.componentLib.util.utilFun;
+	import View.componentLib.util.*;
 	
 	/**
 	 * ...
@@ -26,6 +28,8 @@ package View.GameView
 		
 		[Inject]
 		public var _BetModel:BetModel;
+		
+		public var  _ScreenBtn:SingleObject;
 		
 		public function HudView()  
 		{
@@ -51,7 +55,10 @@ package View.GameView
 			utilFun.SetText(_DownBar["Credit"], _BetModel._credit.toString() );
 			//
 			
-			utilFun.AddMouseListen(_TopBar["btn_fullscreen"], FullScreen);
+			_ScreenBtn = new SingleObject();
+			_ScreenBtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[1,2,2,1]);
+			_ScreenBtn.Create(_TopBar["btn_fullscreen"]);
+			_ScreenBtn.mousedown = FullScreen;
 			//btn_info 遊戲資訊
 			//btn_mute
 			
@@ -62,36 +69,31 @@ package View.GameView
 			
 		}
 		
-		private function FullScreen(e:Event):void
+		private function FullScreen(e:Event):Boolean 
 		{
-			switch (e.type)
-			{			
-				case "mouseDown":
-				{
-					if ( stage.displayState == StageDisplayState.NORMAL)
-					{
-						stage.displayState = StageDisplayState.FULL_SCREEN; 
-					}
-					else
-					{
-						stage.displayState = StageDisplayState.NORMAL; 
-					}
-					
-					e.currentTarget.gotoAndStop(2)	
-				}
-				break;
-				case "mouseUp":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
-				case "rollOut":
-				{
-					e.currentTarget.gotoAndStop(1)	
-				}
-				break;
-				
+			if ( stage.displayState == StageDisplayState.NORMAL)
+			{
+				stage.displayState = StageDisplayState.FULL_SCREEN; 
 			}
+			else
+			{
+				stage.displayState = StageDisplayState.NORMAL; 
+			}
+			return true;
+		}
+		
+		
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "hudupdata")]
+		public function hudupdate():void
+		{			
+			//所押盤數更新
+			utilFun.SetText(_DownBar["BetOrder"], _BetModel.GetBetTableNo().length.toString());
+			
+			//押分
+			utilFun.SetText(_DownBar["Bet"], _BetModel.GetBetTotal().toString());
+			//
+			//Credits
+			utilFun.SetText(_DownBar["Credit"], _BetModel._credit.toString() );
 		}
 		
 		override public function ExitView(View:ViewState):void

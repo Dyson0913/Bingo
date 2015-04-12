@@ -36,6 +36,7 @@ package View.componentLib.util
 		
 		//元件命名
 		private var _ItemName:String;		
+		private var _contido:Boolean;
 		
 		public function MultiObject() 
 		{
@@ -69,7 +70,7 @@ package View.componentLib.util
 				
 				mc.name = ItemName + i;
 				_ItemName = ItemName;
-				_ItemList.push(mc);
+				ItemList.push(mc);
 				Container.addChild(mc);
 			}
 			_Container = Container;
@@ -78,11 +79,12 @@ package View.componentLib.util
 		
 		public function FlushObject():void
 		{
-			for each(var i:int in _ItemList)
-			{
+			var ItemNum:int = ItemList.length;
+			for (var i:int = 0 ; i < ItemNum; i++)
+			{			
 				if (CustomizedFun != null)
 				{
-					CustomizedFun(_ItemList[i], i,CustomizedData);
+					CustomizedFun(ItemList[i], i,CustomizedData);
 				}
 			}
 		}
@@ -90,13 +92,13 @@ package View.componentLib.util
 		public function CleanList():void
 		{
 			//removeListen();
-			var cnt:int = _ItemList.length;
+			var cnt:int = ItemList.length;
 			for ( var i:int = 0; i < cnt; i++)
 			{
-				_Container.removeChild(_ItemList[i]);
+				_Container.removeChild(ItemList[i]);
 			}
 			
-			_ItemList.length = 0;
+			ItemList.length = 0;
 		}
 		
 		public function Getidx(name:String):int 
@@ -107,56 +109,55 @@ package View.componentLib.util
 		
 		private function Listen():void
 		{
-			var N:int =  _ItemList.length;
+			var N:int =  ItemList.length;
 			for (var i:int = 0 ;  i < N ;  i++)
 			{
-				if ( MouseFrame[0] != 0) _ItemList[i].addEventListener(MouseEvent.ROLL_OUT, eventListen);
-				if ( MouseFrame[1] != 0) _ItemList[i].addEventListener(MouseEvent.ROLL_OVER, eventListen);
-				if ( MouseFrame[2] != 0) _ItemList[i].addEventListener(MouseEvent.MOUSE_DOWN, eventListen);
-				if ( MouseFrame[3] != 0) _ItemList[i].addEventListener(MouseEvent.MOUSE_UP, eventListen);
+				if ( MouseFrame[0] != 0) ItemList[i].addEventListener(MouseEvent.ROLL_OUT, eventListen);
+				if ( MouseFrame[1] != 0) ItemList[i].addEventListener(MouseEvent.ROLL_OVER, eventListen);
+				if ( MouseFrame[2] != 0) ItemList[i].addEventListener(MouseEvent.MOUSE_DOWN, eventListen);
+				if ( MouseFrame[3] != 0) ItemList[i].addEventListener(MouseEvent.MOUSE_UP, eventListen);
 			}
 		}
 		
 		public function removeListen():void
 		{
-			var N:int =  _ItemList.length;
+			var N:int =  ItemList.length;
 			for (var i:int = 0 ;  i < N ;  i++)
 			{
-				if ( MouseFrame[0] != 0) _ItemList[i].removeEventListener(MouseEvent.ROLL_OUT, eventListen);
-				if ( MouseFrame[1] != 0) _ItemList[i].removeEventListener(MouseEvent.ROLL_OVER, eventListen);
-				if ( MouseFrame[2] != 0) _ItemList[i].removeEventListener(MouseEvent.MOUSE_DOWN, eventListen);
-				if ( MouseFrame[3] != 0) _ItemList[i].removeEventListener(MouseEvent.MOUSE_UP, eventListen);
+				if ( MouseFrame[0] != 0) ItemList[i].removeEventListener(MouseEvent.ROLL_OUT, eventListen);
+				if ( MouseFrame[1] != 0) ItemList[i].removeEventListener(MouseEvent.ROLL_OVER, eventListen);
+				if ( MouseFrame[2] != 0) ItemList[i].removeEventListener(MouseEvent.MOUSE_DOWN, eventListen);
+				if ( MouseFrame[3] != 0) ItemList[i].removeEventListener(MouseEvent.MOUSE_UP, eventListen);
 			}
 		}
 		
 		public function eventListen(e:Event):void
-		{			
-			utilFun.Log(e.type);
+		{
 			var idx:int = Getidx(e.currentTarget.name);
 			switch (e.type)
 			{
 				case MouseEvent.ROLL_OUT:
-				{					
-					if ( rollout != null) rollout(e,idx);
-					utilFun.GotoAndStop(e,MouseFrame[0]);
+				{
+					if ( rollout != null) _contido = rollout(e,idx);
+					if( _contido ) utilFun.GotoAndStop(e, MouseFrame[0]);					
 				}
 				break;
 				case MouseEvent.ROLL_OVER:
-				{					
-					if ( rollover != null) rollover(e,idx);
-					utilFun.GotoAndStop(e,MouseFrame[1]);
+				{
+					if ( rollover != null) _contido = rollover(e,idx);
+					if( _contido ) utilFun.GotoAndStop(e, MouseFrame[1]);
 				}
 				break;
 				case MouseEvent.MOUSE_DOWN:
 				{
-					if ( mousedown != null) mousedown(e,idx);
-					utilFun.GotoAndStop(e,MouseFrame[2]);
+					if ( mousedown != null) _contido = mousedown(e,idx);
+					if( _contido ) utilFun.GotoAndStop(e, MouseFrame[2]);					
 				}
 				break;
 				case MouseEvent.MOUSE_UP:
 				{
-					if ( mouseup != null) mouseup(e,idx);
-					utilFun.GotoAndStop(e,MouseFrame[3]);
+					if ( mouseup != null) _contido = mouseup(e,idx);
+					if( _contido ) utilFun.GotoAndStop(e, MouseFrame[3]);
 				}
 				break;
 			}

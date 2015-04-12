@@ -8,8 +8,7 @@ package View.componentLib.util
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.getDefinitionByName;
 	
-	import View.componentLib.util.utilFun;
-	import View.events.TriggerEvent;
+	import View.componentLib.util.utilFun;	
 	import caurina.transitions.Tweener;
 	
 	/**
@@ -53,16 +52,16 @@ package View.componentLib.util
 		}
 		
 		private function MenuEffect(e:Event):void 
-		{
+		{			
 			switch (e.type)
 			{
-				case "click":
+				case MouseEvent.MOUSE_DOWN:
 						PopMyFunList();
 					break;
-				case "rollOut":
+				case MouseEvent.ROLL_OUT:
 						_Menu.backgroundColor  = _RollOutColor;
 					break;
-				case "rollOver":
+				case MouseEvent.ROLL_OVER:
 						_Menu.backgroundColor  = _RollInColor;
 				break;
 			}
@@ -125,7 +124,7 @@ package View.componentLib.util
 			
 			switch (e.type)
 			{
-				case "click":
+				case MouseEvent.MOUSE_DOWN:
 						switch (sName)
 						{
 							case _AdValue:
@@ -149,7 +148,7 @@ package View.componentLib.util
 							break; 
 						}
 					break;
-				case "rollOut":
+				case MouseEvent.ROLL_OUT:
 						e.currentTarget.backgroundColor  = _RollOutColor;
 					break;
 				case "rollOver":
@@ -165,7 +164,7 @@ package View.componentLib.util
 			
 			switch (e.type)
 			{
-				case "click":
+				case MouseEvent.MOUSE_DOWN:
 						switch (sName)
 						{
 							case _AdValue:
@@ -189,10 +188,10 @@ package View.componentLib.util
 							break; 
 						}
 					break;
-				case "rollOut":
+				case MouseEvent.ROLL_OUT:
 						e.currentTarget.backgroundColor  = _RollOutColor;
 					break;
-				case "rollOver":
+				case MouseEvent.ROLL_OVER:
 						e.currentTarget.backgroundColor  = _RollInColor;
 				break;
 			}

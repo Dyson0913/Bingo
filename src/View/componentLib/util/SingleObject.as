@@ -19,6 +19,8 @@ package View.componentLib.util
 		public var mousedown:Function;
 		public var mouseup:Function;
 		
+		private var _contido:Boolean;
+		
 		public function SingleObject() 
 		{
 			
@@ -52,26 +54,26 @@ package View.componentLib.util
 			{
 				case MouseEvent.ROLL_OUT:
 				{					
-					if ( rollout != null) rollout(e);
-					utilFun.GotoAndStop(e,MouseFrame[0]);
+					if ( rollout != null)  _contido = rollout(e);
+					if( _contido ) utilFun.GotoAndStop(e,MouseFrame[0]);
 				}
 				break;
 				case MouseEvent.ROLL_OVER:
 				{					
-					if ( rollover != null) rollover(e);
-					utilFun.GotoAndStop(e,MouseFrame[1]);
+					if ( rollover != null)  _contido = rollover(e);
+					if( _contido ) utilFun.GotoAndStop(e,MouseFrame[1]);
 				}
 				break;
 				case MouseEvent.MOUSE_DOWN:
 				{
-					if ( mousedown != null) mousedown(e);
-					utilFun.GotoAndStop(e,MouseFrame[2]);
+					if ( mousedown != null)  _contido = mousedown(e);
+					if( _contido ) utilFun.GotoAndStop(e,MouseFrame[2]);
 				}
 				break;
 				case MouseEvent.MOUSE_UP:
 				{
-					if ( mouseup != null) mouseup(e);
-					utilFun.GotoAndStop(e,MouseFrame[3]);
+					if ( mouseup != null) _contido = mouseup(e);
+					if( _contido ) utilFun.GotoAndStop(e,MouseFrame[3]);
 				}
 				break;
 			}
