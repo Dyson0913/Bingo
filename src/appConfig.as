@@ -2,6 +2,7 @@ package
 {
 	import com.hexagonstar.util.debug.Debug;
 	import flash.display.MovieClip;
+	import Model.BallModel;
 	import Model.BetModel;
 	import Model.LobbyModel;
 	import Model.PlayerModel;
@@ -33,6 +34,7 @@ package
 		public var _BetModel:BetModel = new BetModel();
 		public var _LobbyModel:LobbyModel = new LobbyModel();
 		public var _TableModel:TableModel = new TableModel();
+		public var _BallModel:BallModel = new BallModel();
 		
 		
 		//connect module

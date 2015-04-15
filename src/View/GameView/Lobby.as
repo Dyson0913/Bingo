@@ -12,8 +12,7 @@ package View.GameView
 	import View.componentLib.ViewBase.ViewBase;
 	
 	import View.InterFace.IVew;
-	import View.componentLib.util.utilFun;
-	import View.componentLib.util.MouseBehavior;
+	import View.componentLib.util.*;
 	import caurina.transitions.Tweener
 	
 	/**

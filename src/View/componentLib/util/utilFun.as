@@ -6,6 +6,7 @@ package View.componentLib.util
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.utils.getDefinitionByName;
 	import com.hexagonstar.util.debug.Debug;
 	import View.componentLib.util.DebugEnumMapping;
@@ -30,6 +31,19 @@ package View.componentLib.util
 			var mc:MovieClip = new Temp();	
 			mc.name = sClassName;
 			return mc;
+		}
+		
+		public	static function Createitem(text:String,color:uint,align:String = TextFieldAutoSize.LEFT):TextField
+		{
+			var tx:TextField = new TextField();
+			tx.background = true;
+			tx.backgroundColor  = color;
+			tx.text = text;
+			tx.width = tx.textWidth;
+			tx.height = tx.height;
+			tx.selectable = false;
+			tx.autoSize = align;
+			return tx;
 		}
 		
 		/**
@@ -153,6 +167,11 @@ package View.componentLib.util
 		public static function Regex_MatchPatten(str:String, pattern:RegExp):Boolean
 		{
 			return pattern.test(str);
+		}
+		
+		public static function Regex_Match(str:String, pattern:RegExp):Array
+		{
+			return str.match(pattern);			
 		}
 		
 		//n個字後變...

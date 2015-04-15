@@ -1,5 +1,6 @@
 package View.componentLib.ViewBase 
 {
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import View.GameView.ViewState;
 	/**
@@ -13,6 +14,8 @@ package View.componentLib.ViewBase
 	{
 		[MessageDispatcher]
         public var dispatcher:Function;
+		
+		public var _View:MovieClip;
 		
 		public function ViewBase() 
 		{

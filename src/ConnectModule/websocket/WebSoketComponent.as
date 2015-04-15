@@ -40,18 +40,6 @@ package ConnectModule.websocket
 		[Inject]
 		public var _BetModel:BetModel;
 		
-		public var EnterBetView:Function;
-		public var stopBetView:Function;
-		public var OpenBallView:Function;
-		public var HalfEnterInit:Function;
-		public var UpdataBallInfo:Function;
-		public var UpdateBetInfo:Function;
-		public var BetResult:Function;
-		public var cleanResult:Function;
-		public var UpTableBetInfo:Function;
-		
-		public var BingoHint:Function;
-		
 		private var websocket:WebSocket;		
 		
 		private var best_table_list:Array;
@@ -80,7 +68,7 @@ package ConnectModule.websocket
 		
 		public function Connect():void
 		{
-			websocket = new WebSocket("ws://192.168.1.27:8888/gamesocket", "");
+			websocket = new WebSocket("ws://106.186.116.216:6000/gamesocket", "");
 			websocket.addEventListener(WebSocketEvent.OPEN, handleWebSocket);
 			websocket.addEventListener(WebSocketEvent.CLOSED, handleWebSocket);			
 			websocket.addEventListener(WebSocketErrorEvent.CONNECTION_FAIL, handleConnectionFail);
@@ -125,16 +113,12 @@ package ConnectModule.websocket
 					}
 					case Message.MSG_TYPE_DISPLAY_ROOMS:
 					{
-						utilFun.Log("recv Display Rooms");							
-												
-						var uid:Intobject = new Intobject(result.player_info.id,"uuid");
-						dispatcher(uid);
-						var nickname:StringObject = new StringObject(result.player_info.nickname, "nickname");
-						dispatcher(nickname);
-						//
-						var intob:Intobject = new Intobject(result.player_info.credit,"credit");
-						dispatcher(intob);				
-						 //
+						utilFun.Log("recv Display Rooms");
+						
+						dispatcher(new Intobject(result.player_info.id,"uuid") );
+						dispatcher( new StringObject(result.player_info.nickname, "nickname") );
+						dispatcher(new Intobject(result.player_info.credit,"credit"));
+						
 						TableNo.length = 0;
 						is_betarr.length = 0;
 						ballarr.length = 0;
@@ -245,19 +229,14 @@ package ConnectModule.websocket
 							TableNo.push(Table);
 							is_betarr.push(is_bet);
 						}
-						
-						var table:ArrayObject = new ArrayObject(TableNo, "table");
-						dispatcher(table);
 							
-						var bet:ArrayObject = new ArrayObject(is_betarr, "is_betarr");						
-						dispatcher(bet);
+						dispatcher(new ArrayObject(TableNo, "table"));
+						dispatcher(new ArrayObject(is_betarr, "is_betarr"));
 						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
-						//UpTableBetInfo(TableNo, is_betarr,ballarr);
 							
 						break;
 					}
-					
 					
 					case Message.MSG_TYPE_NEW_ROUND_WITH_BALL:
 					{
@@ -316,7 +295,7 @@ package ConnectModule.websocket
                                 amount.push(my);
                             }
 							//更新到新己的betinfo
-							UpdateBetInfo(table_no,amount);
+							_BetModel.UpateBetInfo(table_no, amount);
 							
 							_credit = result.player_info.credit;
 						}
@@ -325,8 +304,8 @@ package ConnectModule.websocket
 					case Message.MSG_TYPE_END_BET:
 					{
 						utilFun.Log("recv End Bet");
-						m_game_state = Message.GAME_STATE_END_BET;						
-						stopBetView();
+						m_game_state = Message.GAME_STATE_END_BET;
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STOP_HINT));
 						break;
 					}
 					case Message.MSG_TYPE_OPEN_BALL:
@@ -335,12 +314,23 @@ package ConnectModule.websocket
 						//收到結束,切到開球畫面
 						if (m_game_state == Message.GAME_STATE_END_BET) 
 						{
-							OpenBallView();
+							dispatcher(new ViewState(ViewState.openball,ViewState.ENTER) );
+							dispatcher(new ViewState(ViewState.Bet, ViewState.LEAVE) );
+							
 							m_game_state = 	Message.GAME_STATE_START_ROUND;
 						}  
 						else
-						{							
-							UpdataBallInfo(result, false);
+						{
+							dispatcher(new Intobject( parseInt(msg.game_info.opened_info.current_ball), "BallNum"));
+							dispatcher(new Intobject( msg.game_info.opened_info.best_remain, "best_remain"));
+							dispatcher(new Intobject( msg.game_info.opened_info.second_remain, "second_remain"));
+							dispatcher(new Intobject( msg.game_info.opened_info.opened_ball_num, "opened_ball_num"));
+							dispatcher(new ArrayObject(msg.game_info.opened_info.best_list, "best_list"));
+							dispatcher(new ArrayObject(msg.game_info.opened_info.second_list, "second_list"));
+							
+							
+							//UpdataBallInfo(result, false);
+							dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
 						}
 						
 						break;
@@ -356,7 +346,8 @@ package ConnectModule.websocket
 						//會拿到新credit
 						//utilFun.Log("new MSG_TYPE_BINGO credit = " + result.player_info.credit);
 						
-						BingoHint();	
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BINGO));
+						
 						break;						
 					}
 				}
@@ -428,34 +419,18 @@ package ConnectModule.websocket
 					m_game_state = 	Message.GAME_STATE_START_ROUND;
 					//中途入局
 					utilFun.Log("中途入局");
-					   for (var id:String in msg)
-                       {
-                         var value:Object = msg[id];
-                         utilFun.Log(" msg =" + id + " = " + value);                                    
-                       }
-					  
 					  //msg =room_no = 92
-					   
-					    for (var id:String in msg.game_info)
-                       {
-                         var value:Object = msg.game_info[id];
-                         utilFun.Log(" msg.game_info =" + id + " = " + value);                                    
-                       }
-					   
+					  
 					   //player_info
 					    //=credit = 50000
 					   // =id = Player1
 					   // =nickname = Player1
-					   var intob:Intobject = new Intobject(msg.player_info.credit,"credit");
-						dispatcher(intob);
-					   //msg.game_info
-					   //= opened_history array
+					   
+						dispatcher(new Intobject(msg.player_info.credit, "credit"));
+						dispatcher(new ArrayObject(msg.game_info.opened_history, "opened_history"));
 					  
 					   dispatcher(new ViewState(ViewState.openball,ViewState.ENTER) );
 					   dispatcher(new ViewState(ViewState.Lobb, ViewState.LEAVE) );
-					   
-					  // OpenBallView();
-					   //HalfEnterInit(_credit,msg.game_info.opened_history);
 					   
 					break;
 				}	

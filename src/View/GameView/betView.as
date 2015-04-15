@@ -53,6 +53,7 @@ package View.GameView
 		private var BetPointList:MultiObject;
 		
 		private var cancelbet:SingleObject;
+		public var stophint:MovieClip;
 		
 		public function betView()  
 		{
@@ -199,7 +200,6 @@ package View.GameView
 			var str:String;
 			var RowCnt:int = 5;
 			var ColCnt:int = 5;
-			var str:String;
 			
 			var rowNum:int = idx  / RowCnt;			
 			var colNum:int = idx  % ColCnt;			
@@ -377,10 +377,29 @@ package View.GameView
 			
 		}
 		
+		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstopHint")]
+		public function EnterStopBet():void
+		{
+			stophint = utilFun.GetClassByString("StopBet");
+			stophint.x =  174.55;
+			stophint.y = 431.7;
+			bet.addChild(stophint);
+			
+			stophint.alpha = 0;
+			Tweener.addTween(stophint, {alpha:1, time:2,onComplete:FadeIn});
+		}		
+		
+		private function FadeIn():void
+		{
+			Tweener.addTween(stophint, {alpha:0, time:2});
+		}
+		
 		[MessageHandler(selector="Leave")]
 		override public function ExitView(View:ViewState):void
 		{
-			
+			if (View._view != ViewState.Bet) return;
+			utilFun.ClearContainerChildren(bet);
+			utilFun.Log("bet ExitView");
 		}
 		
 		
