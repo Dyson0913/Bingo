@@ -7,7 +7,6 @@ package View.GameView
 	import ConnectModule.websocket.WebSoketComponent
 	
 	
-	import View.InterFace.IVew;
 	import View.componentLib.util.utilFun;
 	import caurina.transitions.Tweener;
 	/**

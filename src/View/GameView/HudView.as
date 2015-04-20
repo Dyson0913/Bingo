@@ -3,22 +3,20 @@ package View.GameView
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.display.StageDisplayState;
-	import mx.core.Singleton;
+	import flash.display.StageDisplayState;	
 	import View.componentLib.util.SingleObject;
 	
 	import Model.BetModel;
 	import View.component.Marquee.Marquee;
 	import View.componentLib.ViewBase.ViewBase;
 	
-	import View.InterFace.IVew;
 	import View.componentLib.util.*;
 	
 	/**
 	 * ...
 	 * @author hhg
 	 */
-	public class HudView extends ViewBase// implements IVew
+	public class HudView extends ViewBase
 	{
 		
 		public var _TopBar:MovieClip;
@@ -39,6 +37,7 @@ package View.GameView
 		[MessageHandler(selector="add")] 
 		override public function EnterView (View:ViewState):void
 		{
+			utilFun.Log("in to hud=");			
 			if (View._view != ViewState.Hud) return;
 			
 			_TopBar = utilFun.GetClassByString("TopBar");
@@ -66,7 +65,7 @@ package View.GameView
 			_Marquee.init();
 			_Marquee.SetPeriodMsg(["現在儲值賓果可獲500紅利點數", "儲值上限每人10000點", "活動期間1月20到3月底截止", "儲滿5000加送造形紀念品", "祝你再次中獎"]);
 			
-			
+			utilFun.Log("in to hud=2");			
 		}
 		
 		private function FullScreen(e:Event):Boolean 
@@ -96,8 +95,10 @@ package View.GameView
 			utilFun.SetText(_DownBar["Credit"], _BetModel._credit.toString() );
 		}
 		
+		[MessageHandler(selector="Leave")]
 		override public function ExitView(View:ViewState):void
 		{
+			if (View._view != ViewState.Hud) return;
 			
 		}
 		

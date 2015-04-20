@@ -9,7 +9,6 @@ package View.GameView
 	import View.componentLib.util.SingleObject;
 	import View.componentLib.ViewBase.ViewBase;
 	
-	import View.InterFace.IVew;
 	import caurina.transitions.Tweener;
 	import View.componentLib.util.*;
 	
@@ -83,8 +82,7 @@ package View.GameView
 			var arr:Array = _BetModel.GetBetTableNo();
 			for (var i:int = 0; i < arr.length; i++)
 			{
-				var tableBall:Array = _TableModel.GetBallByIdx(arr[i]);
-				utilFun.Log("tableBall = " + tableBall);
+				var tableBall:Array = _TableModel.GetBallByIdx(arr[i]);				
 				_BetModel.CommfirmAdd(tableBall);
 			}			
 			
@@ -124,8 +122,9 @@ package View.GameView
 		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "ball_update")]
-		private function update_Ball_state():void
+		public function update_Ball_state():void
 		{
+			utilFun.Log("update_Ball_state =");
 			//目前開球
 			var CurrentBallNum:TextField = _View["CurrentOpenBall"]["ballNum"] ;
 			CurrentBallNum.text = _BallModel.CurrentBallNum.toString();
@@ -221,7 +220,7 @@ package View.GameView
 			
 			//SoundSuccess.play();
 			utilFun.SetText( _View["ballCount"], _BallModel.opened_ball_num.toString() );
-			
+			utilFun.Log("update_Ball_state =2");
 		}
 		
 		public function SortSelfBet(TableNo:Array, BallList:Array):void

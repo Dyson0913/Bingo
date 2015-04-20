@@ -60,6 +60,7 @@
     <element path="lib\dependencies\spicelib-reflect-3.0.0.swc" />
     <element path="lib\dependencies\spicelib-util-3.1.0.swc" />
     <element path="lib\dependencies\spicelib-xml-mapper-3.0.2.swc" />
+    <element path="lib\LibGen.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

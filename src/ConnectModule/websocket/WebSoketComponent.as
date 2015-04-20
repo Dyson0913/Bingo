@@ -68,7 +68,7 @@ package ConnectModule.websocket
 		
 		public function Connect():void
 		{
-			websocket = new WebSocket("ws://106.186.116.216:6000/gamesocket", "");
+			websocket = new WebSocket("ws://106.186.116.216:8888/gamesocket", "");
 			websocket.addEventListener(WebSocketEvent.OPEN, handleWebSocket);
 			websocket.addEventListener(WebSocketEvent.CLOSED, handleWebSocket);			
 			websocket.addEventListener(WebSocketErrorEvent.CONNECTION_FAIL, handleConnectionFail);
@@ -97,7 +97,9 @@ package ConnectModule.websocket
 		{			
 		  if (event.message.type === WebSocketMessage.TYPE_UTF8) 
 		  {
+			
 			var result:Object = JSON.decode(event.message.utf8Data);
+			//utilFun.Log("result"+event.message.utf8Data)
 			//var result = JSON.parse(event.message.utf8Data, function(k,v){			
 		  }
 				
@@ -139,7 +141,7 @@ package ConnectModule.websocket
 						dispatcher(roomplayer);
 						
 						//載入選桌大廳
-						dispatcher(new ViewState(ViewState.Lobb,ViewState.ENTER) );
+						dispatcher(new ViewState(ViewState.Lobb, ViewState.ENTER) );							
 						dispatcher(new ViewState(ViewState.Loading,ViewState.LEAVE) );
 						
 						break;
@@ -260,8 +262,8 @@ package ConnectModule.websocket
 							//utilFun.Log("TableNo = " + TableNo.length);
 							//utilFun.Log("is_betarr = " + is_betarr);
 							
-							dispatcher(new ViewState(ViewState.openball,ViewState.ENTER) );
-							dispatcher(new ViewState(ViewState.Bet, ViewState.LEAVE) );
+							dispatcher(new ViewState(ViewState.Bet, ViewState.ENTER) );
+							dispatcher(new ViewState(ViewState.openball,ViewState.LEAVE) );							
 							//EnterBetView(TableNo,is_betarr,ballarr,_remainTime,_credit);
 						}
 						else 
@@ -314,22 +316,20 @@ package ConnectModule.websocket
 						//收到結束,切到開球畫面
 						if (m_game_state == Message.GAME_STATE_END_BET) 
 						{
-							dispatcher(new ViewState(ViewState.openball,ViewState.ENTER) );
-							dispatcher(new ViewState(ViewState.Bet, ViewState.LEAVE) );
+							dispatcher(new ViewState(ViewState.openball, ViewState.ENTER) );							
+							dispatcher(new ViewState(ViewState.Bet, ViewState.LEAVE) );							
 							
 							m_game_state = 	Message.GAME_STATE_START_ROUND;
 						}  
 						else
-						{
-							dispatcher(new Intobject( parseInt(msg.game_info.opened_info.current_ball), "BallNum"));
-							dispatcher(new Intobject( msg.game_info.opened_info.best_remain, "best_remain"));
-							dispatcher(new Intobject( msg.game_info.opened_info.second_remain, "second_remain"));
-							dispatcher(new Intobject( msg.game_info.opened_info.opened_ball_num, "opened_ball_num"));
-							dispatcher(new ArrayObject(msg.game_info.opened_info.best_list, "best_list"));
-							dispatcher(new ArrayObject(msg.game_info.opened_info.second_list, "second_list"));
+						{							
+							dispatcher(new Intobject( parseInt(result.game_info.opened_info.current_ball), "BallNum"));
+							dispatcher(new Intobject( result.game_info.opened_info.best_remain, "best_remain"));
+							dispatcher(new Intobject( result.game_info.opened_info.second_remain, "second_remain"));
+							dispatcher(new Intobject( result.game_info.opened_info.opened_ball_num, "opened_ball_num"));
+							dispatcher(new ArrayObject(result.game_info.opened_info.best_list, "best_list"));
+							dispatcher(new ArrayObject(result.game_info.opened_info.second_list, "second_list"));
 							
-							
-							//UpdataBallInfo(result, false);
 							dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
 						}
 						

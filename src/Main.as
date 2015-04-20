@@ -53,8 +53,8 @@ package
 			addChild(_context.getObjectByType(LoadingView) as LoadingView);
 			addChild(_context.getObjectByType(Lobby) as Lobby);
 			addChild(_context.getObjectByType(betView) as betView);
-			addChild(_context.getObjectByType(HudView) as HudView);
 			addChild(_context.getObjectByType(OpenBallView) as OpenBallView);
+			addChild(_context.getObjectByType(HudView) as HudView);
 			
 			var Enter:LoadingView = _context.getObject("Enter") as LoadingView;
 			utilFun.Log("Enter = "+Enter);

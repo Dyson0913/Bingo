@@ -13,8 +13,7 @@ package View.GameView
 	import Model.TableModel;
 	import View.componentLib.util.MultiObject;
 	import View.componentLib.ViewBase.ViewBase;
-	
-	import View.InterFace.IVew;
+		
 	import View.componentLib.util.utilFun;
 	import View.componentLib.util.MouseBehavior;
 	import caurina.transitions.Tweener;

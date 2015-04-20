@@ -10,8 +10,7 @@ package View.GameView
 	import View.componentLib.util.MultiObject;
 	import View.componentLib.util.SingleObject;
 	import View.componentLib.ViewBase.ViewBase;
-	
-	import View.InterFace.IVew;
+		
 	import View.componentLib.util.*;
 	import caurina.transitions.Tweener
 	
@@ -19,7 +18,7 @@ package View.GameView
 	 * ...
 	 * @author hhg
 	 */
-	public class Lobby extends ViewBase //implements IVew
+	public class Lobby extends ViewBase
 	{
 		
 		public var LobbView:MovieClip;
