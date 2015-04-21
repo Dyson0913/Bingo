@@ -4,24 +4,23 @@ package View.GameView
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import Model.valueObject.Intobject;
-	import View.componentLib.util.SingleObject;
+	import Model.valueObject.Intobject;	
 	
 	import Model.BetModel;
 	import Model.LobbyModel;
 	import Model.PlayerModel;
 	import Model.TableModel;
-	import View.componentLib.util.MultiObject;
-	import View.componentLib.ViewBase.ViewBase;
+	import View.Viewutil.*
+	import View.ViewBase.ViewBase;
 		
-	import View.componentLib.util.utilFun;
-	import View.componentLib.util.MouseBehavior;
+	import util.utilFun;
+	import View.Viewutil.MouseBehavior;
 	import caurina.transitions.Tweener;
 	/**
 	 * ...
 	 * @author hhg
 	 */
-	public class betView extends ViewBase// implements IVew
+	public class betView extends ViewBase
 	{
 		public var bet:MovieClip;
 		

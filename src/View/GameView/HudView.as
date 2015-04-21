@@ -4,13 +4,13 @@ package View.GameView
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.display.StageDisplayState;	
-	import View.componentLib.util.SingleObject;
+	import View.Viewutil.*
 	
 	import Model.BetModel;
-	import View.component.Marquee.Marquee;
-	import View.componentLib.ViewBase.ViewBase;
+	import View.ViewComponent.*;
+	import View.ViewBase.ViewBase;
 	
-	import View.componentLib.util.*;
+	import util.*;
 	
 	/**
 	 * ...

@@ -1,10 +1,10 @@
-package View.componentLib.util 
+package View.Viewutil 
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import View.componentLib.util.utilFun;
+	import util.utilFun;
 	
 	
 	/**
@@ -75,7 +75,7 @@ package View.componentLib.util
 			}
 			_Container = Container;
 			Listen();
-		}
+		}		
 		
 		public function FlushObject():void
 		{

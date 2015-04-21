@@ -5,12 +5,11 @@ package View.GameView
 	import flash.events.Event;
 	import flash.text.TextField;
 	import Model.*;
-	import View.componentLib.util.MultiObject;
-	import View.componentLib.util.SingleObject;
-	import View.componentLib.ViewBase.ViewBase;
+	import View.Viewutil.*	
+	import View.ViewBase.ViewBase;
 	
 	import caurina.transitions.Tweener;
-	import View.componentLib.util.*;
+	import util.*;
 	
 	/**
 	 * ...

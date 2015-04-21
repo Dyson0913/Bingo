@@ -9,7 +9,7 @@ package
 	import org.spicefactory.parsley.asconfig.*;
 	
 	import com.hexagonstar.util.debug.Debug;
-	import View.componentLib.util.utilFun;
+	import util.utilFun;
 	import View.GameView.*;
 	
 	

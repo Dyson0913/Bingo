@@ -1,6 +1,6 @@
 package Model 
 {
-	import View.componentLib.util.utilFun;
+	import util.utilFun;
 	/**
 	 * ...
 	 * @author hhg4092

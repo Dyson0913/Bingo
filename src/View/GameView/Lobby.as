@@ -7,11 +7,10 @@ package View.GameView
 	import Model.BetModel;
 	import Model.LobbyModel;
 	import Model.PlayerModel;
-	import View.componentLib.util.MultiObject;
-	import View.componentLib.util.SingleObject;
-	import View.componentLib.ViewBase.ViewBase;
+	import View.Viewutil.*	
+	import View.ViewBase.ViewBase;
 		
-	import View.componentLib.util.*;
+	import util.*;
 	import caurina.transitions.Tweener
 	
 	/**

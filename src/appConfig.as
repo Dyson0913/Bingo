@@ -9,7 +9,7 @@ package
 	import Model.TableModel;
 	import org.spicefactory.parsley.asconfig.processor.ActionScriptConfigurationProcessor;
 	import org.spicefactory.parsley.core.registry.ObjectDefinition;
-	import View.componentLib.ViewBase.ViewBase;
+	import View.ViewBase.ViewBase;
 	import ConnectModule.websocket.WebSoketComponent;
 	
 	import View.GameView.*;

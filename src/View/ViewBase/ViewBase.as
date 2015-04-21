@@ -1,8 +1,11 @@
-package View.componentLib.ViewBase 
+package View.ViewBase
 {
+	import Command.DataOperation;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import Model.Model;
 	import View.GameView.ViewState;
+	
 	/**
 	 * ...
 	 * @author hhg
@@ -14,6 +17,12 @@ package View.componentLib.ViewBase
 	{
 		[MessageDispatcher]
         public var dispatcher:Function;
+		
+		[Inject]
+		public var _model:Model;
+		
+		[Inject]
+		public var _opration:DataOperation;
 		
 		public var _View:MovieClip;
 		

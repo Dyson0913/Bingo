@@ -3,18 +3,18 @@ package View.GameView
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import Model.PlayerModel;
-	import View.componentLib.ViewBase.ViewBase;
+	import View.ViewBase.ViewBase;
 	import ConnectModule.websocket.WebSoketComponent
 	
 	
-	import View.componentLib.util.utilFun;
+	import util.utilFun;
 	import caurina.transitions.Tweener;
 	/**
 	 * ...
 	 * @author hhg
 	 */
 
-	public class LoadingView extends ViewBase// implements IVew
+	public class LoadingView extends ViewBase
 	{	
 		public var _LoadingView:MovieClip;		
 		

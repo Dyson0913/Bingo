@@ -1,4 +1,4 @@
-package View.componentLib.util 
+package util 
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -8,9 +8,8 @@ package View.componentLib.util
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.getDefinitionByName;
-	import com.hexagonstar.util.debug.Debug;
-	import View.componentLib.util.DebugEnumMapping;
-	import View.componentLib.util.MouseBehavior;
+	import com.hexagonstar.util.debug.Debug;	
+	import View.Viewutil.*;
 	
 	/**
 	 * 常用功能

@@ -20,7 +20,7 @@ package ConnectModule.websocket
 	
 	import View.GameView.ViewState;
 	
-	import View.componentLib.util.utilFun;	
+	import util.utilFun;	
 	import ConnectModule.websocket.Message
 
 

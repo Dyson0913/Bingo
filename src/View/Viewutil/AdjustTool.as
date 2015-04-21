@@ -1,4 +1,4 @@
-package View.componentLib.util 
+package View.Viewutil 
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -8,7 +8,7 @@ package View.componentLib.util
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.getDefinitionByName;
 	
-	import View.componentLib.util.utilFun;	
+	import util.utilFun;	
 	import caurina.transitions.Tweener;
 	
 	/**

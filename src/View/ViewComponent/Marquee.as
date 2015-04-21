@@ -1,11 +1,11 @@
-package View.component.Marquee 
+package View.ViewComponent 
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.text.TextField;
 	
-	import View.componentLib.util.utilFun;
+	import util.utilFun;
 	import caurina.transitions.Tweener;
 	import flash.text.TextFormat;	
 	
