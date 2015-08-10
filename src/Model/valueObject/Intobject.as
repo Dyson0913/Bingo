@@ -6,14 +6,14 @@ package Model.valueObject
 	 */
 	public class Intobject 
 	{
-		public var InterValue:int;
+		public var Value:int;
 		
 		[Selector]
 		public var selector:String
 		
 		public function Intobject(ob:int,selec:String) 
 		{
-			InterValue = ob;
+			Value = ob;
 			selector = selec;
 		}
 		

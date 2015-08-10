@@ -1,6 +1,7 @@
 package util 
 {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -8,9 +9,12 @@ package util
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.getDefinitionByName;
-	import com.hexagonstar.util.debug.Debug;	
-	import View.Viewutil.*;
+	import flash.utils.setTimeout;
+	import Interface.ViewComponentInterface;
 	
+	import com.hexagonstar.util.debug.Debug;
+	import View.Viewutil.MouseBehavior;
+	import Res.ResName;	
 	/**
 	 * 常用功能
 	 * @author hhg
@@ -30,6 +34,21 @@ package util
 			var mc:MovieClip = new Temp();	
 			mc.name = sClassName;
 			return mc;
+		}
+		
+		public static function prepare(name:*, ob:ViewComponentInterface,di:DI, container:DisplayObjectContainer = null):*
+		{
+			if (di.getValue(name)== null) 
+			{
+				if ( container != null) container.addChild(ob.getContainer());
+				di.putValue(name, ob);
+			}
+			else
+			{
+				return di.getValue(name);
+			}
+			
+			return ob;
 		}
 		
 		public	static function Createitem(text:String,color:uint,align:String = TextFieldAutoSize.LEFT):TextField
@@ -65,17 +84,33 @@ package util
 		}	
 		
 		//清空容器標記
-		public static function ClearContainerChildren(Container:MovieClip):void
+		public static function ClearContainerChildren(Container:ViewComponentInterface):void
 		{	
+			Container.OnExit();			
+		}		
+		
+		public static function Clear_ItemChildren(Container:DisplayObjectContainer):void
+		{
 			while (Container.numChildren > 0)
-			{
+			{	
 				Container.removeChildAt(0);
-			}
-		}
+			}		
+		}	
 		
 		public static function SetText(Container:TextField,Text:String):void
 		{			
 			Container.text = Text;
+		}	
+		
+		//TODO move to time object
+		public static function Set(Container:MovieClip,Text:Array):void
+		{			
+			Container.text = Text;
+		}	
+		
+		public static function SetTime(listen:Function,sec:int):void
+		{			
+			setTimeout(listen, sec*1000);
 		}	
 		
 		//滑鼠監聽
@@ -141,6 +176,95 @@ package util
 			return BtnMouseFrame;
 		}
 		
+		public static function easy_combination(list:Array, lenght:int):Array
+		{
+			var result:Array = [];
+			var n:int = lenght -1;
+			var fixelemnt:Array = [];
+			for ( var i:int = 0; i < n; i++)
+			{
+				fixelemnt.push(list[i]);
+			}
+			
+			var rest:Array = Get_restItem(list, fixelemnt);
+			while (fixelemnt[0] != list[list.length - lenght])
+			{
+				
+				//one set conbination
+				for (i = 0; i < rest.length; i++)
+				{
+					var temp:Array = [];
+					temp = fixelemnt.concat();
+					if ( rest[i] <= fixelemnt[fixelemnt.length - 1]) continue;
+					temp.push (rest[i]);
+					result.push(temp);
+				}
+				rest.shift();
+				
+				//bound judge
+				fixelemnt[fixelemnt.length - 1] ++;
+				if ( fixelemnt[fixelemnt.length - 1] == list.length -1)
+				{
+					fixelemnt[fixelemnt.length - 1] --;
+					averagedistance(fixelemnt);
+					rest = Get_restItem(list, fixelemnt);					
+				}
+			}
+			
+			//last combi
+			for (i = 0; i < rest.length; i++)
+			{
+				temp.length = 0;
+				temp = fixelemnt.concat();
+				if ( rest[i] <= fixelemnt[fixelemnt.length - 1]) continue;
+				temp.push (rest[i]);
+				result.push(temp);
+			}
+			
+			return result;
+		}
+		
+		/**
+		 * 
+		 * @param	arr [0,2,3,5]  -> [0,2,4,5] -> [0,3,4,5]-> [1,2,3,4]
+		 */
+		public static function averagedistance(arr:Array):void
+		{			
+			for ( var i:int = arr.length; i > 0 ; i --)
+			{
+				if ( parseInt(arr[i]) - parseInt(arr[i - 1] ) >= 2)
+				{
+					var k:int = parseInt( arr[i - 1]);
+					k++;
+					
+					arr[i - 1] = k.toString();
+					
+					if ( i - 1 == 0)
+					{
+						for ( var j:int = 0; j < arr.length ; j++ ) arr[j] = k++;	
+					}
+					return;
+				}				
+			}
+		}
+		
+		/**
+		 * @param	origi [10,11,12,13,14]
+		 * @param	own  [0,1,3]
+		 * @return   [12,14]
+		 */
+		public static function Get_restItem(origi:Array,own:Array):Array
+		{
+			var rest_item:Array = [];
+			var n:int = origi.length;
+		  	for (var i:int = 0; i < n; i++)
+			{				
+				if (  own.indexOf(origi[i]) == -1 )  rest_item.push(origi[i]);
+			}
+			
+			return rest_item;
+		}
+		
 		//條件 0 base (flash為1base 影格 , CurFrame -1和 Frame + 1在於調整為0 base 
 		//FrameCycle = 有幾格在循環
 		//
@@ -201,6 +325,14 @@ package util
 				str += "0";
 			}
 			return str + digit.toString();
+		}
+		
+		//補零回傳陣列
+		public static function arrFormat(digit:int,lenth:int):Array
+		{
+			var str:String = utilFun.Format(digit, lenth)
+			// or string.charAt(index)
+			return str.split("");
 		}
 		
 		//將數字轉成會計符號計法  12345 -> 12,345

@@ -3,14 +3,13 @@ package View.GameView
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.display.StageDisplayState;	
-	import View.Viewutil.*
-	
-	import Model.BetModel;
-	import View.ViewComponent.*;
+	import Model.valueObject.Intobject;
+	import util.DI;
 	import View.ViewBase.ViewBase;
-	
-	import util.*;
+	import View.Viewutil.SingleObject;
+	import View.Viewutil.MouseBehavior;;
+	import Model.*;
+	import util.utilFun;
 	
 	/**
 	 * ...
@@ -19,86 +18,66 @@ package View.GameView
 	public class HudView extends ViewBase
 	{
 		
-		public var _TopBar:MovieClip;
-		public var _DownBar:MovieClip;
-		
-		private var _Marquee:Marquee
-		
-		[Inject]
-		public var _BetModel:BetModel;
-		
-		public var  _ScreenBtn:SingleObject;
-		
 		public function HudView()  
 		{
 			utilFun.Log("HudView");
 		}
 		
-		[MessageHandler(selector="add")] 
-		override public function EnterView (View:ViewState):void
+		[MessageHandler(type="Model.valueObject.Intobject",selector="EnterView")]
+		override public function EnterView (View:Intobject):void
 		{
-			utilFun.Log("in to hud=");			
-			if (View._view != ViewState.Hud) return;
+			if (View.Value != modelName.Hud) return;
 			
-			_TopBar = utilFun.GetClassByString("TopBar");
-			_DownBar  = utilFun.GetClassByString("ButtonBar");
 			
-			addChild( _TopBar);
-			addChild( _DownBar );
-			
-			//所押盤數更新
-			utilFun.SetText(_DownBar["BetOrder"], String(0));			
-			//押分
-			utilFun.SetText(_DownBar["Bet"], String(0));
-			//Credit
-			utilFun.SetText(_DownBar["Credit"], _BetModel._credit.toString() );
+			//var back_btn:MovieClip = prepare("back_to_lobby",utilFun.GetClassByString("Back_to_lobby") , this);
+			//back_btn.x = 1840;
 			//
+			//var back_Lobby:SingleObject  = prepare("back_lobby", new SingleObject());
+			//back_Lobby.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);
+			//back_Lobby.Create(back_btn);
+			//back_Lobby.mousedown = LeaveGame;
 			
-			_ScreenBtn = new SingleObject();
-			_ScreenBtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[1,2,2,1]);
-			_ScreenBtn.Create(_TopBar["btn_fullscreen"]);
-			_ScreenBtn.mousedown = FullScreen;
-			//btn_info 遊戲資訊
-			//btn_mute
+			//var hint:MovieClip = prepare("leavehint", utilFun.GetClassByString("LeaveHint") , this);
+			//hint.visible = false;
+			//hint.x = 520;
+			//hint.y = 390;
+			//
+			//var back_game:SingleObject  = prepare("back_game", new SingleObject());
+			//back_game.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);
+			//back_game.Create(hint["_back"]);
+			//back_game.mousedown = backGame;
+			//
+			//var back_Leave:SingleObject  = prepare("back_Leave", new SingleObject());
+			//back_Leave.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);
+			//back_Leave.Create(hint["_leave"]);
+			//back_Leave.mousedown = backLobby;
 			
-			_Marquee = new Marquee(_TopBar["Mcmarquee"]);
-			_Marquee.init();
-			_Marquee.SetPeriodMsg(["現在儲值賓果可獲500紅利點數", "儲值上限每人10000點", "活動期間1月20到3月底截止", "儲滿5000加送造形紀念品", "祝你再次中獎"]);
 			
-			utilFun.Log("in to hud=2");			
+			//addChild(_tool);
 		}
 		
-		private function FullScreen(e:Event):Boolean 
+		private function LeaveGame(e:Event):Boolean 
 		{
-			if ( stage.displayState == StageDisplayState.NORMAL)
-			{
-				stage.displayState = StageDisplayState.FULL_SCREEN; 
-			}
-			else
-			{
-				stage.displayState = StageDisplayState.NORMAL; 
-			}
+			Get("leavehint").visible = true;
 			return true;
 		}
 		
-		
-		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "hudupdata")]
-		public function hudupdate():void
-		{			
-			//所押盤數更新
-			utilFun.SetText(_DownBar["BetOrder"], _BetModel.GetBetTableNo().length.toString());
-			
-			//押分
-			utilFun.SetText(_DownBar["Bet"], _BetModel.GetBetTotal().toString());
-			//
-			//Credits
-			utilFun.SetText(_DownBar["Credit"], _BetModel._credit.toString() );
+		private function backGame(e:Event):Boolean 
+		{
+			Get("leavehint").visible = false;
+			return true;
 		}
 		
-		[MessageHandler(selector="Leave")]
-		override public function ExitView(View:ViewState):void
+		private function backLobby(e:Event):Boolean 
 		{
-			if (View._view != ViewState.Hud) return;
+			
+			return true;
+		}
+		
+		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]
+		override public function ExitView(View:Intobject):void
+		{
+			if (View.Value != modelName.Hud) return;
 			
 		}
 		

@@ -55,19 +55,19 @@ package View.Viewutil
 			{
 				case MouseEvent.ROLL_OUT:
 				{					
-					if ( rollout != null)  _contido = rollout(e);
+					if ( rollout != null)  _contido = rollout(e);					
 					if( _contido ) utilFun.GotoAndStop(e,MouseFrame[0]);
 				}
 				break;
 				case MouseEvent.ROLL_OVER:
 				{					
-					if ( rollover != null)  _contido = rollover(e);
+					if ( rollover != null)  _contido = rollover(e);					
 					if( _contido ) utilFun.GotoAndStop(e,MouseFrame[1]);
 				}
 				break;
 				case MouseEvent.MOUSE_DOWN:
 				{
-					if ( mousedown != null)  _contido = mousedown(e);
+					if ( mousedown != null)  _contido = mousedown(e);					
 					if( _contido ) utilFun.GotoAndStop(e,MouseFrame[2]);
 				}
 				break;

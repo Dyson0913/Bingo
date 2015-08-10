@@ -1,11 +1,12 @@
 package util 
 {
 	import flash.utils.Dictionary;
+	import Interface.CollectionsInterface;
 	/**
 	 * DI
 	 * @author hhg
 	 */
-	public class DI 
+	public class DI implements CollectionsInterface
 	{
 		private var _dic:Dictionary = new Dictionary();
 		
@@ -28,11 +29,28 @@ package util
 			return null;
 		}
 		
+		public function Del(name:*):void
+		{
+			if ( _dic[name] != null)
+			{
+				delete _dic[name] 
+			}			
+		}
+		
 		public function clean():void
 		{
 			_dic = new Dictionary();
 		}
 		
+		public function length():int
+		{
+			var n:int = 0;
+			for (var ke:* in _dic)
+			{
+			    n++;
+			}
+			return n;
+		}
 		
 	}
 

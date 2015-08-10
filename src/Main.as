@@ -4,32 +4,51 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import org.spicefactory.parsley.core.context.Context;
-	
-	import org.spicefactory.parsley.core.events.ContextEvent;
 	import org.spicefactory.parsley.asconfig.*;
 	
 	import com.hexagonstar.util.debug.Debug;
 	import util.utilFun;
 	import View.GameView.*;
-	
-	
+	import com.adobe.serialization.json.JSON;
+		
 	/**
 	 * ...
 	 * @author hhg
 	 */
+	[SWF(backgroundColor = "#000000")]
 	public class Main extends MovieClip 
 	{
 		private var _context:Context;
 		
-		//[ObjectDefinition(id="Enter")]
-		//public var _LoadingView:LoadingView
+		public var result:Object ;
 		
 		private var _appconfig:appConfig = new appConfig();
+		
+		private var _par:MovieClip;
+		
+		private var _credit:Number =-1;
+		private var _clientidx:Number =-1;
+		private var _handshake:Function = null;
 		
 		public function Main():void 
 		{
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
+		public function pass(pass:Object):void
+		{
+			result = pass;
+		}
+		
+		public function handshake(credit:Number,Clientidx:int,handshake:Function,playerinfo:Object):void
+		{
+			_credit = credit;
+			_clientidx = Clientidx;
+			_handshake = handshake;
+			result = playerinfo;
+			utilFun.Log("_credit = " + _credit + " client id = " +_clientidx + "_handshake = "+_handshake+ "result = "+result);
+			
 		}
 		
 		private function init(e:Event = null):void 
@@ -38,57 +57,20 @@ package
 			// entry point
 			
 			Debug.monitor(stage);
-			utilFun.Log("welcome to alcon");
+			utilFun.Log("welcome bingo");
 			
-			
-			
-			_context  = ActionScriptContextBuilder.build(appConfig, stage);
-			
-			//託管類別
-			_context.addEventListener(ContextEvent.CONFIGURED, ConfigOK);
-			_context.addEventListener(ContextEvent.INITIALIZED, InitOK);
-			_context.addEventListener(ContextEvent.DESTROYED, DestoryOK);
-			
+			//no thing ,ok
+			_context  = ActionScriptContextBuilder.build(appConfig);
 			
 			addChild(_context.getObjectByType(LoadingView) as LoadingView);
-			addChild(_context.getObjectByType(Lobby) as Lobby);
+			addChild(_context.getObjectByType(LobbyView) as LobbyView);
 			addChild(_context.getObjectByType(betView) as betView);
-			addChild(_context.getObjectByType(OpenBallView) as OpenBallView);
-			addChild(_context.getObjectByType(HudView) as HudView);
+			addChild(_context.getObjectByType(HudView) as HudView);			
 			
 			var Enter:LoadingView = _context.getObject("Enter") as LoadingView;
 			utilFun.Log("Enter = "+Enter);
-			Enter.FirstLoad();
-			
-			
+			Enter.FirstLoad([result,_credit,_clientidx,_handshake]);
 		}
-		
-		
-		
-		
-		public function kickstar():void
-		{
-			Debug.trace("Enter = ");
-		}
-		
-		private function DestoryOK(e:ContextEvent):void 
-		{
-			Debug.trace("destoryOK");
-		}
-		
-		private function InitOK(e:ContextEvent):void 
-		{
-			Debug.trace("InitOK");
-		}
-		
-		private function ConfigOK(e:ContextEvent):void 
-		{
-			Debug.trace("ConfigOK");
-		}
-		
-	
-		
-		
 	}
 	
 }

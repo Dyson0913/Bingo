@@ -6,14 +6,14 @@ package Model.valueObject
 	 */
 	public class StringObject 
 	{
-		public var stringValue:String;
+		public var Value:String;
 		
 		[Selector]
 		public var selector:String
 		
 		public function StringObject(ob:String,selec:String) 
 		{
-			stringValue = ob;
+			Value = ob;
 			selector = selec;
 		}
 		

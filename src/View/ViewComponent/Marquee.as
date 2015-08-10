@@ -5,7 +5,7 @@ package View.ViewComponent
 	import flash.events.Event;
 	import flash.text.TextField;
 	
-	import util.utilFun;
+	import View.componentLib.util.utilFun;
 	import caurina.transitions.Tweener;
 	import flash.text.TextFormat;	
 	

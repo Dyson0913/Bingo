@@ -6,14 +6,14 @@ package Model.valueObject
 	 */
 	public class ArrayObject 
 	{
-		public var array:Array;
+		public var Value:Array;
 		
 		[Selector]
 		public var selector:String
 		
 		public function ArrayObject(ob:Array,selec:String) 
 		{
-			array = ob;
+			Value = ob;
 			selector = selec;
 		}
 		
