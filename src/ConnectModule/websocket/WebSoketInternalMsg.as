@@ -11,6 +11,7 @@ package ConnectModule.websocket
 		public static const BET:String = "Bet";
 		public static const NO_CREDIT:String = "CreditNotEnough";
 		public static const BETRESULT:String = "Betresult";
+		public static const BET_STATE_UPDATE:String = "betstateupdate";
 		
 		[Selector]
 		public var selector:String

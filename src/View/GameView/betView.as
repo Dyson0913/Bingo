@@ -46,9 +46,6 @@ package View.GameView
 		public var _betzone:Visual_betZone;
 		
 		[Inject]
-		public var _coin:Visual_Coin;
-		
-		[Inject]
 		public var _settle:Visual_Settle;
 		
 		[Inject]

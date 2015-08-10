@@ -207,6 +207,30 @@ package ConnectModule.websocket
 						break;
 					}
 					
+					case Message.MSG_TYPE_UPDATE_BET:
+					{
+						//比押注結果更早收到 球資訊為空,,之前進入己傳過
+						utilFun.Log("recv MSG_TYPE_UPDATE_BET=");			
+						var arrlist:Array = result.bet_info;	
+						var table_no:Array = _model.getValue("table");		
+						var is_bet:Array = _model.getValue("is_betarr");
+						num = arrlist.length;
+						table_no.length = 0;
+						is_bet.length = 0;
+						for ( i = 0; i < num ; i++)
+						{
+							table_no.push(arrlist[i]["table_no"]);
+							is_bet.push(arrlist[i]["is_bet"]);
+						}
+							
+						_model.putValue("table", table_no);
+						_model.putValue("is_betarr", is_bet);
+						
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
+							
+						break;
+					}
+					
 					//case Message.MSG_TYPE_INTO_GAME:
 					//{						
 						//進入 遊戲,得到第一個畫面(不論半途或一開始
@@ -303,16 +327,24 @@ package ConnectModule.websocket
 		}
 		
 		
+		//[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="Bet")]
+		//public function SendBet():void
+		//{
+			//var ob:Object = _actionqueue.getMsg();
+			//var bet:Object = { "message_type":Message.MSG_TYPE_BET, 
+			                               //"serial_no":0,
+										   //"game_type":1,
+										   //"bet_type":ob["betType"],
+										    //"amount":ob["bet_amount"]};
+										   //
+			//SendMsg(bet);
+		//}
+		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="Bet")]
 		public function SendBet():void
 		{
 			var ob:Object = _actionqueue.getMsg();
-			var bet:Object = { "message_type":Message.MSG_TYPE_BET, 
-			                               "serial_no":0,
-										   "game_type":1,
-										   "bet_type":ob["betType"],
-										    "amount":ob["bet_amount"]};
-										   
+			var bet:Object = { "message_type":Message.MSG_TYPE_BET, "table_no":ob["betType"], "amount":ob["bet_amount"] };
 			SendMsg(bet);
 		}
 		

@@ -14,7 +14,6 @@ package View.GameView
 	import View.Viewutil.*;
 	import View.ViewBase.ViewBase;
 	import util.*;
-	import View.ViewComponent.Visual_Coin;
 	
 	import Command.*;
 	

@@ -24,9 +24,6 @@ package View.ViewComponent
 		[Inject]
 		public var _betCommand:BetCommand;
 		
-		[Inject]
-		public var _visual_coin:Visual_Coin;
-		
 		public function Visual_betZone() 
 		{
 			
@@ -40,10 +37,10 @@ package View.ViewComponent
 			coinob.container.x = 151.85;
 			coinob.container.y = 235.85;
 			coinob.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,0]);
-			coinob.CustomizedFun = BetListCustomizedFun;
+			coinob.CustomizedFun = BetListini;
 			coinob.CustomizedData = _model.getValue("is_betarr");
 			coinob.Create_by_list(coinob.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
-			coinob.mousedown = _betCommand.bet_local;
+			coinob.mousedown = _betCommand.betTypeMain;
 			
 			//押分 pan num
 			var betlist:MultiObject = prepare("betlist", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -84,26 +81,27 @@ package View.ViewComponent
 			bet_add.mousedown = _betCommand.add_bet;
 			bet_add.mouseup = betSelect;
 			
-			_tool.SetControlMc(betmaount_num.container);
+			_tool.SetControlMc(coinob.ItemList[50]);
 			add(_tool);
 		}		
 		
 		public function bet_amountFun(mc:MovieClip, idx:int, betamount:Array):void
 		{
-			if ( idx >= betamount.length) 
-			{				
-				return;
-			}
 			
-			if (betamount[idx] != 0)
+			if (betamount[idx] != undefined)
 			{			
 				var arr:Array = String(betamount[idx]).split("");
 				var re:Array = arr.reverse();
 				//utilFun.Log("reverse = "+re);			
-				for ( var i:int = 0; i < re.length; i++)
+				for ( var i:int = 0; i < 5; i++)
 				{
-					if ( re[i] == "0" ) re[i] = "10";
-					mc["_num_"+i].gotoAndStop( parseInt(re[i]));
+					if ( re[i] != undefined)
+					{
+						if ( re[i] == "0" ) re[i] = "10";
+						mc["_num_" + i].gotoAndStop( parseInt(re[i]));
+					}
+					else mc["_num_" + i].gotoAndStop(11);
+					
 				}			
 			}
 			else
@@ -128,7 +126,39 @@ package View.ViewComponent
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array = []; //my bet _model.getValue("table");
+			var arr:Array =  _betCommand.get_Bet_type();			
+			var cnt:int =  arr.length;
+			
+			//先調回無人下注
+			mc.gotoAndStop( 1 );
+			
+			//有人下非自己,變黃
+			if ( IsBetInfo[idx] == 1)
+			{
+				var MyBet:int = arr.indexOf(idx)
+				if ( MyBet != -1)
+				{
+					//紅
+					if (  MyBet == (cnt - 1))  
+					{
+						mc.gotoAndStop( (IsBetInfo[idx] + 2) );
+					}
+					else mc.gotoAndStop( (IsBetInfo[idx] + 1) );
+				}
+				else
+				{
+					//黃
+					mc.gotoAndStop( (IsBetInfo[idx] + 3) );
+				}
+			}
+			
+		}
+		
+		public function BetListini(mc:MovieClip,idx:int,IsBetInfo:Array):void
+		{			
+			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
+			//1,無人 2為自己, 3自己最後一注,4,為他人
+			var arr:Array =  _betCommand.get_Bet_type();
 			var cnt:int =  arr.length;
 			
 			//先調回無人下注
@@ -162,29 +192,12 @@ package View.ViewComponent
 		}
 		
 		
-		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="Betresult")]
+		//[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="Betresult")]
 		public function BetResult( ):void
 		{
-			var bet_result:int = _model.getValue("bet_result");
-			//utilFun.Log("BetResult = "+_BetModel._Bet_result );
-			utilFun.Log("BetResult = "+ bet_result );
-			//if ( bet_result)
-			//{
-				//新增押注				
-				//var betSuccess:Boolean = _BetModel.AddBetInfo(_BetModel._Bet_room_no);
-				//if (betSuccess)
-				//{
-					//顥示新盤號
-					//UpdatePanNumAndBet();
+		
 					//LoadingPan(_BetModel._Bet_room_no);
-					//
-					//押注BTN更新
-					//BetList.CustomizedFun = BetListCustomizedFun;					
-					//BetList.CustomizedData = _TableModel.GetisBet();
-					//BetList.FlushObject();			
-					//
-				//}
-			//}
+				
 		}
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]
@@ -200,20 +213,25 @@ package View.ViewComponent
 				var bet_ob:Object = arr[i];
 				tab_no.push(bet_ob["betType"]);
 				amount_no.push(bet_ob["bet_amount"]);
-				
-			
 			}
-						
-				utilFun.Log("bet_ob[betType] = " + tab_no);
-				utilFun.Log("bet_ob[bet_amount] = " + amount_no);
 				
+			//自己下注 pan號
 			Get("betlist").CustomizedFun = CustomizedFun_ShowData;
 			Get("betlist").CustomizedData = tab_no;
 			Get("betlist").FlushObject();
 			
+			//pan 金額
 			Get("betamount_num").CustomizedFun = bet_amountFun;
 			Get("betamount_num").CustomizedData =  amount_no;
 			Get("betamount_num").FlushObject();
+			
+			//比自己押注結果更早收到
+			//所有盤號更新
+			Get("betZone").CustomizedFun = BetListCustomizedFun;
+			Get("betZone").CustomizedData = _model.getValue("is_betarr");
+			Get("betZone").FlushObject();
+			
+			
 		}
 		
 		public function CustomizedFun_ShowData(mc:MovieClip,idx:int,CustomizedData:Array):void

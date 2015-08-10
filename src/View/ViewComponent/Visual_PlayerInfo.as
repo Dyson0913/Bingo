@@ -45,6 +45,18 @@ package View.ViewComponent
 			
 		}
 		
+		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstateupdate")]
+		public function UpdataTableBetInfo():void
+		{	
+			
+			//外盤 (有人押叫外盤)
+			//utilFun.SetText(bet["outorder"], String(_TableModel.GetBetCnt()));
+			//
+			//內盤 (沒人押叫內盤)
+			//utilFun.SetText(bet["selforder"], String(_TableModel.GetNoOneBetCnt()));
+			
+		}
+		
 		[MessageHandler(type = "Model.ModelEvent", selector = "updateCredit")]
 		public function updateCredit():void
 		{							
