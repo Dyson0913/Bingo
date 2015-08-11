@@ -100,18 +100,7 @@ package View.ViewComponent
 			}
 			
 			
-			//主路單更新
-			//var idx:int = _mainTable.current.data.getValue("current_idx");				
-			//addBall(betresult,_model.getValue("Position")[idx] , _mainTable.current.Item,"mainball");
-			//idx = (idx + 1) % 6;
-			//if ( idx == 0) 
-			//{
-				//_mainTable.Next();
-			//}
-			//_mainTable.current.data.putValue("current_idx",idx);
-			//
-			//大路單更新
-			//bigRoadupdate();		
+		
 									
 		}
 		

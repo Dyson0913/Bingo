@@ -49,6 +49,7 @@ package View.ViewComponent
 			//TODO check view to do prepare model
 			///////////////////////////			
 			
+			//bet _view
 				//var is_bet:Array = [];
 							//var balls:Array = [];
 							//var table_no:Array = [];
@@ -61,6 +62,22 @@ package View.ViewComponent
 							//_model.putValue("is_betarr",is_bet);
 							//_model.putValue("ballarr",balls);
 							//_model.putValue("table", table_no);			
+							
+			//open view
+			
+			var bsetlist:Array = [];
+			var sendlist:Array = [];
+			for (var i:int = 0; i < 30; i ++ )
+			{
+				var bet:Object;			
+				bet = { "table_no": i, 											
+			                           "ball_list":  []									   
+									   };
+									   
+				 bsetlist.push(bet);
+			}
+			_model.putValue("best_list",bsetlist );
+			_model.putValue("second_list", bsetlist );
 			
 		}		
 		
@@ -70,11 +87,12 @@ package View.ViewComponent
 			
 			if ( idx == 0) 
 			{				
-				for ( var i:int = 1; i < 76; i++)
-				{
-					_model.putValue("Curball", i);
-					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
-				}
+				//for ( var i:int = 1; i < 76; i++)
+				//{
+					//_model.putValue("Curball", i);
+					//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
+				//}
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
             }
 			  else if (idx == 1)
 			  {

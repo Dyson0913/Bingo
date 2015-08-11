@@ -26,7 +26,7 @@ package View.ViewComponent
 		public function init():void
 		{
 						
-			//盤號 內盤,外盤
+			//最佳盤號 次佳盤
 			var bestinfo:MultiObject = prepare("best_pan_info", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bestinfo.CustomizedFun = info_initFun;
 			bestinfo.container.x = 768;
@@ -40,7 +40,16 @@ package View.ViewComponent
 			totalball_info.container.y = 79;
 			totalball_info.Create_by_list(1, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
 			
-			_tool.SetControlMc(totalball_info.container);
+			var public_best_pan:MultiObject = prepare("public_best_pan_info", new MultiObject(), GetSingleItem("_view").parent.parent);
+			//public_best_pan.CustomizedFun = info_initFun;
+			public_best_pan.container.x = 492.85;
+			public_best_pan.container.y = 128.8;
+			public_best_pan.Create_by_list(26, [ResName.BetButton], 0, 0, 13, 106.25, 80, "time_");
+			
+			//26 -> 1 row 13 106.25  80
+			
+			
+			_tool.SetControlMc(public_best_pan.container);
 			add(_tool);
 		}
 		
@@ -62,41 +71,15 @@ package View.ViewComponent
 			utilFun.SetText(GetSingleItem("best_pan_info", 1)["_text"], String( list.length ));
 			list  = _model.getValue("second_list");
 			utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], String( list.length ));
-						
 			
+			Get("public_best_pan_info")
+			
+			Get("public_best_pan_info").CustomizedFun = info_initFun;						
+			Get("public_best_pan_info").Create_by_list(26, [ResName.BetButton], 0, 0, 13, 106.25, 80, "time_");
 			
 		}
 		
-		[MessageHandler(type = "Model.ModelEvent", selector = "updateCredit")]
-		public function updateCredit():void
-		{							
-			var s:int = _model.getValue("after_bet_credit");	
-			if ( _model.getValue(modelName.HandShake_chanel) != null )
-			{
-				var response:Function = _model.getValue(modelName.HandShake_chanel);
-				response(_model.getValue(modelName.Client_ID), ["HandShake_updateCredit", s]);
-				utilFun.Log("Hand_she asking "+ _model.getValue(modelName.Client_ID));
-			}
-			else 
-			{
-				utilFun.SetText(GetSingleItem(modelName.CREDIT)["credit"], _model.getValue("after_bet_credit").toString());
-			}
-		}		
 		
-		[MessageHandler(type = "Model.ModelEvent", selector = "update_result_Credit")]
-		public function update_result_Credit():void
-		{	
-				var s:int = _model.getValue(modelName.CREDIT);
-			if ( _model.getValue(modelName.HandShake_chanel) != null )
-			{
-				var response:Function = _model.getValue(modelName.HandShake_chanel);
-				response(_model.getValue(modelName.Client_ID), ["HandShake_updateCredit", s]);				
-			}
-			else
-			{
-				utilFun.SetText(GetSingleItem(modelName.CREDIT)["credit"], _model.getValue(modelName.CREDIT).toString());
-			}
-		}
 		
 	}
 

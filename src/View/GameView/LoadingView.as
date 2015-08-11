@@ -55,8 +55,8 @@ package View.GameView
 			//result:Object
 		public function FirstLoad(para:Array ):void
  		{			
-			//dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH));		
-			//return;
+			dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH));		
+			return;
 			
 			_model.putValue(modelName.LOGIN_INFO, para[0]);
 			_model.putValue(modelName.CREDIT, para[1]);

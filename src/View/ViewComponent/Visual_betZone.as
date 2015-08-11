@@ -191,15 +191,6 @@ package View.ViewComponent
 			return true;
 		}
 		
-		
-		//[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="Betresult")]
-		public function BetResult( ):void
-		{
-		
-					//LoadingPan(_BetModel._Bet_room_no);
-				
-		}
-		
 		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]
 		public function betlist_update():void
 		{

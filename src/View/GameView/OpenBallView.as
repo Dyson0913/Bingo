@@ -69,7 +69,7 @@ package View.GameView
 			
 			_test.init();
 			
-			_ball.init();
+		//	_ball.init();
 			_staticinfo.init();
 			//_path.init();
 			//
