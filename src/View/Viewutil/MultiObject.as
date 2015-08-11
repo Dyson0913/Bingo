@@ -135,7 +135,7 @@ package View.Viewutil
 			Listen();
 		}		
 		
-		private function customized():void
+		public function customized():void
 		{
 			var ItemNum:int = ItemList.length;
 			for (var i:int = 0 ; i < ItemNum; i++)

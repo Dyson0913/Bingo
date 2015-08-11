@@ -71,7 +71,7 @@ package View.ViewComponent
 			{
 				var bet:Object;			
 				bet = { "table_no": i, 											
-			                           "ball_list":  []									   
+			                           "ball_list":  [1,2,3,4]									   
 									   };
 									   
 				 bsetlist.push(bet);
