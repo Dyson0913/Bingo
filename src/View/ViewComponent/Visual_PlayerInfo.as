@@ -25,12 +25,10 @@ package View.ViewComponent
 		public function init():void
 		{
 						
-			//stick cotainer  
+			//盤號 內盤,外盤
 			var coinstack:MultiObject = prepare("bet_view_info", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			coinstack.container.x = 305;
-			coinstack.container.y = 83;
-			//coinstack.Posi_CustzmiedFun = _regular.Posi_xy_Setting;
-			//coinstack.Post_CustomizedData = [[830,200],[180,100],[615,57]];
+			coinstack.container.y = 83;		
 			coinstack.Create_by_list(4, [ResName.sys_num], 0, 0, 4, 300, 0, "time_");
 			
 			

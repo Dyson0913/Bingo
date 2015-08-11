@@ -26,11 +26,11 @@ package View.ViewComponent
 		
 		public function init():void
 		{
-			var zoneCon:MultiObject = prepare("zone", new MultiObject(), GetSingleItem("_view").parent.parent);
-			zoneCon.Create_by_list(2, [ResName.bankerScore, ResName.playerScore], 0 , 0, 2, -770, 0, "Bet_");
-			zoneCon.container.visible = false;
-			zoneCon.container.x = 1290;
-			zoneCon.container.y = 150;
+			//var zoneCon:MultiObject = prepare("zone", new MultiObject(), GetSingleItem("_view").parent.parent);
+			//zoneCon.Create_by_list(2, [ResName.bankerScore, ResName.playerScore], 0 , 0, 2, -770, 0, "Bet_");
+			//zoneCon.container.visible = false;
+			//zoneCon.container.x = 1290;
+			//zoneCon.container.y = 150;
 		}
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "clearn")]

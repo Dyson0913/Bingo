@@ -230,6 +230,53 @@ package ConnectModule.websocket
 							
 						break;
 					}
+					case Message.MSG_TYPE_END_BET:
+					{
+						utilFun.Log("recv End Bet");
+						m_game_state = Message.GAME_STATE_END_BET;
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STOP_HINT));
+						break;
+					}
+					
+					case Message.MSG_TYPE_OPEN_BALL:
+					{
+						utilFun.Log("recv Open Ball" +m_game_state);		
+						//收到結束,切到開球畫面
+						if (m_game_state == Message.GAME_STATE_END_BET) 
+						{
+							dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );								
+							
+							m_game_state = 	Message.GAME_STATE_START_ROUND;
+						}  
+						else
+						{			
+							_model.putValue("Curball", parseInt(result.game_info.opened_info.current_ball) );
+							
+							_model.putValue("opened_ball_num", result.game_info.opened_info.opened_ball_num );
+							_model.putValue("best_remain", parseInt(result.game_info.opened_info.best_remain) );
+							_model.putValue("second_remain", parseInt(result.game_info.opened_info.second_remain) );
+							 
+							_model.putValue("best_list", result.game_info.opened_info.best_list );
+							_model.putValue("second_list", result.game_info.opened_info.second_list );
+							// "best_list": [{"table_no": 90, "ball_list": []}, {"table_no": 58, "ball_list": []},
+							
+							
+							
+							dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
+						}
+						
+						break;
+					}
+					
+					
+					case Message.MSG_TYPE_NEW_ROUND_WITH_BALL:
+					{
+						utilFun.Log("recv New Round =" +result.message_sub );
+						
+						
+						break;
+					}
+					
 					
 					//case Message.MSG_TYPE_INTO_GAME:
 					//{						
@@ -396,11 +443,13 @@ package ConnectModule.websocket
 					   // =nickname = Player1
 					   
 						//dispatcher(new Intobject(msg.player_info.credit, "credit"));
-						//dispatcher(new ArrayObject(msg.game_info.opened_history, "opened_history"));
-					  //
-					   //dispatcher(new ViewState(ViewState.openball,ViewState.ENTER) );
-					   //dispatcher(new ViewState(ViewState.Lobb, ViewState.LEAVE) );
+						
+						_model.putValue("open_history", msg.game_info.opened_history);
+						dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );												
 					   
+						//TODO half_enter
+						//dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );		
+						
 					break;
 				}	
 				case Message.GAME_STATE_END_ROUND:

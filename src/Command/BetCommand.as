@@ -46,6 +46,18 @@ package Command
 			
 			if ( _Actionmodel.length() > 0) return false;
 			
+			if ( _Bet_info.getValue("self") != null)
+			{
+				var bet_recode:Array = _Bet_info.getValue("self");			
+				if (bet_recode.length+1 > 12) 
+				{					
+					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_FULL_HINT));
+					return false;
+				}
+				
+			}
+			
+			
 			//押注金額判定
 			//if ( all_betzone_totoal() + _opration.array_idx("coin_list", "coin_selectIdx") > _model.getValue(modelName.CREDIT))
 			//{
@@ -205,6 +217,7 @@ package Command
 		
 		public function get_my_betlist():Array
 		{
+			//TODO check null
 			return _Bet_info.getValue("self");		
 		}
 		
@@ -216,6 +229,8 @@ package Command
 			_model.putValue("after_bet_credit", credit - total);
 			
 			dispatcher(new ModelEvent("bet_list_update"));
+			
+			_Actionmodel.dropMsg();
 		}
 		
 		private function all_betzone_totoal():Number

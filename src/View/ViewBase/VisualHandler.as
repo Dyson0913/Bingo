@@ -69,7 +69,9 @@ package View.ViewBase
 		
 		protected function prepare(name:*, ob:ViewComponentInterface, container:DisplayObjectContainer = null):*
 		{
-			ob.setContainer(new Sprite());
+			var sp:Sprite = new Sprite();
+			sp.name = name + "_con";
+			ob.setContainer(sp);
 			return utilFun.prepare(name,ob , _viewcom.currentViewDI , container);
 		}
 		

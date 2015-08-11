@@ -81,8 +81,8 @@ package View.ViewComponent
 			bet_add.mousedown = _betCommand.add_bet;
 			bet_add.mouseup = betSelect;
 			
-			_tool.SetControlMc(coinob.ItemList[50]);
-			add(_tool);
+			//_tool.SetControlMc(coinob.ItemList[50]);
+			//add(_tool);
 		}		
 		
 		public function bet_amountFun(mc:MovieClip, idx:int, betamount:Array):void

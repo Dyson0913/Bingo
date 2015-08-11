@@ -31,10 +31,7 @@ package View.GameView
 		public var _betCommand:BetCommand;
 		
 		[Inject]
-		public var _regular:RegularSetting;
-		
-		[Inject]
-		public var _poker:Visual_poker;
+		public var _regular:RegularSetting;	
 		
 		[Inject]
 		public var _timer:Visual_timer;
@@ -52,13 +49,10 @@ package View.GameView
 		public var _playerinfo:Visual_PlayerInfo;
 		
 		[Inject]
-		public var _path:Path_Generator;
+		public var _bingo:Visual_bingoPan;
 		
-		private var _mainroad:MultiObject = new MultiObject();
-				
-		public var _mainTable:LinkList = new LinkList();
-		public var _bigroadTable:LinkList = new LinkList();
-				
+		[Inject]
+		public var _test:Visual_testInterface;
 		
 		public function betView()  
 		{
@@ -79,34 +73,14 @@ package View.GameView
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Bet_Scene], 0, 0, 1, 0, 0, "a_");	
 			
-			
+			//_test.init();
+				
 			_playerinfo.init();
 			_betzone.init();
 			
 			_timer.init();
-			//trig time
-			
-			//_path.init();
-			//
-			//_poker.init();
-			//_settle.init();
-			//
-		
-			//
-
-			//_hint.init();			
-
-			//_coin.init();
-		//
-			
-			//_tool.SetControlMc(coinstack.ItemList[0]);
-			//addChild(_tool);		
-			
-			//_tool.SetControlMc(hintmsg);
-			//addChild(_tool);
-			
-			
-		
+			_hint.init();
+			_bingo.init();
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]

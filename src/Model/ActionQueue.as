@@ -37,7 +37,7 @@ package Model
 		public function excutionMsg():Object
 		{
 			var msg:Object = _queue[0];
-			_queue.shift();
+			//_queue.shift();
 			return msg;
 		}
 		

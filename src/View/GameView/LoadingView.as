@@ -55,11 +55,15 @@ package View.GameView
 			//result:Object
 		public function FirstLoad(para:Array ):void
  		{			
+			//dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH));		
+			//return;
+			
 			_model.putValue(modelName.LOGIN_INFO, para[0]);
 			_model.putValue(modelName.CREDIT, para[1]);
 			_model.putValue(modelName.Client_ID, para[2]);
 			_model.putValue(modelName.HandShake_chanel, para[3]);
 			dispatcher(new Intobject(modelName.Loading, ViewCommand.SWITCH));			
+				
 		}
 		
 		[MessageHandler(type="Model.valueObject.Intobject",selector="EnterView")]

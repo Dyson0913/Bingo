@@ -25,6 +25,7 @@ package
 		public var _LoadingView:LoadingView = new LoadingView();		
 		public var _Lobby:LobbyView = new LobbyView();
 		public var _betView:betView = new betView();
+		public var _ballview:OpenBallView = new OpenBallView();
 		public var _HudView:HudView = new HudView();		
 		
 		//model		
@@ -47,12 +48,15 @@ package
 		public var _path:Path_Generator = new Path_Generator();
 		
 		
-		//visual
-		public var _pokerhandler:Visual_poker = new Visual_poker();
+		//visual		
 		public var _timer:Visual_timer = new Visual_timer();
 		public var _hint:Visual_Hintmsg = new Visual_Hintmsg();
 		public var _playerinfo:Visual_PlayerInfo = new Visual_PlayerInfo();		
 		public var _betzone:Visual_betZone = new Visual_betZone();
+		public var _ball:Visual_ball = new Visual_ball();
+		public var _staticinfo:Visual_staticInfo = new Visual_staticInfo();
+		public var _bingo:Visual_bingoPan = new Visual_bingoPan();
+		
 		public var _settle:Visual_Settle = new Visual_Settle();
 		
 		//test
