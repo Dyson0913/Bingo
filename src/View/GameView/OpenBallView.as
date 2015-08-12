@@ -46,6 +46,9 @@ package View.GameView
 		public var _staticinfo:Visual_staticInfo;
 		
 		[Inject]
+		public var _ticket:Visual_ticket;
+		
+		[Inject]
 		public var _settle:Visual_Settle;
 		
 		[Inject]
@@ -69,9 +72,10 @@ package View.GameView
 			
 			_test.init();
 			
-		//	_ball.init();
+			_ball.init();
 			_staticinfo.init();
-			//_path.init();
+			
+			_ticket.init();
 			//
 			//_settle.init();
 		}

@@ -56,6 +56,7 @@ package
 		public var _ball:Visual_ball = new Visual_ball();
 		public var _staticinfo:Visual_staticInfo = new Visual_staticInfo();
 		public var _bingo:Visual_bingoPan = new Visual_bingoPan();
+		public var _ticket:Visual_ticket = new Visual_ticket();
 		
 		public var _settle:Visual_Settle = new Visual_Settle();
 		

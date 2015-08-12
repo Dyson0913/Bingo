@@ -193,18 +193,10 @@ package View.ViewComponent
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]
 		public function betlist_update():void
-		{
-			var arr:Array = _betCommand.get_my_betlist();
-			//utilFun.Log("bet_list_update = " + arr.length);
-
-			var tab_no:Array = [];
-			var amount_no:Array = [];
-			for ( var i:int = 0; i < arr.length ; i++)
-			{
-				var bet_ob:Object = arr[i];
-				tab_no.push(bet_ob["betType"]);
-				amount_no.push(bet_ob["bet_amount"]);
-			}
+		{			
+			var tab_no:Array = _betCommand.get_my_bet_info("table");
+			var amount_no:Array = _betCommand.get_my_bet_info("amount");
+		
 				
 			//自己下注 pan號
 			Get("betlist").CustomizedFun = CustomizedFun_ShowData;

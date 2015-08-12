@@ -50,8 +50,9 @@ package View.ViewComponent
 		   
 		   	//_tool.SetControlMc(ball_pan.container);
 			//add(_tool);
-			_model.putValue("open3Balllist", []);
+			_model.putValue("open3Balllist", []);			
 			_model.putValue("open_history", []);
+			
 		}
 		
 		public function sballFun(mc:MovieClip, idx:int, scalesize:Array):void

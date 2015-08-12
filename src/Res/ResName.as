@@ -25,6 +25,7 @@ package Res
 		
 		public static const Ball:String = "DynamicBall";
 		public static const Ball_pan:String = "ballpan";
+		public static const Myticket:String = "My_ticket";
 		
 		public static const Paninfo_font:String = "pan_info_font";
 		public static const bingo_pan:String = "Pan";

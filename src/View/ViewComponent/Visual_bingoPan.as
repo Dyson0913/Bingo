@@ -27,8 +27,7 @@ package View.ViewComponent
 		}
 		
 		public function init():void
-		{
-						
+		{			
 			//盤號 內盤,外盤
 			var bingo_pan:MultiObject = prepare("bingo_pan", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bingo_pan.CustomizedFun = info_initFun;
@@ -42,8 +41,8 @@ package View.ViewComponent
 			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedFun = bet_amountFun;			
 			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedData = [0];
 			
-			//_tool.SetControlMc(bingo_pan.container);
-			//add(_tool);
+			_tool.SetControlMc(bingo_pan.container);
+			add(_tool);
 		}
 		
 		public function info_initFun(mc:MovieClip, idx:int, data:Array):void
@@ -59,42 +58,24 @@ package View.ViewComponent
 			pan.container.y = 30;
 			pan.Create_by_list(25, [ResName.bingo_pancell], 0, 0, 5, 63, 63, "time_");
 			
-			//amount
-			//var betmaount_num:MultiObject = prepare("pan_amount", new MultiObject(), mc);
-			//betmaount_num.container.x = 55;
-			//betmaount_num.container.y = -30;
-			//betmaount_num.CustomizedFun = bet_amountFun;			
-			//betmaount_num.CustomizedData = [0];			
-			//betmaount_num.Create_by_list(1,  [ResName.pan_betnum], 0 , 0, 1,0,47 , "pan_amount_");			
-			//_tool.SetControlMc(betmaount_num.container);
-			//add(_tool);
+			
 		}
 		
 		public function bet_amountFun(mc:MovieClip, amount:int):void
 		{
-					
-				var arr:Array = String(amount).split("");
-				var re:Array = arr.reverse();
-				//utilFun.Log("reverse = "+re);			
-				for ( var i:int = 0; i < 4; i++)
+			var arr:Array = String(amount).split("");
+			var re:Array = arr.reverse();
+			//utilFun.Log("reverse = "+re);			
+			for ( var i:int = 0; i < 4; i++)
+			{
+				if ( re[i] != undefined)
 				{
-					if ( re[i] != undefined)
-					{
-						if ( re[i] == "0" ) re[i] = "10";
-						mc["_num_" + i].gotoAndStop( parseInt(re[i]));
-					}
-					else mc["_num_" + i].gotoAndStop(11);
-					
-				}			
-			//}
-			//else
-			//{
-				//mc["_num_0"].gotoAndStop(11);
-				//mc["_num_1"].gotoAndStop(11);
-				//mc["_num_2"].gotoAndStop(11);
-				//mc["_num_3"].gotoAndStop(11);			
-			//}
-			
+					if ( re[i] == "0" ) re[i] = "10";
+					mc["_num_" + i].gotoAndStop( parseInt(re[i]));
+				}
+				else mc["_num_" + i].gotoAndStop(11);
+				
+			}			
 		}
 		
 		public function PanMatrixCustomizedFun(mc:MovieClip,idx:int,CustomizedData:Array):void

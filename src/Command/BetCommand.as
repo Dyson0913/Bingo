@@ -2,6 +2,7 @@ package Command
 {
 	import ConnectModule.websocket.WebSoketInternalMsg;
 	import flash.events.Event;
+	import flash.net.URLVariables;
 	import Model.*;
 	import util.DI;
 	import util.utilFun;
@@ -120,6 +121,19 @@ package Command
 			return true;
 		}		
 		
+		public function test_bet(betob:Object):void
+		{
+			if ( _Bet_info.getValue("self") == null)
+			{
+				_Bet_info.putValue("self", [betob]);			
+			}
+			else {
+				var bet_list:Array = _Bet_info.getValue("self");
+					bet_list.push(betob);  
+			_Bet_info.putValue("self",bet_list);		
+			}
+			
+		}
 		
 		public function get_amount(tableNo:int ):int
 		{
@@ -220,6 +234,22 @@ package Command
 			//TODO check null
 			return _Bet_info.getValue("self");		
 		}
+		
+		public function get_my_bet_info(type:String):Array
+		{
+			var arr:Array = _Bet_info.getValue("self");			
+			var data:Array = [];
+			
+			for ( var i:int = 0; i < arr.length ; i++)
+			{
+				var bet_ob:Object = arr[i];
+				if ( type == "table") data.push(bet_ob["betType"]);
+				if ( type == "amount") data.push(bet_ob["bet_amount"]);
+				
+			}
+			return data;
+		}
+	
 		
 		private function self_show_credit():void
 		{
