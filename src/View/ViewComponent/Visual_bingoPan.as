@@ -86,8 +86,9 @@ package View.ViewComponent
 			
 			var rowNum:int = idx  / RowCnt;			
 			var colNum:int = idx  % ColCnt;			
-			//ToolsFunction.Log("idx = "+ idx +" rowNum +"+ rowNum + " colNum "+ colNum);
-			var myidx:int = rowNum + (colNum * ColCnt) ;			
+			
+			var myidx:int = rowNum + (colNum * ColCnt) ;
+			
 			if( idx == 12) 
 			{
 				str = "";		
@@ -95,13 +96,24 @@ package View.ViewComponent
 			}
 			else
 			{
-				if ( rowNum >=3 && colNum == 2 )  myidx -= 1;
-				if ( colNum >= 3)	 myidx -= 1;
-				//utilFun.Log("myidx = "+ myidx);
-				str = CustomizedData[myidx ];	
+				var adjust:int = 0;
+				str = CustomizedData[myidx];	
+				if ( colNum >=3 )
+				{
+					adjust = parseInt(str);
+					adjust -= 1;
+					str = adjust.toString();
+				}
+				else if ( colNum == 2  && rowNum >= 3) 
+				{
+					adjust = parseInt(str);
+					adjust -= 1;
+					str = adjust.toString();
+				}
+				
+				//utilFun.Log("str = "+ str);
 				utilFun.SetText( mc["_text"], str);	
 			}
-			
 					
 		}
 		
