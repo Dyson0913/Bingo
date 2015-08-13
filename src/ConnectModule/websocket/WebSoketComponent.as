@@ -92,7 +92,7 @@ package ConnectModule.websocket
 			var result:Object ;
 			if (event.message.type === WebSocketMessage.TYPE_UTF8) 
 			{
-				//utilFun.Log("before"+event.message.utf8Data)
+				utilFun.Log("before"+event.message.utf8Data)
 				result = JSON.decode(event.message.utf8Data);
 				//utilFun.Log("after"+result)
 			}
@@ -431,13 +431,13 @@ package ConnectModule.websocket
 					//中途入局
 					utilFun.Log("中途入局");
 					  //msg =room_no = 92				
-					   _model.putValue("openBalllist", msg.game_info.opened_history); //to balllist 
-					  utilFun.Log("中途入局 open_hist ="+msg.game_info.opened_history);
-					   var arr:Array = msg.game_info.opened_history.concat();
-					
-						arr.reverse();					
-					   _model.putValue("open3Balllist", arr.slice(0, Math.min(arr.length, 3)) );
-					    utilFun.Log("中途入局 open3Balllist =" +  _model.getValue("open3Balllist"));
+					   //_model.putValue("openBalllist", msg.game_info.opened_history); //to balllist 
+					  //utilFun.Log("中途入局 open_hist ="+msg.game_info.opened_history);
+					   //var arr:Array = msg.game_info.opened_history.concat();
+					//
+						//arr.reverse();					
+					   //_model.putValue("open3Balllist", arr.slice(0, Math.min(arr.length, 3)) );
+					    //utilFun.Log("中途入局 open3Balllist =" +  _model.getValue("open3Balllist"));
 						
 						//_model.putValue("Curball", parseInt(msg.game_info.opened_info.current_ball) );
 						//_model.putValue("opened_ball_num", msg.game_info.opened_info.opened_ball_num );
@@ -447,7 +447,7 @@ package ConnectModule.websocket
 						//_model.putValue("best_list", msg.game_info.opened_info.best_list );
 						//_model.putValue("second_list", msg.game_info.opened_info.second_list );						
 											//
-						dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );												
+						//dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );												
 						//
 						//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
 					   

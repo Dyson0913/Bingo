@@ -42,8 +42,8 @@ package View.ViewComponent
 			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedFun = bet_amountFun;			
 			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedData = [0];
 			
-			_tool.SetControlMc(bingo_pan.container);
-			add(_tool);
+			//_tool.SetControlMc(bingo_pan.container);
+			//add(_tool);
 		}
 		
 		public function info_initFun(mc:MovieClip, idx:int, data:Array):void
