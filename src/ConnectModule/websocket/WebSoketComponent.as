@@ -263,12 +263,69 @@ package ConnectModule.websocket
 						break;
 					}
 					
-					
+					case Message.MSG_TYPE_BINGO:
+						{
+							
+						}
+						break;
 					case Message.MSG_TYPE_NEW_ROUND_WITH_BALL:
 					{
 						utilFun.Log("recv New Round =" +result.message_sub );
+						if (result.message_sub == 1) 
+						{
+							var arrlist:Array = result.game_info.table_info;
 						
-						
+							//拿到後半資訊
+							for ( var p:* in arrlist)
+							{
+								var is_bet:int = arrlist[p] ["is_bet"];
+								var ball:Array = arrlist[p] ["balls"];
+								var Table:int = arrlist[p] ["table_no"];
+								
+								TableNo.push(Table);
+								is_betarr.push(is_bet);
+								ballarr.push(ball);								
+							}
+							
+							//ToolsFunction.Log("TableNo = " + TableNo.length);
+							//ToolsFunction.Log("is_betarr = " + is_betarr);
+							//EnterBetView(TableNo,is_betarr,ballarr,_remainTime,_credit);
+						}
+						else 
+						{
+							//似乎沒用 result.message_sub =0 可以不用傳
+							_remainTime = result.remain_time;
+							var arrlist:Array = result.game_info.table_info;
+							
+							//拿到前半資訊
+							for ( var p:* in arrlist)
+							{
+								var is_bet:int = arrlist[p] ["is_bet"];
+								var ball:Array = arrlist[p] ["balls"];
+								var Table:int = arrlist[p] ["table_no"];
+								
+								TableNo.push(Table);
+								is_betarr.push(is_bet);
+								ballarr.push(ball);								
+							}
+							
+							//server傳的確認押注結果
+							var table_no:Array = [];
+                            var amount:Array = [];
+                            var arrlist:Array = result.bet_info;
+                            for ( var p:* in arrlist)
+                            {
+                                var is_bet:int = arrlist[p] ["table_no"];
+                                var my:int = arrlist[p] ["amount"];
+                                
+                                table_no.push(is_bet);
+                                amount.push(my);
+                            }
+							//更新到新己的betinfo
+							//UpdateBetInfo(table_no,amount);
+							
+							//_credit = result.player_info.credit;
+						}
 						break;
 					}
 					
@@ -421,8 +478,9 @@ package ConnectModule.websocket
 				}
 				case Message.GAME_STATE_END_BET:
 				{
-					m_game_state = Message.GAME_STATE_END_BET;
-					//DisplayEndBet();
+					m_game_state = Message.GAME_STATE_END_BET;					
+					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STOP_HINT));
+					
 					break;
 				}
 				case Message.GAME_STATE_START_ROUND:
@@ -431,28 +489,25 @@ package ConnectModule.websocket
 					//中途入局
 					utilFun.Log("中途入局");
 					  //msg =room_no = 92				
-					   //_model.putValue("openBalllist", msg.game_info.opened_history); //to balllist 
-					  //utilFun.Log("中途入局 open_hist ="+msg.game_info.opened_history);
-					   //var arr:Array = msg.game_info.opened_history.concat();
+					   _model.putValue("openBalllist", msg.game_info.opened_history);
+					  utilFun.Log("中途入局 open_hist ="+msg.game_info.opened_history);
+					  var arr:Array = msg.game_info.opened_history.concat();
 					//
-						//arr.reverse();					
-					   //_model.putValue("open3Balllist", arr.slice(0, Math.min(arr.length, 3)) );
-					    //utilFun.Log("中途入局 open3Balllist =" +  _model.getValue("open3Balllist"));
+						arr.reverse();					
+					   _model.putValue("open3Balllist", arr.slice(0, Math.min(arr.length, 3)) );
 						
-						//_model.putValue("Curball", parseInt(msg.game_info.opened_info.current_ball) );
-						//_model.putValue("opened_ball_num", msg.game_info.opened_info.opened_ball_num );
-						//_model.putValue("best_remain", parseInt(msg.game_info.opened_info.best_remain) );
-						//_model.putValue("second_remain", parseInt(msg.game_info.opened_info.second_remain) );
-							 //
-						//_model.putValue("best_list", msg.game_info.opened_info.best_list );
-						//_model.putValue("second_list", msg.game_info.opened_info.second_list );						
-											//
-						//dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );												
+						_model.putValue("Curball", parseInt(msg.game_info.opened_info.current_ball) );
+						_model.putValue("opened_ball_num", msg.game_info.opened_info.opened_ball_num );
+						_model.putValue("best_remain", parseInt(msg.game_info.opened_info.best_remain) );
+						_model.putValue("second_remain", parseInt(msg.game_info.opened_info.second_remain) );
+						
+						_model.putValue("best_list", msg.game_info.opened_info.best_list );
+						_model.putValue("second_list", msg.game_info.opened_info.second_list );						
+						
+						dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );												
 						//
-						//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
-					   
-						//TODO half_enter
-						//dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );		
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.HALF_ENTER_UPDATE));
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
 						
 					break;
 				}	

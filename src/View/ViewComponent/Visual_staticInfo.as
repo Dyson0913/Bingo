@@ -73,21 +73,16 @@ package View.ViewComponent
 			utilFun.SetText(GetSingleItem("best_pan_info", 0)["_text"], String( _model.getValue("best_remain") ));
 			utilFun.SetText(GetSingleItem("best_pan_info", 2)["_text"], String( _model.getValue("second_remain") ));
 			
-			var list:Array = _model.getValue("best_list");
-			utilFun.SetText(GetSingleItem("best_pan_info", 1)["_text"], String( list.length ));
-			list  = _model.getValue("second_list");
-			utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], String( list.length ));
+			var best_list:Array = _model.getValue("best_list");
+			utilFun.SetText(GetSingleItem("best_pan_info", 1)["_text"], String( best_list.length ));
+			var second_list:Array  = _model.getValue("second_list");
+			utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], String( second_list.length ));
 			
-			//沒有ball list?
-			var tablelist:Array = _model.getValue("best_list");			
-			//utilFun.Log("best_list" + tablelist.length) ;
-			//utilFun.Log("best_remain" + _model.getValue("best_remain") ;
-			//utilFun.Log("second_remain" + _model.getValue("second_remain") ;
-			var bet:Object = tablelist[0];			
+						
+			//utilFun.Log("best_list" + tablelist.length) ;		
+			var bet:Object = best_list[0];			
 			var ball_lenth:int =  bet.ball_list.length;
-			var dis:Array = [tablelist,ball_lenth];
-			//utilFun.Log("ball_lenth" + ball_lenth) ;
-			
+			var dis:Array = [best_list,ball_lenth];		
 			
 			//Get("public_best_pan_info").CustomizedFun = pan_set;						
 			//Get("public_best_pan_info").CustomizedData = _model.getValue("best_list");				
@@ -95,11 +90,9 @@ package View.ViewComponent
 			Get("public_best_pan_info").Post_CustomizedData = dis;
 			Get("public_best_pan_info").customized();
 			
-			tablelist = _model.getValue("second_list");
-			//utilFun.Log("second_list" + tablelist.length) ;
-			bet = tablelist[0];
-			ball_lenth =  bet.ball_list.length;
-			dis = [tablelist, ball_lenth];
+			var sebet:Object = second_list[0];
+			ball_lenth =  sebet.ball_list.length;
+			dis = [second_list, ball_lenth];
 			//utilFun.Log("second_list ball_lenth" + ball_lenth) ;
 			Get("public_second_pan_info").Posi_CustzmiedFun = reposition;						
 			Get("public_second_pan_info").Post_CustomizedData = dis;
@@ -249,9 +242,14 @@ package View.ViewComponent
 			mc.y = mc.parent.parent.y + ( Math.floor(idx / RowCnt) * Ydiff);		
 			
 			//TODO sort to first?
-			var table:Array = _betCommand.get_my_bet_info("table");
-			if( table.indexOf( bet["table_no"]) !=-1) mc.gotoAndStop(2);
+			if ( _betCommand.get_my_betlist() != null) 
+			{
+				var table:Array = _betCommand.get_my_bet_info("table");
+				if ( table.indexOf( bet["table_no"]) != -1) mc.gotoAndStop(2);
+			}
 		}
+		
+		
 		
 	}
 

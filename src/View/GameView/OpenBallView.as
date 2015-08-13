@@ -75,11 +75,8 @@ package View.GameView
 			_ball.init();
 			_staticinfo.init();
 			
-			//if ( _betCommand.get_my_betlist() != null)
-			//{
-				_ticket.init();
-			//}
-				utilFun.Log("in to down=");			
+			
+			_ticket.init();			
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]

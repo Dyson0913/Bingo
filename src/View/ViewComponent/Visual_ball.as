@@ -126,46 +126,29 @@ package View.ViewComponent
 			
 		}
 		
-		private function HalfEnterInit():void
-		{
-			
-			
-			//移到hud
-			//utilFun.ClearContainerChildren(Hud);
-			//Hud.addChild( ToolsFunction.GetClassByString("TopBar") );
-			//Hud.addChild( ToolsFunction.GetClassByString("ButtonBar") );
-			//所押盤數更新
-			//ToolsFunction.SetText(Hud.getChildByName("ButtonBar")["BetOrder"], String(0));			
-			//押分
-			//ToolsFunction.SetText(Hud.getChildByName("ButtonBar")["Bet"], String(0));
-			//Credit
-			//ToolsFunction.SetText(Hud.getChildByName("ButtonBar")["Credit"], betModel._credit.toString() );
-			//離最佳剩幾球
-			//ToolsFunction.SetText( OpenBallView["BestLeft"], String(0));
-			
-			
-			
+		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="half_enter_update")]		
+		public function HalfEnterInit():void
+		{			
+			var openballist:Array = _model.getValue("openBalllist");
+			utilFun.Log("HalfEnterInit = "+openballist.length);
 			//己開球補齊			
-			//var Cnt:int = _BallModel.opened_history.length;
-			//for ( var i:int = 0; i < Cnt; i++)
-			//{
+			var Cnt:int = openballist.length;
+			for ( var i:int = 0; i < Cnt; i++)
+			{
 				//server 傳1 base
-				//var CurrentBallNum:int = _BallModel.opened_history[i];
-				//var BallIdx:int = CurrentBallNum-1;
-				//var BallDisPlayIdx:int = CurrentBallNum;
-				//var mc:MovieClip = utilFun.GetClassByString("DynamicBall");
-				//BallPan.addChild(mc);
-				//
-				//var xPos:int = (( BallIdx  % 15 )) *  76;
-				//var yPos:int  = Math.floor( BallIdx / 15 )* 72;
-				//
-				//utilFun.SetText( mc["ballNum"], utilFun.Format( BallDisPlayIdx, 2 ));
-				//
-				//mc.gotoAndStop( Math.ceil( BallDisPlayIdx / 15 ) );
-				//utilFun.scaleXY(mc, 0.4, 0.4);
-				//mc.x =  80.05+xPos;
-				//mc.y = 1.95+yPos;
-			//}
+				var BallNum:int = openballist[i];
+				var BallIdx:int = BallNum - 1;
+				var BallDisPlayIdx:int = BallNum;
+			
+				var xPos:int = (( BallIdx  % 15 )) *  88;
+				var yPos:int  = Math.floor( BallIdx / 15 )*  96.65;				
+				var openball:MovieClip = GetSingleItem("opan_pan_ball", BallIdx);
+				utilFun.SetText( openball["ballNum"], utilFun.Format( BallDisPlayIdx, 2 ));
+				
+				openball.visible = true;
+				openball.gotoAndStop( Math.ceil( BallDisPlayIdx / 15 ) );
+				utilFun.scaleXY(openball, 0.48, 0.48);								
+			}
 		}	
 		
 		

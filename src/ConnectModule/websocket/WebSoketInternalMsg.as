@@ -15,6 +15,7 @@ package ConnectModule.websocket
 		public static const BET_STOP_HINT:String = "betstopHint";
 		public static const BET_FULL_HINT:String = "betfullHint";
 		public static const BALL_UPDATE:String = "ballupdate";
+		public static const HALF_ENTER_UPDATE:String = "half_enter_update";
 		
 		[Selector]
 		public var selector:String
