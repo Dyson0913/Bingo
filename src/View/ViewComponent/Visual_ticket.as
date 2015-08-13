@@ -118,22 +118,9 @@ package View.ViewComponent
 			}
 			else
 			{
-				var adjust:int = 0;
-				str = CustomizedData[myidx];	
-				if ( colNum >=3 )
-				{
-					adjust = parseInt(str);
-					adjust -= 1;
-					str = adjust.toString();
-				}
-				else if ( colNum == 2  && rowNum >= 3) 
-				{
-					adjust = parseInt(str);
-					adjust -= 1;
-					str = adjust.toString();
-				}
-				
-				//utilFun.Log("str = "+ str);
+				if ( rowNum >=3 && colNum == 2 )  myidx -= 1;
+				if ( colNum >= 3)	 myidx -= 1;
+				str = CustomizedData[myidx];				
 				utilFun.SetText( mc["_text"], str);	
 			}
 		}
@@ -145,13 +132,26 @@ package View.ViewComponent
 			var len:int = Get("ticket").ItemList.length;
 			var openballist:Array = _model.getValue("openBalllist");
 			openballist.push(BallNum);		
+			//_model.putValue("openBalllist",openballist);
 			
-			//open ball ani
+			//open ball ani			
+			//TODO show min start
 			for ( var i:int = 0; i < len ; i++)
 			{				
-				Get("select_pan" + i).CustomizedFun = SelfPanBallAni;
-				Get("select_pan" + i).FlushObject();
+				Get("select_pan" + i).CustomizedFun = SelfPanBallAni;				
+				Get("select_pan" + i).FlushObject();				
+				
+				var arr:Array = Get("select_pan" + i).CustomizedData;			
+				var count:int = 24;
+				for (  var k:int = 0; k < openballist.length ; k++)
+				{
+					if ( arr.indexOf(openballist[k] ) != -1) count--;
+				}				
+				utilFun.SetText( Get("ticket").ItemList[i]["_rest_ball"], count.toString());
+				
 			}			
+			
+			
 		}
 		
 		public function SelfPanBallAni(mc:MovieClip, idx:int, CustomizedData:Array):void

@@ -29,11 +29,11 @@ package View.ViewComponent
 		public function init():void
 		{
 			var ball:MultiObject = prepare(modelName.Open_Ball_Num, new MultiObject()  , GetSingleItem("_view").parent.parent);
-			 ball.CustomizedFun = sballFun;		   
-		   ball.CustomizedData = [1];	   
-		   ball.Create_by_list(1, [ResName.Ball], 0, 0, 1, 0, 0, "time_");
-		   ball.container.x = 170;
-		   ball.container.y = 224;		  
+			ball.CustomizedFun = sballFun;		   
+		    ball.CustomizedData = [1];	   
+		    ball.Create_by_list(1, [ResName.Ball], 0, 0, 1, 0, 0, "time_");
+		    ball.container.x = 170;
+		    ball.container.y = 224;		  
 			
 		   var sball:MultiObject = prepare("small_ball", new MultiObject()  , GetSingleItem("_view").parent.parent);
 		   sball.CustomizedFun = sballFun;		   
@@ -50,8 +50,7 @@ package View.ViewComponent
 		   
 		   	//_tool.SetControlMc(ball_pan.container);
 			//add(_tool);
-			_model.putValue("open3Balllist", []);			
-			_model.putValue("open_history", []);
+			_model.putValue("open3Balllist", []);						
 			
 		}
 		

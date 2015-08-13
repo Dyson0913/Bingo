@@ -180,8 +180,7 @@ package ConnectModule.websocket
 						break;
 					}
 					case Message.MSG_TYPE_BET:
-					{	
-						//TODO 用int objec 解偶
+					{						
 						dispatcher(new ValueObject( result.room_no, "bet_room_num") );
 						dispatcher(new ValueObject(  result.result, "bet_result") );
 						//_BetModel._Bet_room_no =  result.room_no;
@@ -257,11 +256,7 @@ package ConnectModule.websocket
 							_model.putValue("second_remain", parseInt(result.game_info.opened_info.second_remain) );
 							 
 							_model.putValue("best_list", result.game_info.opened_info.best_list );
-							_model.putValue("second_list", result.game_info.opened_info.second_list );
-							// "best_list": [{"table_no": 90, "ball_list": []}, {"table_no": 58, "ball_list": []},
-							
-							
-							
+							_model.putValue("second_list", result.game_info.opened_info.second_list );						
 							dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
 						}
 						
@@ -435,17 +430,26 @@ package ConnectModule.websocket
 					m_game_state = 	Message.GAME_STATE_START_ROUND;
 					//中途入局
 					utilFun.Log("中途入局");
-					  //msg =room_no = 92
-					  
-					   //player_info
-					    //=credit = 50000
-					   // =id = Player1
-					   // =nickname = Player1
-					   
-						//dispatcher(new Intobject(msg.player_info.credit, "credit"));
+					  //msg =room_no = 92				
+					   _model.putValue("openBalllist", msg.game_info.opened_history); //to balllist 
+					  utilFun.Log("中途入局 open_hist ="+msg.game_info.opened_history);
+					   var arr:Array = msg.game_info.opened_history.concat();
+					
+						arr.reverse();					
+					   _model.putValue("open3Balllist", arr.slice(0, Math.min(arr.length, 3)) );
+					    utilFun.Log("中途入局 open3Balllist =" +  _model.getValue("open3Balllist"));
 						
-						_model.putValue("open_history", msg.game_info.opened_history);
+						//_model.putValue("Curball", parseInt(msg.game_info.opened_info.current_ball) );
+						//_model.putValue("opened_ball_num", msg.game_info.opened_info.opened_ball_num );
+						//_model.putValue("best_remain", parseInt(msg.game_info.opened_info.best_remain) );
+						//_model.putValue("second_remain", parseInt(msg.game_info.opened_info.second_remain) );
+							 //
+						//_model.putValue("best_list", msg.game_info.opened_info.best_list );
+						//_model.putValue("second_list", msg.game_info.opened_info.second_list );						
+											//
 						dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );												
+						//
+						//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
 					   
 						//TODO half_enter
 						//dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );		

@@ -49,7 +49,7 @@ package View.ViewComponent
 			public_best_pan.container.y = 128.8;
 			public_best_pan.Create_by_list(26, [ResName.BetButton], 0, 0, 13, 106.25, 80, "time_");
 			
-			
+			//次佳盤
 			var public_second_pan:MultiObject = prepare("public_second_pan_info", new MultiObject(), GetSingleItem("_view").parent.parent);			
 			public_second_pan.CustomizedFun = pan_set;
 			public_second_pan.container.x = 492.85;
@@ -70,6 +70,8 @@ package View.ViewComponent
 		public function UpdataTableBetInfo():void
 		{			
 			
+			
+			
 			utilFun.SetText(GetSingleItem("total_ball_info")["_text"], String( _model.getValue("opened_ball_num") ));
 			utilFun.SetText(GetSingleItem("best_pan_info", 0)["_text"], String( _model.getValue("best_remain") ));
 			utilFun.SetText(GetSingleItem("best_pan_info", 2)["_text"], String( _model.getValue("second_remain") ));
@@ -81,9 +83,14 @@ package View.ViewComponent
 			
 			//沒有ball list?
 			var tablelist:Array = _model.getValue("best_list");			
+			utilFun.Log("best_list" + tablelist.length) ;
+			//utilFun.Log("best_remain" + _model.getValue("best_remain") ;
+			//utilFun.Log("second_remain" + _model.getValue("second_remain") ;
 			var bet:Object = tablelist[0];			
 			var ball_lenth:int =  bet.ball_list.length;
 			var dis:Array = [tablelist,ball_lenth];
+			utilFun.Log("ball_lenth" + ball_lenth) ;
+			
 			
 			//Get("public_best_pan_info").CustomizedFun = pan_set;						
 			//Get("public_best_pan_info").CustomizedData = _model.getValue("best_list");				
@@ -92,13 +99,16 @@ package View.ViewComponent
 			Get("public_best_pan_info").customized();
 			
 			tablelist = _model.getValue("second_list");
+			utilFun.Log("second_list" + tablelist.length) ;
 			bet = tablelist[0];
 			ball_lenth =  bet.ball_list.length;
 			dis = [tablelist, ball_lenth];
-			
+			utilFun.Log("second_list ball_lenth" + ball_lenth) ;
 			Get("public_second_pan_info").Posi_CustzmiedFun = reposition;						
 			Get("public_second_pan_info").Post_CustomizedData = dis;
 			Get("public_second_pan_info").customized();
+			
+			utilFun.Log("down") ;
 		}
 		
 		public function pan_set(mc:MovieClip, idx:int, tablelist:Array):void

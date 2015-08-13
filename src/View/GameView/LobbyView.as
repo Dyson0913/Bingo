@@ -26,9 +26,6 @@ package View.GameView
 	public class LobbyView extends ViewBase
 	{
 		[Inject]
-		public var _betCommand:BetCommand;
-		
-		[Inject]
 		public var _regular:RegularSetting;			
 		
 		
@@ -43,12 +40,7 @@ package View.GameView
 			utilFun.Log("LobbyView in to EnterBetview="+View.Value);	
 			if (View.Value != modelName.lobby) return;
 			super.EnterView(View);
-			//清除前一畫面
-			
-			utilFun.Log("in lobby");	
-			
-			
-			
+			//清除前一畫面		
 			//var view:MultiObject = prepare("_view", new MultiObject() , this);
 			//view.Create_by_list(1, [ResName.lobby_], 0, 0, 1, 0, 0, "a_");			
 						
@@ -56,8 +48,7 @@ package View.GameView
 		}			 
 		
 		private function connet():void
-		{	
-			utilFun.Log("send connet");	
+		{				
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.CHOOSE_ROOM));		
 		}
 		

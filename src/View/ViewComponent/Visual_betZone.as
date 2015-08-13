@@ -31,16 +31,15 @@ package View.ViewComponent
 		
 		public function init():void
 		{
-			//bet區容器
-			//coin
-			var coinob:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
-			coinob.container.x = 151.85;
-			coinob.container.y = 235.85;
-			coinob.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,0]);
-			coinob.CustomizedFun = BetListini;
-			coinob.CustomizedData = _model.getValue("is_betarr");
-			coinob.Create_by_list(coinob.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
-			coinob.mousedown = _betCommand.betTypeMain;
+			//bet			
+			var betPan:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
+			betPan.container.x = 151.85;
+			betPan.container.y = 235.85;
+			betPan.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,0]);
+			betPan.CustomizedFun = BetListini;
+			betPan.CustomizedData = _model.getValue("is_betarr");
+			betPan.Create_by_list(betPan.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
+			betPan.mousedown = _betCommand.betTypeMain;
 			
 			//押分 pan num
 			var betlist:MultiObject = prepare("betlist", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -84,6 +83,17 @@ package View.ViewComponent
 			//_tool.SetControlMc(coinob.ItemList[50]);
 			//add(_tool);
 		}		
+		
+		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstopHint")]
+		public function forbidden():void
+		{
+			Get("betZone").mousedown = null;
+			Get("betamount_sub").mousedown = null;
+			Get("betamount_sub").mouseup = null;
+			Get("betamount_add").mousedown = null;
+			Get("betamount_add").mouseup = null;
+			
+		}
 		
 		public function bet_amountFun(mc:MovieClip, idx:int, betamount:Array):void
 		{

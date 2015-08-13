@@ -70,14 +70,16 @@ package View.GameView
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Openball_Scene], 0, 0, 1, 0, 0, "a_");	
 			
-			_test.init();
+			//_test.init();
 			
 			_ball.init();
 			_staticinfo.init();
 			
-			_ticket.init();
-			//
-			//_settle.init();
+			//if ( _betCommand.get_my_betlist() != null)
+			//{
+				_ticket.init();
+			//}
+				utilFun.Log("in to down=");			
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]

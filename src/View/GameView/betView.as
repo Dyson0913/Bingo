@@ -28,9 +28,6 @@ package View.GameView
 	public class betView extends ViewBase
 	{
 		[Inject]
-		public var _betCommand:BetCommand;
-		
-		[Inject]
 		public var _regular:RegularSetting;	
 		
 		[Inject]
@@ -41,9 +38,6 @@ package View.GameView
 		
 		[Inject]
 		public var _betzone:Visual_betZone;
-		
-		[Inject]
-		public var _settle:Visual_Settle;
 		
 		[Inject]
 		public var _playerinfo:Visual_PlayerInfo;
@@ -68,7 +62,7 @@ package View.GameView
 			utilFun.Log("in to EnterBetview=");			
 			
 			_tool = new AdjustTool();
-			_betCommand.bet_init();
+			
 			
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Bet_Scene], 0, 0, 1, 0, 0, "a_");	

@@ -29,9 +29,10 @@ package View.ViewComponent
 		public function init():void
 		{			
 			//盤號 內盤,外盤
+			var balls:Array = _model.getValue("ballarr");		
 			var bingo_pan:MultiObject = prepare("bingo_pan", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bingo_pan.CustomizedFun = info_initFun;
-			bingo_pan.CustomizedData = [1,2,3,4,5,6,7,8,9,10,11,12,13,1,4,15,1,6,17,18,19,20,21,22,23,24]; // select pan_num
+			bingo_pan.CustomizedData = balls[0];
 			bingo_pan.container.x = 1409;
 			bingo_pan.container.y = 751.9;
 			bingo_pan.Create_by_list(1, [ResName.bingo_pan], 0, 0, 1, 0, 0, "time_");
@@ -95,23 +96,10 @@ package View.ViewComponent
 				mc.gotoAndStop(4);
 			}
 			else
-			{
-				var adjust:int = 0;
-				str = CustomizedData[myidx];	
-				if ( colNum >=3 )
-				{
-					adjust = parseInt(str);
-					adjust -= 1;
-					str = adjust.toString();
-				}
-				else if ( colNum == 2  && rowNum >= 3) 
-				{
-					adjust = parseInt(str);
-					adjust -= 1;
-					str = adjust.toString();
-				}
-				
-				//utilFun.Log("str = "+ str);
+			{				
+				if ( rowNum >=3 && colNum == 2 )  myidx -= 1;
+				if ( colNum >= 3)	 myidx -= 1;
+				str = CustomizedData[myidx];					
 				utilFun.SetText( mc["_text"], str);	
 			}
 					

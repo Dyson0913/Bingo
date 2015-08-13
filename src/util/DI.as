@@ -17,7 +17,10 @@ package util
 		
 		public function putValue(name:*,ob:*):void
 		{
-			_dic[name] = ob;
+		    if (_dic[name] == null)
+			{
+				_dic[name] = ob;
+			}
 		}
 		
 		public function getValue(name:*):*

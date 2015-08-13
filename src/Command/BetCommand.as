@@ -101,7 +101,7 @@ package Command
 			var amount:int = get_amount(idx);
 			bet = { "betType": idx, 											
 			                           "bet_amount":  amount,		
-									   "bet_idx":coin_list.indexOf(amount)
+									   "bet_idx":coin_list.indexOf(amount)						   
 									   };
 									   
 			//var bet_list:Array =  _model.getValue("Bet_recode_List");
@@ -230,8 +230,7 @@ package Command
 		}
 		
 		public function get_my_betlist():Array
-		{
-			//TODO check null
+		{		
 			return _Bet_info.getValue("self");		
 		}
 		
@@ -244,8 +243,7 @@ package Command
 			{
 				var bet_ob:Object = arr[i];
 				if ( type == "table") data.push(bet_ob["betType"]);
-				if ( type == "amount") data.push(bet_ob["bet_amount"]);
-				
+				if ( type == "amount") data.push(bet_ob["bet_amount"]);								
 			}
 			return data;
 		}

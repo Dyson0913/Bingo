@@ -45,6 +45,9 @@ package View.GameView
 		[Inject]
 		public var _visual_test:Visual_testInterface;
 		
+		[Inject]
+		public var _betCommand:BetCommand;
+		
 		
 		
 		public function LoadingView()  
@@ -55,8 +58,8 @@ package View.GameView
 			//result:Object
 		public function FirstLoad(para:Array ):void
  		{			
-			dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH));		
-			return;
+			//dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH));		
+			//return;
 			
 			_model.putValue(modelName.LOGIN_INFO, para[0]);
 			_model.putValue(modelName.CREDIT, para[1]);
@@ -74,11 +77,9 @@ package View.GameView
 			super.EnterView(View);
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Loading_Scene], 0, 0, 1, 0, 0, "a_");			
-			_tool = new AdjustTool();
-			//paitest()
-			//testroad();		
+			_tool = new AdjustTool();				
 			
-			
+			_betCommand.bet_init();
 			//_regular.strdotloop(view.ItemList[0]["_Text"],20,40);			
 			utilFun.SetTime(connet, 2);
 			//

@@ -70,10 +70,10 @@ package Command
 			
 			viewDISwitch();
 			dispatcher(new Intobject(_CurrentView,VIEW_ENTER));
-			utilFun.Log("enter vew = " +_CurrentView);
+			//utilFun.Log("enter vew = " +_CurrentView);
 			if ( _preView != _CurrentView) 
 			{
-				utilFun.Log("leave preivew = " + _preView);
+				//utilFun.Log("leave preivew = " + _preView);
 				preView_clean();
 				dispatcher(new Intobject(_preView,VIEW_LEAVE ));
 			}			
