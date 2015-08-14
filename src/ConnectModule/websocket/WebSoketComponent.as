@@ -150,10 +150,8 @@ package ConnectModule.websocket
 						{
 							//arrlist =[object Object],[object Object],						
 							//後半包
-							var arr_lat:Array = result.game_info.table_info;
-						
-							num = arr_lat.length;
-						
+							var arr_lat:Array = result.game_info.table_info;						
+							num = arr_lat.length;						
 							var is_bet:Array = _model.getValue("is_betarr");
 							var balls:Array = _model.getValue("ballarr");
 							var table_no:Array = _model.getValue("table");							
@@ -170,6 +168,7 @@ package ConnectModule.websocket
 							m_game_state = Message.MSG_TYPE_ENTER_ROOM;							
 							dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );						
 							
+							//triger timer,
 							dispatcher(new ModelEvent("display"));
 							
 						} else {
@@ -264,67 +263,59 @@ package ConnectModule.websocket
 					}
 					
 					case Message.MSG_TYPE_BINGO:
-						{
+					{
+						_model.putValue("_bet_info", result.bet_info);
 							
-						}
-						break;
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.WIN_HINT));
+					}
+					break;
 					case Message.MSG_TYPE_NEW_ROUND_WITH_BALL:
 					{
 						utilFun.Log("recv New Round =" +result.message_sub );
 						if (result.message_sub == 1) 
 						{
-							var arrlist:Array = result.game_info.table_info;
-						
-							//拿到後半資訊
-							for ( var p:* in arrlist)
-							{
-								var is_bet:int = arrlist[p] ["is_bet"];
-								var ball:Array = arrlist[p] ["balls"];
-								var Table:int = arrlist[p] ["table_no"];
-								
-								TableNo.push(Table);
-								is_betarr.push(is_bet);
-								ballarr.push(ball);								
-							}
-							
-							//ToolsFunction.Log("TableNo = " + TableNo.length);
-							//ToolsFunction.Log("is_betarr = " + is_betarr);
-							//EnterBetView(TableNo,is_betarr,ballarr,_remainTime,_credit);
+							//後半包
+							var arr_lat:Array = result.game_info.table_info;						
+							num = arr_lat.length;						
+							var is_bet:Array = _model.getValue("is_betarr");
+							var balls:Array = _model.getValue("ballarr");
+							var table_no:Array = _model.getValue("table");							
+							for ( i = 0; i < num ; i++)
+							{						
+								is_bet.push( arr_lat[i].is_bet);
+								balls.push( arr_lat[i].balls);
+								table_no.push( arr_lat[i].table_no);
+							}					
+							_model.putValue("is_betarr",is_bet);
+							_model.putValue("ballarr",balls);
+							_model.putValue("table", table_no);						
+							dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );													
+							//triger timer,
+							dispatcher(new ModelEvent("display"));
 						}
 						else 
-						{
-							//似乎沒用 result.message_sub =0 可以不用傳
-							_remainTime = result.remain_time;
-							var arrlist:Array = result.game_info.table_info;
-							
-							//拿到前半資訊
-							for ( var p:* in arrlist)
-							{
-								var is_bet:int = arrlist[p] ["is_bet"];
-								var ball:Array = arrlist[p] ["balls"];
-								var Table:int = arrlist[p] ["table_no"];
+						{						
+							//前半包
+							var arr:Array = result.game_info.table_info;							
+								var num:int = arr.length;
+								//utilFun.Log("arrlist = " + num);
+								var is_bet:Array = [];
+								var balls:Array = [];
+								var table_no:Array = [];
+								//utilFun.Log("num = " + num);
+								for (var i:int = 0; i < num ; i++)
+								{						
+									is_bet.push( arr[i].is_bet);
+									balls.push( arr[i].balls);
+									table_no.push( arr[i].table_no);
+								}
 								
-								TableNo.push(Table);
-								is_betarr.push(is_bet);
-								ballarr.push(ball);								
-							}
+							dispatcher(new ValueObject(result.remain_time, modelName.REMAIN_TIME) );						
+							_model.putValue("is_betarr",is_bet);
+							_model.putValue("ballarr",balls);
+							_model.putValue("table", table_no);
 							
-							//server傳的確認押注結果
-							var table_no:Array = [];
-                            var amount:Array = [];
-                            var arrlist:Array = result.bet_info;
-                            for ( var p:* in arrlist)
-                            {
-                                var is_bet:int = arrlist[p] ["table_no"];
-                                var my:int = arrlist[p] ["amount"];
-                                
-                                table_no.push(is_bet);
-                                amount.push(my);
-                            }
-							//更新到新己的betinfo
-							//UpdateBetInfo(table_no,amount);
 							
-							//_credit = result.player_info.credit;
 						}
 						break;
 					}

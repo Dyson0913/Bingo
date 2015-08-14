@@ -67,6 +67,8 @@ package View.GameView
 			//清除前一畫面
 			utilFun.Log("in to OpenBallView=");			
 			
+			this.parent.swapChildrenAt(3, 2);
+			
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Openball_Scene], 0, 0, 1, 0, 0, "a_");	
 			
@@ -76,13 +78,15 @@ package View.GameView
 			_staticinfo.init();
 			
 			
-			_ticket.init();			
+			_ticket.init();	
+			_hint.init();
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]
 		override public function ExitView(View:Intobject):void
 		{
 			if (View.Value != modelName.openball) return;
+			utilFun.Log("leave to OpenBallView=");			
 			super.ExitView(View);
 		}		
 	}

@@ -36,6 +36,7 @@ package Res
 		public static const playerInfo:String = "playerinfo";		
 		
 		public static const Hint:String = "HintMsg";	
+		public static const Winhint:String = "win_hint";	
 				
 		public static const CleanBtn:String = "rebetbtn";
 		public static const betcomfirmBtn:String = "betcomfirmbtn";		

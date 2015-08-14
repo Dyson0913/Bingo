@@ -96,6 +96,7 @@ package Command
 		
 		private function viewDISwitch():void
 		{
+			//if ( nextViewDI.getValue("_view") ) nextViewDI.getValue("_view").container.visible = false;
 			nextViewDI.clean();
 			
 			//switch ptr

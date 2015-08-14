@@ -59,8 +59,18 @@ package View.GameView
 			if (View.Value != modelName.Bet) return;
 			super.EnterView(View);
 			//清除前一畫面
-			utilFun.Log("in to EnterBetview=");			
 			
+			//in to bet view=[object LoadingView]
+ //[I] in to bet view=[object LobbyView]
+ //[I] in to bet view=[object betView]
+ //[I] in to bet view=[object OpenBallView]
+			
+			this.parent.swapChildrenAt(3, 2);
+			//utilFun.Log("in to bet view=");			
+			//utilFun.Log("in to bet view="+this.parent.getChildAt(0).toString());			
+			//utilFun.Log("in to bet view="+this.parent.getChildAt(1).toString());			
+			//utilFun.Log("in to bet view="+this.parent.getChildAt(2).toString());			
+			//utilFun.Log("in to bet view=" + this.parent.getChildAt(3).toString() );			
 			_tool = new AdjustTool();
 			
 			
@@ -75,6 +85,7 @@ package View.GameView
 			_timer.init();
 			_hint.init();
 			_bingo.init();
+			utilFun.Log("bet view= end");			
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]
