@@ -29,7 +29,7 @@ package Command
 		
 		public function BetCommand() 
 		{
-			Clean_bet();					
+			
 		}
 		
 		public function bet_init():void
@@ -39,6 +39,7 @@ package Command
 			//_model.putValue("coin_list", [100, 500, 1000, 5000, 10000]);
 			_model.putValue("Bet_coin_List", [0, 100, 200, 300, 500, 1000]);
 			_model.putValue("after_bet_credit", 0);
+			_Bet_info.putValue("self", [] ) ;
 		}
 		
 		public function betTypeMain(e:Event,idx:int):Boolean
@@ -227,7 +228,7 @@ package Command
 				//utilFun.Log("bet_info  = "+bet["betType"] +" amount ="+ bet["bet_amount"]);
 			//}
 			
-		}
+		}	
 		
 		public function get_my_betlist():Array
 		{		
@@ -392,11 +393,40 @@ package Command
 			
 			return true;
 		}
+			
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "clearn")]
 		public function Clean_bet():void
-		{
-			_Bet_info.clean();
+		{			
+			if ( _model.getValue("_bet_info") == null) 
+			{
+				_Bet_info.clean();
+			}
+			else
+			{
+				var coin_list:Array  = _model.getValue("Bet_coin_List");
+				var betinfo:Array = _model.getValue("_bet_info");
+				for (var i:int = 0; i < betinfo.length; i++)
+				{
+					var bet:Object = betinfo[i];
+					var amount:int = get_amount(bet["table_no"]);
+					bet = { "betType": bet["table_no"], 											
+							   "bet_amount":  amount,		
+							   "bet_idx":coin_list.indexOf(amount)
+						   };
+						   
+					if ( _Bet_info.getValue("self") == null) _Bet_info.putValue("self", [bet]);		
+					else
+					{
+						var bet_list:Array = _Bet_info.getValue("self");
+						bet_list.push(bet);  
+						_Bet_info.putValue("self", bet_list);
+						
+					}
+				}			
+			}
+			
+			
 		}
 	}
 

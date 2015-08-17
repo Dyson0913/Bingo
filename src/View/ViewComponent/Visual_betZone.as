@@ -47,6 +47,7 @@ package View.ViewComponent
 			betlist.container.y = 160.3;
 			betlist.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,0]);
 			betlist.CustomizedFun = BetListFun;			
+			betlist.CustomizedData = _betCommand.get_my_bet_info("table");			
 			betlist.Create_by_list(12,  [ResName.Bet_Pan_Num], 0 , 0, 1,0, 47, "Coin_");
 			//betlist.mousedown = _betCommand.bet_local;//_visual_coin.betSelect;
 			
@@ -56,11 +57,12 @@ package View.ViewComponent
 			betmaount.container.y = 159.3;			
 			betmaount.Create_by_list(12,  [ResName.Bet_amount_bg], 0 , 0, 1,0, 47, "Coin_");			
 			
+			
 			var betmaount_num:MultiObject = prepare("betamount_num", new MultiObject(), GetSingleItem("_view").parent.parent);
 			betmaount_num.container.x = 1558.85;
 			betmaount_num.container.y = 162.3;
 			betmaount_num.CustomizedFun = bet_amountFun;			
-			betmaount_num.CustomizedData = [0,0,0,0,0,0,0,0,0,0,0,0,0];			
+			betmaount_num.CustomizedData = _betCommand.get_my_bet_info("amount");
 			betmaount_num.Create_by_list(12,  [ResName.Bet_amount_num], 0 , 0, 1,0,47 , "Coin_");			
 			
 			//押分sub
@@ -97,9 +99,16 @@ package View.ViewComponent
 		
 		public function bet_amountFun(mc:MovieClip, idx:int, betamount:Array):void
 		{
+			mc["_num_0"].gotoAndStop(11);
+			mc["_num_1"].gotoAndStop(11);
+			mc["_num_2"].gotoAndStop(11);
+			mc["_num_3"].gotoAndStop(11);
+			mc["_num_4"].gotoAndStop(11);
 			
-			if (betamount[idx] != undefined)
-			{			
+			utilFun.Log("betamount "+betamount);
+			utilFun.Log("betamount[idx] "+betamount[idx]);
+			if (betamount &&  betamount[idx] != undefined)
+			{							
 				var arr:Array = String(betamount[idx]).split("");
 				var re:Array = arr.reverse();
 				//utilFun.Log("reverse = "+re);			
@@ -114,21 +123,15 @@ package View.ViewComponent
 					
 				}			
 			}
-			else
-			{
-				mc["_num_0"].gotoAndStop(11);
-				mc["_num_1"].gotoAndStop(11);
-				mc["_num_2"].gotoAndStop(11);
-				mc["_num_3"].gotoAndStop(11);
-				mc["_num_4"].gotoAndStop(11);
-			}
+		
 			
 		}
 				
 		public function BetListFun(mc:MovieClip, idx:int, IsBetInfo:Array):void
 		{
 			utilFun.scaleXY(mc, 0.7, 0.7);
-			utilFun.SetText(mc["tableNo"], "");
+			var str:String = idx >= IsBetInfo.length ? "" : IsBetInfo[idx];
+			utilFun.SetText( mc["tableNo"],str );	
 			
 		}
 		
@@ -205,11 +208,10 @@ package View.ViewComponent
 		public function betlist_update():void
 		{			
 			var tab_no:Array = _betCommand.get_my_bet_info("table");
-			var amount_no:Array = _betCommand.get_my_bet_info("amount");
-		
+			var amount_no:Array = _betCommand.get_my_bet_info("amount");		
 				
 			//自己下注 pan號
-			Get("betlist").CustomizedFun = CustomizedFun_ShowData;
+			Get("betlist").CustomizedFun = BetListFun;
 			Get("betlist").CustomizedData = tab_no;
 			Get("betlist").FlushObject();
 			
@@ -225,12 +227,6 @@ package View.ViewComponent
 			Get("betZone").FlushObject();
 			
 			
-		}
-		
-		public function CustomizedFun_ShowData(mc:MovieClip,idx:int,CustomizedData:Array):void
-		{			
-			var str:String = idx >= CustomizedData.length ? "" : CustomizedData[idx];
-			utilFun.SetText( mc["tableNo"],str );			
 		}		
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "display")]

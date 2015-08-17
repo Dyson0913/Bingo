@@ -60,19 +60,8 @@ package View.GameView
 			super.EnterView(View);
 			//清除前一畫面
 			
-			//in to bet view=[object LoadingView]
- //[I] in to bet view=[object LobbyView]
- //[I] in to bet view=[object betView]
- //[I] in to bet view=[object OpenBallView]
-			
-			this.parent.swapChildrenAt(3, 2);
-			//utilFun.Log("in to bet view=");			
-			//utilFun.Log("in to bet view="+this.parent.getChildAt(0).toString());			
-			//utilFun.Log("in to bet view="+this.parent.getChildAt(1).toString());			
-			//utilFun.Log("in to bet view="+this.parent.getChildAt(2).toString());			
-			//utilFun.Log("in to bet view=" + this.parent.getChildAt(3).toString() );			
-			_tool = new AdjustTool();
-			
+			//loop view
+			this.parent.swapChildrenAt(3, 2);								
 			
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Bet_Scene], 0, 0, 1, 0, 0, "a_");	
