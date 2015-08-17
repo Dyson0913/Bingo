@@ -79,10 +79,11 @@ package View.ViewComponent
 			utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], String( second_list.length ));
 			
 						
-			//utilFun.Log("best_list" + tablelist.length) ;		
+			
 			var bet:Object = best_list[0];			
 			var ball_lenth:int =  bet.ball_list.length;
-			var dis:Array = [best_list,ball_lenth];		
+			var dis:Array = [best_list,ball_lenth,"best"];		
+			utilFun.Log("best_list ball_lenth = " + ball_lenth) ;		
 			
 			//Get("public_best_pan_info").CustomizedFun = pan_set;						
 			//Get("public_best_pan_info").CustomizedData = _model.getValue("best_list");				
@@ -90,10 +91,10 @@ package View.ViewComponent
 			Get("public_best_pan_info").Post_CustomizedData = dis;
 			Get("public_best_pan_info").customized();
 			
-			var sebet:Object = second_list[0];
-			ball_lenth =  sebet.ball_list.length;
-			dis = [second_list, ball_lenth];
-			//utilFun.Log("second_list ball_lenth" + ball_lenth) ;
+			bet = second_list[0];
+			ball_lenth=  bet.ball_list.length;
+			dis = [second_list, ball_lenth,"second"];
+			//utilFun.Log("second_list ball_lenth =" + sball_lenth) ;
 			Get("public_second_pan_info").Posi_CustzmiedFun = reposition;						
 			Get("public_second_pan_info").Post_CustomizedData = dis;
 			Get("public_second_pan_info").customized();
@@ -185,12 +186,26 @@ package View.ViewComponent
 				
 				
 				//TODO  clean 
-				var sball:MultiObject = prepare("small_ball"+idx, new MultiObject()  , mc);
-				sball.CustomizedFun = sballFun;		   
-			   sball.CustomizedData = bet.ball_list;
-			   sball.Create_by_list(ball_lenth, [ResName.Ball], 0, 0, ball_lenth, 55, 0, "time_");
-			   sball.container.x = 106;
-			   sball.container.y = 10;		
+				var listname:String =  dis[2];	
+				if ( Get("small_ball"+listname + idx) == null)
+				{
+					var sball:MultiObject = prepare("small_ball+"+listname + idx, new MultiObject()  , mc);
+					sball.CustomizedFun = sballFun;		   
+				   sball.CustomizedData = bet.ball_list;
+				   sball.Create_by_list(ball_lenth, [ResName.Ball], 0, 0, ball_lenth, 55, 0, "time_");
+				   sball.container.x = 106;
+				   sball.container.y = 10;		
+				}
+				else
+				{
+					var ballList:MultiObject = Get("small_ball"+listname + idx);
+					ballList.CleanList();
+					ballList.CustomizedFun = sballFun;		   
+				    ballList.CustomizedData = bet.ball_list;
+				    ballList.Create_by_list(ball_lenth, [ResName.Ball], 0, 0, ball_lenth, 55, 0, "time_");
+				    ballList.container.x = 106;
+				    ballList.container.y = 10;		
+				}
 				//_tool.SetControlMc(sball.container);
 				//add(_tool);
 				//utilFun.Log("mc.numChildren = " + mc.numChildren);		

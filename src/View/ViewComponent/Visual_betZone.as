@@ -105,8 +105,6 @@ package View.ViewComponent
 			mc["_num_3"].gotoAndStop(11);
 			mc["_num_4"].gotoAndStop(11);
 			
-			utilFun.Log("betamount "+betamount);
-			utilFun.Log("betamount[idx] "+betamount[idx]);
 			if (betamount &&  betamount[idx] != undefined)
 			{							
 				var arr:Array = String(betamount[idx]).split("");

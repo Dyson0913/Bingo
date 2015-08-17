@@ -110,10 +110,7 @@ package View.ViewComponent
 		{
 			
 			var bet_ob:Object = _Actionmodel.excutionMsg();
-			var tableNo:int = bet_ob["betType"];
-			
-			utilFun.Log("select_pan = tableNo"+tableNo);
-			utilFun.Log("select_pan = amount"+ bet_ob["bet_amount"]);
+			var tableNo:int = bet_ob["betType"];		
 			
 			//桌號
 			utilFun.SetText( GetSingleItem("bingo_pan")["_panNum"]["tableNo"], String( tableNo));			
