@@ -30,6 +30,7 @@ package Res
 		public static const Paninfo_font:String = "pan_info_font";
 		public static const bingo_pan:String = "Pan";
 		public static const bingo_pancell:String = "PanCell";		
+		public static const bingo_pancell_new:String = "PanCell_new";		
 		public static const pan_betnum:String = "pan_bet_num";		
 		
 		

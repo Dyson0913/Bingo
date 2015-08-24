@@ -35,11 +35,12 @@ package View.ViewComponent
 			var betPan:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
 			betPan.container.x = 151.85;
 			betPan.container.y = 235.85;
-			betPan.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,0]);
+			betPan.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,3]);
 			betPan.CustomizedFun = BetListini;
 			betPan.CustomizedData = _model.getValue("is_betarr");
 			betPan.Create_by_list(betPan.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
 			betPan.mousedown = _betCommand.betbyTable;
+			betPan.mouseup = _betCommand.empty_reaction;
 			
 			//押分 pan num
 			var betlist:MultiObject = prepare("betlist", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -49,7 +50,7 @@ package View.ViewComponent
 			betlist.CustomizedFun = BetListFun;			
 			betlist.CustomizedData = _betCommand.get_my_bet_info("table");			
 			betlist.Create_by_list(12,  [ResName.Bet_Pan_Num], 0 , 0, 1,0, 47, "Coin_");
-			//betlist.mousedown = _betCommand.bet_local;//_visual_coin.betSelect;
+			
 			
 			//押分底圖
 			var betmaount:MultiObject = prepare("betamount", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -70,18 +71,17 @@ package View.ViewComponent
 			bet_sub.container.x = 1523.85;
 			bet_sub.container.y = 161.3;
 			bet_sub.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
-			bet_sub.Create_by_list(12,  [ResName.Bet_sub], 0 , 0, 1, 0, 47, "Coin_");
-			bet_sub.mousedown = _betCommand.sub_bet;
+			bet_sub.Create_by_list(12,  [ResName.Bet_sub], 0 , 0, 1, 0, 47, "Coin_");		
+			bet_sub.mousedown = _betCommand.betbyidx_sub;
 			bet_sub.mouseup = betSelect;
 			
 			var bet_add:MultiObject = prepare("betamount_add", new MultiObject(), GetSingleItem("_view").parent.parent);
 			bet_add.container.x = 1685.85;
 			bet_add.container.y = 161.3;
 			bet_add.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
-			bet_add.Create_by_list(12,  [ResName.Bet_add], 0 , 0, 1, 0, 47, "Coin_");		
-			bet_add.mousedown = _betCommand.add_bet;
-			bet_add.mouseup = betSelect;
-			
+			bet_add.Create_by_list(12,  [ResName.Bet_add], 0 , 0, 1, 0, 47, "Coin_");					
+			bet_add.mousedown = _betCommand.betbyidx_add;
+			bet_add.mouseup = betSelect;	
 			//_tool.SetControlMc(coinob.ItemList[50]);
 			//add(_tool);
 		}		
@@ -230,16 +230,16 @@ package View.ViewComponent
 		[MessageHandler(type = "Model.ModelEvent", selector = "display")]
 		public function display():void
 		{
-			var betzone:MultiObject = Get("betzone");
-			betzone.mousedown = _betCommand.betTypeMain;
-			betzone.mouseup = _betCommand.empty_reaction;
-		}
-		
-		[MessageHandler(type = "Model.ModelEvent", selector = "hide")]
-		public function timer_hide():void
-		{
-			var betzone:MultiObject = Get("betzone");
-			betzone.mousedown = null;
+			utilFun.Log("display");
+			Get("betzone").mousedown = _betCommand.betbyTable;
+			Get("betzone").mouseup = _betCommand.empty_reaction;
+			
+			Get("betamount_sub").mousedown = _betCommand.betbyidx_sub;
+			Get("betamount_sub").mouseup = betSelect;
+			
+			Get("betamount_add").mousedown = _betCommand.betbyidx_add;
+			Get("betamount_add").mouseup = betSelect;	
+			
 		}
 		
 		

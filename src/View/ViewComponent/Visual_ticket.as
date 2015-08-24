@@ -72,7 +72,7 @@ package View.ViewComponent
 			pan.CustomizedData = balls[idx]; // select pan_num
 			pan.container.x = 60;
 			pan.container.y = 30;
-			pan.Create_by_list(25, [ResName.bingo_pancell], 0, 0, 5, 63, 63, "time_");
+			pan.Create_by_list(25, [ResName.bingo_pancell_new], 0, 0, 5, 63, 63, "time_");
 			
 			utilFun.SetText( mc["_panNum"]["tableNo"], String( tableid[idx]));			
 			

@@ -87,18 +87,62 @@ package Command
 		public function betbyTable(e:Event, idx:int):Boolean
 		{
 			//idx to table no
-			var tableNo:Array = get_my_bet_info("table");
-			var selectidx:int = tableNo.indexOf(idx);
-			if ( selectidx != -1)
-			{				
-				utilFun.Log("Table no ="+ tableNo[selectidx]);
-			}
-			else
+			//var tableNo:Array = get_my_bet_info("table");
+			//var selectidx:int = tableNo.indexOf(idx);
+			//utilFun.Log("tableNo = " + tableNo);
+			//utilFun.Log("selectidx =" + selectidx);
+			//if ( selectidx != -1)
+			//{				
+				//utilFun.Log("Table no =" + tableNo[selectidx]);
+			//
+			//}
+			//else
+			//{
+				//utilFun.Log("new Table no =" + idx);
+				//add_bet(e, idx);
+			//}
+			add_bet(e, idx);
+			return true;
+		}
+		
+		public function betbyidx_add(e:Event, idx:int):Boolean
+		{
+			var bet_list:Array = _Bet_info.getValue("self");
+			// table no  to bet_list idx 
+			var tableNo :int = -1;
+			
+			if ( idx >= bet_list.length )
 			{
-				utilFun.Log("new Table no =" + idx);
-				add_bet(e, idx);
+			    //over idx
+				utilFun.Log("over idx = ");
+				return false
+			}			
+			
+			var bet:Object = bet_list[idx];
+			tableNo = bet["betType"];
+			
+			add_bet(e, tableNo);
+			return true;
+		}
+		
+		public function betbyidx_sub(e:Event, idx:int):Boolean
+		{
+			var bet_list:Array = _Bet_info.getValue("self");
+			// table no  to bet_list idx 
+			var tableNo :int = -1;
+			
+			var bet_list:Array = _Bet_info.getValue("self");
+			if ( idx >= bet_list.length )
+			{
+				//over idx
+				utilFun.Log("over idx = ");
+				return false
 			}
 			
+			var bet:Object = bet_list[idx];
+			tableNo = bet["betType"];
+			utilFun.Log("bus table no = "+ tableNo);
+			sub_bet(e, tableNo);
 			return true;
 		}
 		
@@ -336,13 +380,7 @@ package Command
 		}
 		
 		public function add_bet(e:Event,tableNo:int):Boolean
-		{			
-			//if ( _Bet_info.getValue("self") == null) 
-			//{
-				//utilFun.Log("return null = ");
-				//return false;
-			//}
-			
+		{
 			var bet_list:Array = _Bet_info.getValue("self");
 			// table no  to bet_list idx 
 			var list_idx:int = -1;
@@ -356,20 +394,15 @@ package Command
 				}
 			}
 			
+			utilFun.Log("add_bet  list _idx = "+list_idx);
 			//first bet TODO judge -1 = first or empty click
 			if ( list_idx == -1)
 			{
-				betTypeMain(e,tableNo);
+				//betTypeMain(e,tableNo);
 			}
 			else
 			{
 				var total:Number = 0;				
-				//if ( idx >= bet_list.length )
-				//{
-					//over idx
-					//utilFun.Log("over idx = ");
-					//return false
-				//}			
 				
 				var bet:Object = bet_list[list_idx];							
 				var betlist:Array =  _model.getValue("Bet_coin_List");	
@@ -377,7 +410,7 @@ package Command
 				if ( (bet_list[list_idx]["bet_idx"] +1) > betlist.length-1 ) 
 				{
 					utilFun.Log("over bet list = ");
-					return false
+					return true;
 				}
 				
 				bet["bet_idx"]++;
@@ -386,33 +419,33 @@ package Command
 				
 			}
 			
-			betTypeMain(e,tableNo);
-			//betTypeMain(e, bet["betType"]);
+			betTypeMain(e,tableNo);			
 			
 			return true;
 		}
 		
-		public function sub_bet(e:Event,idx:int):Boolean
+		public function sub_bet(e:Event,TableNo:int):Boolean
 		{
-			//if ( _Bet_info.getValue("self") == null) 
-			//{
-				//utilFun.Log("return null = ");
-				//return false;
-			//}
-			
-			
-			var total:Number = 0;
 			var bet_list:Array = _Bet_info.getValue("self");
-			if ( idx >= bet_list.length )
-			{
-				//over idx
-					utilFun.Log("over idx = ");
-				return false
-			}			
 			
-			var bet:Object = bet_list[idx];
-			var betlist:Array =  _model.getValue("Bet_coin_List");				
-			if ( (bet_list[idx]["bet_idx"] -1) == 0 ) 
+			// table no  to bet_list idx 
+			var list_idx:int = -1;
+			for (var i:int = 0; i <  bet_list.length ; i++)
+			{
+				var bet:Object = bet_list[i];
+				if ( bet["betType"] == TableNo )
+				{
+					list_idx = i;
+					break;
+				}
+			}
+			
+			utilFun.Log("sub_bet  list _idx = " + list_idx);
+			var coin_list:Array =  _model.getValue("Bet_coin_List");
+			var total:Number = 0;			
+			var bet:Object = bet_list[list_idx];
+			
+			if ( (bet_list[list_idx]["bet_idx"] -1) == 0 ) 
 			{		
 				bet["bet_amount"] = 0;
 				dispatcher( new ActionEvent(bet, "bet_action"));
@@ -422,9 +455,9 @@ package Command
 			else
 			{
 				bet["bet_idx"] -= 1;
-				bet_list[idx]["bet_amount"] = betlist[bet["bet_idx"]];
+				bet_list[list_idx]["bet_amount"] = coin_list[bet["bet_idx"]];
 				_Bet_info.putValue("self",bet_list);
-				betTypeMain(e, bet["betType"]);
+				betTypeMain(e, TableNo);
 			}
 			
 			

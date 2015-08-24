@@ -17,6 +17,8 @@ package View.ViewComponent
 	 */
 	public class Visual_PlayerInfo  extends VisualHandler
 	{
+		[Inject]
+		public var _betCommand:BetCommand;
 		
 		public function Visual_PlayerInfo() 
 		{
@@ -33,9 +35,48 @@ package View.ViewComponent
 			betview_info.container.y = 80;		
 			betview_info.Create_by_list(4, [ResName.Paninfo_font], 0, 0, 4, 300, 0, "time_");
 			
-				
-			//_tool.SetControlMc(betview_info.container);
+			var bingo_recode:MultiObject = prepare("bingo_recode", new MultiObject(), GetSingleItem("_view").parent.parent);	
+			bingo_recode.CustomizedFun = BetListini
+			bingo_recode.CustomizedData = [11,26,35];
+			bingo_recode.container.x = 564;
+			bingo_recode.container.y = 970;		
+			bingo_recode.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 75, 0, "time_");
+			
+			//_tool.SetControlMc(bingo_recode.container);
+			//_tool.SetControlMc(bingo_recode.ItemList[1]);
 			//add(_tool);						
+		}
+		
+		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void
+		{
+			utilFun.scaleXY(mc, 0.7, 0.7);
+			var str:String = idx >= bingo_recode.length ? "" : bingo_recode[idx];
+			utilFun.SetText(mc["tableNo"], str);
+			//1,無人 2為自己, 3自己最後一注,4,為他人			
+			
+			//先調回無人下注
+			mc.gotoAndStop( 1 );
+			
+			//有人下非自己,變黃
+			//if ( bingo_recode[idx] == 1)
+			//{
+				//var MyBet:int = arr.indexOf(idx)
+				//if ( MyBet != -1)
+				//{
+					//紅
+					//if (  MyBet == (cnt - 1))  
+					//{
+						//mc.gotoAndStop( (bingo_recode[idx] + 2) );
+					//}
+					//else mc.gotoAndStop( (bingo_recode[idx] + 1) );
+				//}
+				//else
+				//{
+					//黃
+					//mc.gotoAndStop( (bingo_recode[idx] + 3) );
+				//}
+			//}
+			
 		}
 		
 		public function betview_fun(mc:MovieClip, idx:int, CustomizedData:Array):void
