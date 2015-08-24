@@ -84,7 +84,23 @@ package Command
 			return true;
 		}		
 		
-		
+		public function betbyTable(e:Event, idx:int):Boolean
+		{
+			//idx to table no
+			var tableNo:Array = get_my_bet_info("table");
+			var selectidx:int = tableNo.indexOf(idx);
+			if ( selectidx != -1)
+			{				
+				utilFun.Log("Table no ="+ tableNo[selectidx]);
+			}
+			else
+			{
+				utilFun.Log("new Table no =" + idx);
+				add_bet(e, idx);
+			}
+			
+			return true;
+		}
 		
 		public function empty_reaction(e:Event, idx:int):Boolean
 		{
@@ -139,7 +155,7 @@ package Command
 		public function get_amount(tableNo:int ):int
 		{
 			var betlist:Array =  _model.getValue("Bet_coin_List");	
-			if ( _Bet_info.getValue("self") == null) return betlist[1];
+			//if ( _Bet_info.getValue("self") == null) return betlist[1];
 			
 			var bet_recode:Array = _Bet_info.getValue("self");			
 			for ( var i:int = 0; i < bet_recode.length ; i++)
@@ -277,8 +293,8 @@ package Command
 		
 		private function get_total_bet(type:int):Number
 		{
-			if ( _Bet_info.getValue("self") == null) return 0;
-			
+			//if ( _Bet_info.getValue("self") == null) return 0;
+			//
 			var total:Number = 0;
 			var bet_list:Array = _Bet_info.getValue("self");
 			for (var i:int = 0; i < bet_list.length; i++)
@@ -292,7 +308,7 @@ package Command
 		
 		public function get_Bet_type():Array
 		{
-			if ( _Bet_info.getValue("self") == null) return [];
+			//if ( _Bet_info.getValue("self") == null) return [];
 			
 			var bet_list:Array = _Bet_info.getValue("self");
 			var table:Array = [];
@@ -319,49 +335,70 @@ package Command
 			return arr;
 		}
 		
-		public function add_bet(e:Event,idx:int):Boolean
+		public function add_bet(e:Event,tableNo:int):Boolean
 		{			
-			if ( _Bet_info.getValue("self") == null) 
-			{
-				utilFun.Log("return null = ");
-				return false;
-			}
+			//if ( _Bet_info.getValue("self") == null) 
+			//{
+				//utilFun.Log("return null = ");
+				//return false;
+			//}
 			
-			
-			var total:Number = 0;
 			var bet_list:Array = _Bet_info.getValue("self");
-			if ( idx >= bet_list.length )
+			// table no  to bet_list idx 
+			var list_idx:int = -1;
+			for (var i:int = 0; i <  bet_list.length ; i++)
 			{
-				//over idx
-				utilFun.Log("over idx = ");
-				return false
-			}			
-			
-			var bet:Object = bet_list[idx];							
-			var betlist:Array =  _model.getValue("Bet_coin_List");	
-			
-			if ( (bet_list[idx]["bet_idx"] +1) > betlist.length-1 ) 
-			{
-				utilFun.Log("over bet list = ");
-				return false
+				var bet:Object = bet_list[i];
+				if ( bet["betType"] == tableNo )
+				{
+					list_idx = i;
+					break;
+				}
 			}
 			
-			bet["bet_idx"]++;
-			bet_list[idx]["bet_amount"] = betlist[bet["bet_idx"]];
-			_Bet_info.putValue("self",bet_list);	
+			//first bet TODO judge -1 = first or empty click
+			if ( list_idx == -1)
+			{
+				betTypeMain(e,tableNo);
+			}
+			else
+			{
+				var total:Number = 0;				
+				//if ( idx >= bet_list.length )
+				//{
+					//over idx
+					//utilFun.Log("over idx = ");
+					//return false
+				//}			
 				
-			betTypeMain(e, bet["betType"]);
+				var bet:Object = bet_list[list_idx];							
+				var betlist:Array =  _model.getValue("Bet_coin_List");	
+				
+				if ( (bet_list[list_idx]["bet_idx"] +1) > betlist.length-1 ) 
+				{
+					utilFun.Log("over bet list = ");
+					return false
+				}
+				
+				bet["bet_idx"]++;
+				bet_list[list_idx]["bet_amount"] = betlist[bet["bet_idx"]];
+				_Bet_info.putValue("self",bet_list);	
+				
+			}
+			
+			betTypeMain(e,tableNo);
+			//betTypeMain(e, bet["betType"]);
 			
 			return true;
 		}
 		
 		public function sub_bet(e:Event,idx:int):Boolean
 		{
-			if ( _Bet_info.getValue("self") == null) 
-			{
-				utilFun.Log("return null = ");
-				return false;
-			}
+			//if ( _Bet_info.getValue("self") == null) 
+			//{
+				//utilFun.Log("return null = ");
+				//return false;
+			//}
 			
 			
 			var total:Number = 0;
