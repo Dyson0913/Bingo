@@ -257,7 +257,7 @@ package View.ViewComponent
 			mc.y = mc.parent.parent.y + ( Math.floor(idx / RowCnt) * Ydiff);		
 			
 			//TODO sort to first?
-			if ( _betCommand.get_my_betlist() != null) 
+			if ( _betCommand.get_my_betlist().length != 0) 
 			{
 				var table:Array = _betCommand.get_my_bet_info("table");
 				if ( table.indexOf( bet["table_no"]) != -1) mc.gotoAndStop(2);

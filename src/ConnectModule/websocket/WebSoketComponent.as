@@ -182,25 +182,8 @@ package ConnectModule.websocket
 					{						
 						dispatcher(new ValueObject( result.room_no, "bet_room_num") );
 						dispatcher(new ValueObject(  result.result, "bet_result") );
-						//_BetModel._Bet_room_no =  result.room_no;
-						//_BetModel._Bet_result = result.result;
 						
-						//if ( _LobbyModel._CleanAllbet >=1)
-						//{
-							//_LobbyModel._CleanAllbet--;
-							//utilFun.Log("recv _CleanAllbet = " + _CleanAllbet + "Betresult = " + Betresult);
-							//if ( _LobbyModel._CleanAllbet == 0)
-							//{
-								//cleanResult();
-								//utilFun.Log("all retrun");
-								//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_CLEARN_ALL));
-							//}
-						//}
-						//else
-						//{							
-							//BetResult(room_no, Betresult);
-							dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
-						//}
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));						
 						
 						break;
 					}

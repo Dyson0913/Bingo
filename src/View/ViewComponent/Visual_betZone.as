@@ -82,7 +82,16 @@ package View.ViewComponent
 			bet_add.Create_by_list(12,  [ResName.Bet_add], 0 , 0, 1, 0, 47, "Coin_");					
 			bet_add.mousedown = _betCommand.betbyidx_add;
 			bet_add.mouseup = betSelect;	
-			//_tool.SetControlMc(coinob.ItemList[50]);
+			
+			var cancel_bet:MultiObject = prepare("cancel_bet", new MultiObject(), GetSingleItem("_view").parent.parent);
+			cancel_bet.container.x = 974;
+			cancel_bet.container.y = 984;
+			cancel_bet.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
+			cancel_bet.Create_by_list(1,  [ResName.Cancel_ALLBet_Btn], 0 , 0, 1, 0, 0, "Coin_");					
+			cancel_bet.mousedown = _betCommand.cancel_allbet;
+			cancel_bet.mouseup = betSelect;	
+			
+			//_tool.SetControlMc(cancel_bet.container);
 			//add(_tool);
 		}		
 		
@@ -94,7 +103,8 @@ package View.ViewComponent
 			Get("betamount_sub").mouseup = null;
 			Get("betamount_add").mousedown = null;
 			Get("betamount_add").mouseup = null;
-			
+			Get("cancel_bet").mousedown = null;
+			Get("cancel_bet").mouseup = null;			
 		}
 		
 		public function bet_amountFun(mc:MovieClip, idx:int, betamount:Array):void
@@ -137,7 +147,7 @@ package View.ViewComponent
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_Bet_type();			
+			var arr:Array =  _betCommand.get_my_bet_info("table");
 			var cnt:int =  arr.length;
 			
 			//先調回無人下注
@@ -169,7 +179,7 @@ package View.ViewComponent
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_Bet_type();
+			var arr:Array =  _betCommand.get_my_bet_info("table");
 			var cnt:int =  arr.length;
 			
 			//先調回無人下注
@@ -229,8 +239,7 @@ package View.ViewComponent
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "display")]
 		public function display():void
-		{
-			utilFun.Log("display");
+		{			
 			Get("betzone").mousedown = _betCommand.betbyTable;
 			Get("betzone").mouseup = _betCommand.empty_reaction;
 			

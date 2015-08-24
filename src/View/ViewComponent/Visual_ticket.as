@@ -31,7 +31,7 @@ package View.ViewComponent
 		
 		public function init():void
 		{			
-			if ( _betCommand.get_my_betlist() == null) return;			
+			if ( _betCommand.get_my_betlist().length == 0) return;			
 			
 			var ball_pan:MultiObject = prepare("ball_pan", new MultiObject()  , GetSingleItem("_view").parent.parent);		  
 		   ball_pan.Create_by_list(1, [ResName.Myticket], 0, 0, 1, 0, 0, "time_");
@@ -132,7 +132,7 @@ package View.ViewComponent
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="ballupdate")]
 		public function select_pan():void
 		{			
-			if ( _betCommand.get_my_betlist() == null) return;	
+			if ( _betCommand.get_my_betlist().length == 0) return;	
 			
 			var BallNum:int = _model.getValue("Curball");			
 			var len:int = Get("ticket").ItemList.length;
