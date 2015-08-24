@@ -112,6 +112,7 @@ package View.ViewComponent
 			var colNum:int = idx  % ColCnt;			
 			
 			var myidx:int = rowNum + (colNum * ColCnt) ;
+			var color:uint = _model.getValue("bingo_color")[idx % 5];
 			
 			if( idx == 12) 
 			{
@@ -122,7 +123,8 @@ package View.ViewComponent
 			{
 				if ( rowNum >=3 && colNum == 2 )  myidx -= 1;
 				if ( colNum >= 3)	 myidx -= 1;
-				str = CustomizedData[myidx];				
+				str = CustomizedData[myidx];
+				mc["_text"].textColor = color;
 				utilFun.SetText( mc["_text"], str);	
 			}
 		}

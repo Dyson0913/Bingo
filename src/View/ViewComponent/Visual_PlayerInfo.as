@@ -43,7 +43,7 @@ package View.ViewComponent
 			utilFun.SetText(mc["_text"], "");
 			
 			//包廂
-			if ( idx == 0) 	utilFun.SetText(mc["_text"], String(100));
+			if ( idx == 0) 	utilFun.SetText(mc["_text"], String(99));
 			
 			//內盤 (沒人押叫內盤)
 			if ( idx == 1) 	utilFun.SetText(mc["_text"], String(100));

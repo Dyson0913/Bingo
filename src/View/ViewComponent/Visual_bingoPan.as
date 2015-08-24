@@ -1,6 +1,7 @@
 package View.ViewComponent 
 {
 	import flash.display.MovieClip;
+	import flash.text.TextFormat;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -27,7 +28,7 @@ package View.ViewComponent
 		}
 		
 		public function init():void
-		{			
+		{
 			//盤號 內盤,外盤
 			var balls:Array = _model.getValue("ballarr");		
 			var bingo_pan:MultiObject = prepare("bingo_pan", new MultiObject(), GetSingleItem("_view").parent.parent);	
@@ -41,6 +42,8 @@ package View.ViewComponent
 			bet_amountFun( bingo_pan.ItemList[0]["_pan_amount"], 0);
 			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedFun = bet_amountFun;			
 			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedData = [0];
+						
+		
 			
 			//_tool.SetControlMc(bingo_pan.container);
 			//add(_tool);
@@ -86,9 +89,11 @@ package View.ViewComponent
 			var ColCnt:int = 5;
 			
 			var rowNum:int = idx  / RowCnt;			
-			var colNum:int = idx  % ColCnt;			
-			
+			var colNum:int = idx  % ColCnt;
 			var myidx:int = rowNum + (colNum * ColCnt) ;
+			
+			
+			var color:uint = _model.getValue("bingo_color")[idx % 5];		
 			
 			if( idx == 12) 
 			{
@@ -99,8 +104,12 @@ package View.ViewComponent
 			{				
 				if ( rowNum >=3 && colNum == 2 )  myidx -= 1;
 				if ( colNum >= 3)	 myidx -= 1;
-				str = CustomizedData[myidx];					
+				str = CustomizedData[myidx];				
+				mc["_text"].textColor = color;
 				utilFun.SetText( mc["_text"], str);	
+				
+				
+				
 			}
 					
 		}

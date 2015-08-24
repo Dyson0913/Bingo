@@ -39,7 +39,7 @@ package View.ViewComponent
 			betPan.CustomizedFun = BetListini;
 			betPan.CustomizedData = _model.getValue("is_betarr");
 			betPan.Create_by_list(betPan.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
-			betPan.mousedown = _betCommand.betTypeMain;
+			betPan.mousedown = _betCommand.betbyTable;
 			
 			//押分 pan num
 			var betlist:MultiObject = prepare("betlist", new MultiObject(), GetSingleItem("_view").parent.parent);

@@ -61,6 +61,8 @@ package View.GameView
 			//dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH));		
 			//return;
 			
+			_model.putValue("bingo_color", [0x41A0F0, 0xF01E1E, 0xB9B9B9, 0x23C323, 0xF58C00]);
+			
 			_model.putValue(modelName.LOGIN_INFO, para[0]);
 			_model.putValue(modelName.CREDIT, para[1]);
 			_model.putValue(modelName.Client_ID, para[2]);
