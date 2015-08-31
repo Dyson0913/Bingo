@@ -48,7 +48,8 @@ package View.GameView
 		[Inject]
 		public var _betCommand:BetCommand;
 		
-		
+		[Inject]
+		public var _ticket:Visual_ticket;
 		
 		public function LoadingView()  
 		{
@@ -85,7 +86,11 @@ package View.GameView
 			//_regular.strdotloop(view.ItemList[0]["_Text"],20,40);			
 			utilFun.SetTime(connet, 2);
 			//
+			
+			//-------------------------------ticket
 			//_visual_test.init();
+				//_ticket.init();
+			//
 		}
 		
 		public function testroad():void

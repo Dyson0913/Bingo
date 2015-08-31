@@ -83,7 +83,7 @@ package View.ViewComponent
 			var bet:Object = best_list[0];			
 			var ball_lenth:int =  bet.ball_list.length;
 			var dis:Array = [best_list,ball_lenth,"best"];		
-			utilFun.Log("best_list ball_lenth = " + ball_lenth) ;		
+			//utilFun.Log("best_list ball_lenth = " + ball_lenth) ;		
 			
 			//Get("public_best_pan_info").CustomizedFun = pan_set;						
 			//Get("public_best_pan_info").CustomizedData = _model.getValue("best_list");				

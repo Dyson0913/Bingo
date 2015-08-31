@@ -40,7 +40,7 @@ package View.ViewComponent
 			betPan.CustomizedData = _model.getValue("is_betarr");
 			betPan.Create_by_list(betPan.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
 			betPan.mousedown = _betCommand.betbyTable;
-			betPan.mouseup = _betCommand.empty_reaction;
+			betPan.mouseup =  _betCommand.check;
 			
 			//押分 pan num
 			var betlist:MultiObject = prepare("betlist", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -73,7 +73,7 @@ package View.ViewComponent
 			bet_sub.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			bet_sub.Create_by_list(12,  [ResName.Bet_sub], 0 , 0, 1, 0, 47, "Coin_");		
 			bet_sub.mousedown = _betCommand.betbyidx_sub;
-			bet_sub.mouseup = betSelect;
+			bet_sub.mouseup = _betCommand.check;
 			
 			var bet_add:MultiObject = prepare("betamount_add", new MultiObject(), GetSingleItem("_view").parent.parent);
 			bet_add.container.x = 1685.85;
@@ -81,7 +81,7 @@ package View.ViewComponent
 			bet_add.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			bet_add.Create_by_list(12,  [ResName.Bet_add], 0 , 0, 1, 0, 47, "Coin_");					
 			bet_add.mousedown = _betCommand.betbyidx_add;
-			bet_add.mouseup = betSelect;	
+			bet_add.mouseup = _betCommand.check;	
 			
 			var cancel_bet:MultiObject = prepare("cancel_bet", new MultiObject(), GetSingleItem("_view").parent.parent);
 			cancel_bet.container.x = 974;
@@ -89,7 +89,7 @@ package View.ViewComponent
 			cancel_bet.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			cancel_bet.Create_by_list(1,  [ResName.Cancel_ALLBet_Btn], 0 , 0, 1, 0, 0, "Coin_");					
 			cancel_bet.mousedown = _betCommand.cancel_allbet;
-			cancel_bet.mouseup = betSelect;	
+			cancel_bet.mouseup = _betCommand.check;	
 			
 			//_tool.SetControlMc(cancel_bet.container);
 			//add(_tool);
@@ -206,12 +206,7 @@ package View.ViewComponent
 				}
 			}
 			
-		}
-		
-		public function betSelect(e:Event, idx:int):Boolean
-		{
-			return true;
-		}
+		}		
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]
 		public function betlist_update():void
@@ -242,17 +237,17 @@ package View.ViewComponent
 		public function display():void
 		{			
 			Get("betzone").mousedown = _betCommand.betbyTable;
-			Get("betzone").mouseup = _betCommand.empty_reaction;
+			Get("betzone").mouseup = _betCommand.check;
 			
 			Get("betamount_sub").mousedown = _betCommand.betbyidx_sub;
-			Get("betamount_sub").mouseup = betSelect;
+			Get("betamount_sub").mouseup = _betCommand.check;
 			
 			Get("betamount_add").mousedown = _betCommand.betbyidx_add;
-			Get("betamount_add").mouseup = betSelect;	
+			Get("betamount_add").mouseup = _betCommand.check;	
 			
 		}
 		
 		
 	}
-
+	
 }

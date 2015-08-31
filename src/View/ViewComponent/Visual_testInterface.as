@@ -34,6 +34,8 @@ package View.ViewComponent
 		[Inject]
 		public var _betCommand:BetCommand;
 		
+		
+		
 		public function Visual_testInterface() 
 		{
 			
@@ -41,7 +43,7 @@ package View.ViewComponent
 		
 		public function init():void
 		{
-			
+			utilFun.Log("init test");
 			var btn:MultiObject = prepare("aa", new MultiObject() ,GetSingleItem("_view").parent.parent );			
 			btn.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);			
 			btn.stop_Propagation = true;
@@ -82,9 +84,12 @@ package View.ViewComponent
 			//}
 			//_model.putValue("best_list",bsetlist );
 			//_model.putValue("second_list", bsetlist );
-			_betCommand.bet_init();
-		     _model.putValue("ballarr",[])
-			for (var i:int = 0; i < 2; i ++ )
+			
+			 
+			//========================================= simu bet
+			_betCommand.bet_init();		  
+			   _model.putValue("ballarr",[])
+			for (var i:int = 0; i < 5; i ++ )
 			{
 				var bet:Object;
 			    var amount:int = 100;
@@ -95,11 +100,13 @@ package View.ViewComponent
 									   _betCommand.test_bet(bet);
 									   
 									   var mylist:Array = _model.getValue("ballarr");
-									   mylist.push ([0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,24]);
+									   var ran:Array = [];
+									    for (var k = 0; k < 24; k++) ran.push(utilFun.Random(75));
+									  // mylist.push ([0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,24]);
+									   mylist.push (ran);
 					_model.putValue("ballarr",mylist);
 			}			
-			
-			
+		
 		}		
 		
 		public function test(e:Event, idx:int):Boolean
@@ -108,8 +115,8 @@ package View.ViewComponent
 			
 			if ( idx == 0) 
 			{				
-				var bsetlist:Array = [];
-				var sendlist:Array = [];
+				//var bsetlist:Array = [];
+				//var sendlist:Array = [];
 				//for (var i:int = 0; i < 30; i ++ )
 				//{
 					//var bet:Object;			
@@ -122,7 +129,8 @@ package View.ViewComponent
 				//_model.putValue("best_list",bsetlist );
 				//_model.putValue("second_list", bsetlist );
 				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
-				_model.putValue("Curball", parseInt("1") );						
+				
+				_model.putValue("Curball", utilFun.Random(75) );						
 		        dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
             }
 			  else if (idx == 1)

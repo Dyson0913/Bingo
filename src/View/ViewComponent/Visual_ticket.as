@@ -2,6 +2,7 @@ package View.ViewComponent
 {
 	import flash.display.MovieClip;
 	import flash.text.TextField;
+	import Interface.CollectionsInterface;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -24,6 +25,8 @@ package View.ViewComponent
 		[Inject]
 		public var _Actionmodel:ActionQueue;
 		
+		private var _best_len:int = 0;
+		
 		public function Visual_ticket() 
 		{
 			
@@ -31,7 +34,7 @@ package View.ViewComponent
 		
 		public function init():void
 		{			
-			if ( _betCommand.get_my_betlist().length == 0) return;			
+			if ( _betCommand.get_my_betlist().length == 0) return;
 			
 			var ball_pan:MultiObject = prepare("ball_pan", new MultiObject()  , GetSingleItem("_view").parent.parent);		  
 		   ball_pan.Create_by_list(1, [ResName.Myticket], 0, 0, 1, 0, 0, "time_");
@@ -135,43 +138,140 @@ package View.ViewComponent
 			if ( _betCommand.get_my_betlist().length == 0) return;	
 			
 			var BallNum:int = _model.getValue("Curball");			
-			var len:int = Get("ticket").ItemList.length;
+			
 			var openballist:Array = _model.getValue("openBalllist");
 			openballist.push(BallNum);		
 			//_model.putValue("openBalllist",openballist);
 			
 			//pick best 3
-			//for ( var i:int = 0; i < len ; i++)
-			//{
-				//var arr:Array = Get("select_pan" + i).CustomizedData;
+			var best:Array = best3_pan(openballist);
+			var best3:Array = [];
+			if ( best.length >= 3)
+			{
+				best3.push(best[1]);
+				best3.push(best[0]);
+				best3.push(best[2]);
+			}
+			else if(best.length ==2)
+			{
+				best3.push(best[1]);
+				best3.push(best[0]);
+			}
+			else if(best.length ==1)
+			{				
+				best3.push(best[0]);
+			}
+			_best_len = best.length;
+			
+			//open ball ani			
+			//TODO show min start
+			var tableNo:Array = [];
+			var openball:Array = openballist.concat();
+			var balls:Array = _model.getValue("ballarr");
+			var len:int = Get("ticket").ItemList.length;
+			var totalshow:int = Math.min(best3.length, len);	
+			
+			openball.pop();
+			//utilFun.Log("openball = "+openballist);
+			//utilFun.Log("openball pop= "+openball);
+			for ( var i:int = 0; i < totalshow ; i++)
+			{				
+				//change pan number
+				Get("select_pan" + i).CustomizedData  = balls[best3[i]["tableNo"]];
+				Get("select_pan" + i).CustomizedFun = PanMatrixCustomizedFun;	
+				Get("select_pan" + i).FlushObject();
+				
+				//open num mark
+				
+				Get("select_pan" + i).CustomizedData  = openball;
+				Get("select_pan" + i).CustomizedFun = PanBallcolor;	
+				Get("select_pan" + i).FlushObject();
+				
+				//new num mark
+				Get("select_pan" + i).CustomizedFun = SelfPanBallAni;
+				Get("select_pan" + i).FlushObject();				
+				
+				
+				//var arr:Array = Get("select_pan" + i).CustomizedData;			
 				//var count:int = 24;
 				//for (  var k:int = 0; k < openballist.length ; k++)
 				//{
 					//if ( arr.indexOf(openballist[k] ) != -1) count--;
 				//}				
-				//
-			//}			
-			
-			
-			
-			//open ball ani			
-			//TODO show min start
-			for ( var i:int = 0; i < len ; i++)
-			{				
-				Get("select_pan" + i).CustomizedFun = SelfPanBallAni;				
-				Get("select_pan" + i).FlushObject();				
-				
-				var arr:Array = Get("select_pan" + i).CustomizedData;			
-				var count:int = 24;
-				for (  var k:int = 0; k < openballist.length ; k++)
-				{
-					if ( arr.indexOf(openballist[k] ) != -1) count--;
-				}				
-				utilFun.SetText( Get("ticket").ItemList[i]["_rest_ball"], count.toString());
-				
+				utilFun.SetText( Get("ticket").ItemList[i]["_rest_ball"], best3[i]["rest"]);
+				tableNo.push( best3[i]["tableNo"]);
 			}			
 			
+			//pan amount and tableno
+			utilFun.Log("new table = "+ tableNo);
+			Get("ticket").CustomizedFun = update_paninfo;
+			Get("ticket").CustomizedData =  tableNo;			
+			Get("ticket").FlushObject();
+		}
+		
+		public function update_paninfo(mc:MovieClip, idx:int, tableid:Array):void
+		{		
+			if( _best_len >=2) 
+			{
+				if ( idx == 1) mc["_start"].visible = true;			
+				else mc["_start"].visible = false;			
+			}
+			else if( _best_len ==1) 
+			{
+				if ( idx == 0) mc["_start"].visible = true;
+			}
 			
+			utilFun.SetText( mc["_panNum"]["tableNo"], String( tableid[idx]));
+			var amount:Array = _betCommand.get_my_bet_info("amount");
+			
+			//amount
+			bet_amountFun(  mc["_pan_amount"], amount[idx]);		
+		}
+		
+		public function best3_pan(openballist:Array):Array
+		{
+			var tableNo:Array =  _betCommand.get_my_bet_info("table");			
+			var Table_len:int = tableNo.length;
+			//utilFun.Log("Table_len = "+ Table_len);
+			//utilFun.Log("openballist = "+ openballist);
+			var balls:Array = _model.getValue("ballarr");
+			var myticket_restball_num:Array = [];
+			for ( var i:int = 0; i < Table_len ; i++)
+			{			
+				var count:int = 24;
+				var ticket_ball:Array = balls[tableNo[i]] ;
+				//utilFun.Log("ticket_ball = "+ ticket_ball);
+				for (  var k:int = 0; k < openballist.length ; k++)
+				{
+					if ( ticket_ball.indexOf(openballist[k] ) != -1) count--;
+				}				
+				
+				var table_and_rest:Object;			
+				table_and_rest = { "tableNo": tableNo[i], 											
+										     "rest":  count										 
+										   };
+				
+				myticket_restball_num.push(table_and_rest);
+			}			
+			//utilFun.Log("myticket_restball_num = "+ myticket_restball_num);
+			myticket_restball_num.sort(order);			
+			
+			for (var k:int = 0; k < myticket_restball_num.length; k++)
+			{
+				utilFun.Log("after sort rest = " + myticket_restball_num[k]["rest"]  +" table =" + myticket_restball_num[k]["tableNo"]);				
+			}
+			
+			return myticket_restball_num;
+		}
+		
+		//傳回值 -1 表示第一個參數 a 是在第二個參數 b 之前。
+		//傳回值 1 表示第二個參數 b 是在第一個參數 a 之前。
+		//傳回值 0 指出元素都具有相同的排序優先順序。
+		private function order(a, b):int 
+		{
+			if ( a["rest"] < b["rest"]) return -1;
+			else if ( a["rest"] > b["rest"]) return 1;
+			else return 0;			
 		}
 		
 		public function SelfPanBallAni(mc:MovieClip, idx:int, CustomizedData:Array):void
@@ -186,12 +286,32 @@ package View.ViewComponent
 				//tx.textColor = 0xD2D2D2;
 				//63
 				Tweener.addTween(mc["_mask"], {height:51, time:1,delay:1, onStartParams:[tableNo,0xD2D2D2],onStart:this.open_handle});
-			}
+			}			
 		}
 		
 		public function open_handle(tx:TextField,color:uint):void
 		{
 			tx.textColor = color;
+		}
+		
+		public function PanBallcolor(mc:MovieClip, idx:int, openlist:Array):void
+		{			
+			
+			var tableNo:TextField = mc["_text"];			
+			if (  openlist.indexOf( parseInt( tableNo.text)) != -1)
+			{
+				//utilFun.Log("open ed");
+				mc.gotoAndStop(2);
+				tableNo.textColor = 0xD2D2D2;
+				mc["_mask"].height = 51;
+			}
+			else {
+				if ( idx == 12) return;
+				mc.gotoAndStop(2);
+				mc["_mask"].height = 0;
+				mc.gotoAndStop(1);
+			}
+		
 		}
 	}
 

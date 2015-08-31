@@ -47,18 +47,15 @@ package Command
 			utilFun.Log("idx ="+idx);	
 			
 			if ( _Actionmodel.length() > 0) return false;
-			
-			if ( _Bet_info.getValue("self") != null)
-			{
-				var bet_recode:Array = _Bet_info.getValue("self");			
-				if (bet_recode.length+1 > 12) 
-				{					
-					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_FULL_HINT));
-					return false;
-				}
-				
-			}
-			
+					
+			//var bet_recode:Array = _Bet_info.getValue("self");			
+			//if (bet_recode.length+1 > 12) 
+			//{					
+				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_FULL_HINT));
+				//return false;
+			//}
+			//
+			//
 			
 			//押注金額判定
 			//if ( all_betzone_totoal() + _opration.array_idx("coin_list", "coin_selectIdx") > _model.getValue(modelName.CREDIT))
@@ -85,8 +82,8 @@ package Command
 		}		
 		
 		public function betbyTable(e:Event, idx:int):Boolean
-		{
-			add_bet(e, idx);
+		{			
+			return add_bet(e, idx);
 			return true;
 		}
 		
@@ -149,6 +146,33 @@ package Command
 		{
 			return true;
 		}
+		
+		public function check(e:Event, tableNo:int):Boolean
+		{
+			var bet_list:Array = _Bet_info.getValue("self");
+			// table no  to bet_list idx 
+			var list_idx:int = -1;
+			for (var i:int = 0; i <  bet_list.length ; i++)
+			{
+				var bet:Object = bet_list[i];
+				if ( bet["betType"] == tableNo )
+				{
+					list_idx = i;
+					break;
+				}
+			}
+			
+			if ( list_idx == -1)
+			{
+				if (bet_list.length+1 > 12) 
+				{					
+					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_FULL_HINT));
+					return false;
+				}
+			}
+			return true;
+		}
+		
 		
 		public function bet_local(e:Event,idx:int):Boolean
 		{						
@@ -316,7 +340,7 @@ package Command
 			var credit:int = _model.getValue(modelName.CREDIT);
 			_model.putValue("after_bet_credit", credit - total);
 			
-			dispatcher(new ModelEvent("bet_list_update"));
+			dispatcher(new ModelEvent(WebSoketInternalMsg.BET_UPDATE));
 			
 			_Actionmodel.dropMsg();
 			if ( _Actionmodel.length() != 0) dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
@@ -370,6 +394,11 @@ package Command
 			if ( list_idx == -1)
 			{
 				//betTypeMain(e,tableNo);
+				if (bet_list.length+1 > 12) 
+				{					
+					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_FULL_HINT));
+					return false;
+				}
 			}
 			else
 			{
