@@ -32,8 +32,8 @@ package View.ViewComponent
 			ball.CustomizedFun = sballFun;		   
 		    ball.CustomizedData = [1];	   
 		    ball.Create_by_list(1, [ResName.Ball], 0, 0, 1, 0, 0, "time_");
-		    ball.container.x = 170;
-		    ball.container.y = 224;		  
+		    ball.container.x = 165;
+		    ball.container.y = 214;		  
 			
 		   var sball:MultiObject = prepare("small_ball", new MultiObject()  , GetSingleItem("_view").parent.parent);
 		   sball.CustomizedFun = sballFun;		   
@@ -48,7 +48,7 @@ package View.ViewComponent
 		   ball_pan.container.x = 443.9;
 		   ball_pan.container.y = 537;	
 		   
-		   	//_tool.SetControlMc(ball_pan.container);
+		   	//_tool.SetControlMc(ball.container);
 			//add(_tool);
 			_model.putValue("open3Balllist", []);						
 			

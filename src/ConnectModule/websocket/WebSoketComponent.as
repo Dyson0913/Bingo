@@ -106,6 +106,10 @@ package ConnectModule.websocket
 			   var result:Object  = _MsgModel.getMsg();
 				switch(result.message_type)
 				{
+					//case "MsgBGInitialInfo":
+						//
+					//break;
+					
 					case Message.MSG_TYPE_PLAYER_INITIAL:
 					{					
 						utilFun.Log("recv Player Initial");

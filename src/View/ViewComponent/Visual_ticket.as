@@ -140,6 +140,20 @@ package View.ViewComponent
 			openballist.push(BallNum);		
 			//_model.putValue("openBalllist",openballist);
 			
+			//pick best 3
+			//for ( var i:int = 0; i < len ; i++)
+			//{
+				//var arr:Array = Get("select_pan" + i).CustomizedData;
+				//var count:int = 24;
+				//for (  var k:int = 0; k < openballist.length ; k++)
+				//{
+					//if ( arr.indexOf(openballist[k] ) != -1) count--;
+				//}				
+				//
+			//}			
+			
+			
+			
 			//open ball ani			
 			//TODO show min start
 			for ( var i:int = 0; i < len ; i++)
@@ -169,8 +183,15 @@ package View.ViewComponent
 			if (  tableNo.text ==  Ball.toString() )
 			{
 				mc.gotoAndStop(2);
-				Tweener.addTween(mc["_mask"], {height:63, time:1});
+				//tx.textColor = 0xD2D2D2;
+				//63
+				Tweener.addTween(mc["_mask"], {height:51, time:1,delay:1, onStartParams:[tableNo,0xD2D2D2],onStart:this.open_handle});
 			}
+		}
+		
+		public function open_handle(tx:TextField,color:uint):void
+		{
+			tx.textColor = color;
 		}
 	}
 
