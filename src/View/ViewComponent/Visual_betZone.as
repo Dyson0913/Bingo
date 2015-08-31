@@ -99,6 +99,7 @@ package View.ViewComponent
 		public function forbidden():void
 		{
 			Get("betZone").mousedown = null;
+			Get("betZone").mouseup = null;
 			Get("betamount_sub").mousedown = null;
 			Get("betamount_sub").mouseup = null;
 			Get("betamount_add").mousedown = null;
