@@ -1,5 +1,6 @@
 package View.ViewComponent 
 {
+	import flash.display.MovieClip;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -18,6 +19,9 @@ package View.ViewComponent
 	{
 		[Inject]
 		public var _regular:RegularSetting;
+		
+		[Inject]
+		public var _betCommand:BetCommand;
 		
 		public function Visual_Hintmsg() 
 		{
@@ -39,8 +43,20 @@ package View.ViewComponent
 			winhint.container.y = 103;
 			winhint.container.visible = false;
 			
-			//_tool.SetControlMc(winhint.container);
+			var public_best_pan:MultiObject = prepare("bingowin_show", new MultiObject(), GetSingleItem("_view").parent.parent);			
+			//public_best_pan.CustomizedFun = pan_set;
+			public_best_pan.container.x = 492.85;
+			public_best_pan.container.y = 128.8;
+			public_best_pan.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");
+			public_best_pan.container.visible = false;
+			//_tool.SetControlMc(public_best_pan.container);
 			//add(_tool);
+			
+		}
+		
+		public function pan_set(mc:MovieClip, idx:int, tablelist:Array):void
+		{				
+			mc.visible = false;			
 		}
 		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstopHint")]
@@ -49,6 +65,8 @@ package View.ViewComponent
 			Get(modelName.HINT_MSG).container.visible = true;
 			GetSingleItem(modelName.HINT_MSG).gotoAndStop(1);	
 			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 2, 2, _regular.Fadeout);		
+			
+			Get("bingowin_show").container.visible = false;
 		}	
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "betfullHint")]
@@ -63,9 +81,30 @@ package View.ViewComponent
 		public function winhint():void
 		{			
 			Get("winhint").container.visible = true;			
+			var bingo:Array = _betCommand.get_my_bet_info("table");
+			var fakebingo:int = utilFun.Random(99);
+			while ( bingo.indexOf(fakebingo) != -1)
+			{
+				fakebingo = utilFun.Random(99);
+			}			
+			var bighist:Array = _model.getValue("bighist");
+			bighist.push(fakebingo);
+			_model.putValue("bighist", bighist);
 			//_regular.FadeIn( GetSingleItem("winhint"), 2, 2, _regular.Fadeout);
+			
+			Get("bingowin_show").container.visible = true;
+			Get("bingowin_show").CustomizedFun = BetListini;
+			Get("bingowin_show").CustomizedData = bighist;
+			Get("bingowin_show").Create_by_list(bighist, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");
+			//Get("bingowin_show").FlushObject();
 		}
 		
+		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void
+		{
+			utilFun.scaleXY(mc, 0.7, 0.7);
+			var str:String = idx >= bingo_recode.length ? "" : bingo_recode[idx];
+			utilFun.SetText(mc["tableNo"], str);
+		}
 	}
 
 }

@@ -252,7 +252,8 @@ package ConnectModule.websocket
 					case Message.MSG_TYPE_BINGO:
 					{
 						_model.putValue("_bet_info", result.bet_info);
-							
+						_model.putValue("best_list", result.game_info.opened_info.best_list );
+						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.WIN_HINT));
 					}
 					break;

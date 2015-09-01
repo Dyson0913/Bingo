@@ -37,7 +37,7 @@ package View.ViewComponent
 			
 			var bingo_recode:MultiObject = prepare("bingo_recode", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bingo_recode.CustomizedFun = BetListini
-			bingo_recode.CustomizedData = [11,26,35];
+			bingo_recode.CustomizedData = _model.getValue("bighist");
 			bingo_recode.container.x = 564;
 			bingo_recode.container.y = 970;		
 			bingo_recode.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 75, 0, "time_");

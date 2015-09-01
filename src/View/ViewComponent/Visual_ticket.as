@@ -256,10 +256,10 @@ package View.ViewComponent
 			//utilFun.Log("myticket_restball_num = "+ myticket_restball_num);
 			myticket_restball_num.sort(order);			
 			
-			for (var k:int = 0; k < myticket_restball_num.length; k++)
-			{
-				utilFun.Log("after sort rest = " + myticket_restball_num[k]["rest"]  +" table =" + myticket_restball_num[k]["tableNo"]);				
-			}
+			//for (var k:int = 0; k < myticket_restball_num.length; k++)
+			//{
+				//utilFun.Log("after sort rest = " + myticket_restball_num[k]["rest"]  +" table =" + myticket_restball_num[k]["tableNo"]);				
+			//}
 			
 			return myticket_restball_num;
 		}
