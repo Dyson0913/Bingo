@@ -12,6 +12,7 @@ package View.GameView
 		public static const START_OPEN:int = 3;
 		public static const END_ROUND:int = 4;
 		
+		
 		public function gameState() 
 		{
 			

@@ -36,6 +36,14 @@ package Command
 		{
 			_model.putValue("coin_selectIdx", 0);
 			
+			var betzone:Array = [];
+			for ( var i:int = 0; i < 100; i++)
+			{
+				betzone.push(i);
+			 
+			}
+			_model.putValue(modelName.BET_ZONE,betzone);
+			
 			//_model.putValue("coin_list", [100, 500, 1000, 5000, 10000]);
 			_model.putValue("Bet_coin_List", [0, 100, 200, 300, 500, 1000]);
 			_model.putValue("after_bet_credit", 0);
@@ -69,9 +77,14 @@ package Command
 			
 			var bet:Object;
 			var amount:int = get_amount(idx);
+			utilFun.Log("amount = " + amount);
+			utilFun.Log("coin_list.indexOf(amount) = " + coin_list.indexOf(amount));
+			utilFun.Log("all_betzone_totoal() = " + all_betzone_totoal());
+			
 			bet = { "betType": idx, 											
 			                           "bet_amount":  amount,		
-									   "bet_idx":coin_list.indexOf(amount)
+									   "bet_idx":coin_list.indexOf(amount),
+									   "total_amount":all_betzone_totoal()
 									   };
 			
 			
@@ -238,12 +251,7 @@ package Command
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "Betresult")]
 		public function accept_bet():void
 		{
-			var bet_result:int = _model.getValue("bet_result");
-			if ( !bet_result) 
-			{
-				//TODO bet faile
-				return;
-			}
+			var bet_result:int = _model.getValue("bet_result");		
 			
 			var bet_ob:Object = _Actionmodel.excutionMsg();
 			
@@ -348,7 +356,7 @@ package Command
 		
 		private function all_betzone_totoal():Number
 		{
-			var betzone:Array = _model.getValue(modelName.BET_ZONE);
+			var betzone:Array = get_my_bet_info("table");//_model.getValue(modelName.BET_ZONE);
 			
 			var total:Number = 0;
 			for each (var i:int in betzone)

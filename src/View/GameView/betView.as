@@ -61,7 +61,7 @@ package View.GameView
 			//清除前一畫面
 			
 			//loop view
-			this.parent.swapChildrenAt(3, 2);								
+			if ( _model.getValue("chang_order") ) this.parent.swapChildrenAt(3, 2);		
 			
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Bet_Scene], 0, 0, 1, 0, 0, "a_");	

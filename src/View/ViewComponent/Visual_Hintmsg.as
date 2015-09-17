@@ -67,7 +67,15 @@ package View.ViewComponent
 			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 2, 2, _regular.Fadeout);		
 			
 			Get("bingowin_show").container.visible = false;
+			
+			Tweener.addCaller(Get("bingowin_show").container, { time:2 , count: 1 , transition:"linear",onComplete: this.change } );
+			
 		}	
+		
+		public function change():void
+		{
+			dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );
+		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "betfullHint")]
 		public function no_credit():void
@@ -81,21 +89,21 @@ package View.ViewComponent
 		public function winhint():void
 		{			
 			Get("winhint").container.visible = true;			
-			var bingo:Array = _betCommand.get_my_bet_info("table");
-			var fakebingo:int = utilFun.Random(99);
-			while ( bingo.indexOf(fakebingo) != -1)
-			{
-				fakebingo = utilFun.Random(99);
-			}			
-			var bighist:Array = _model.getValue("bighist");
-			bighist.push(fakebingo);
-			_model.putValue("bighist", bighist);
+			//var bingo:Array = _betCommand.get_my_bet_info("table");
+			//var fakebingo:int = utilFun.Random(99);
+			//while ( bingo.indexOf(fakebingo) != -1)
+			//{
+				//fakebingo = utilFun.Random(99);
+			//}			
+			//var bighist:Array = _model.getValue("bighist");
+			//bighist.push(fakebingo);
+			//_model.putValue("bighist", bighist);
 			//_regular.FadeIn( GetSingleItem("winhint"), 2, 2, _regular.Fadeout);
 			
-			Get("bingowin_show").container.visible = true;
-			Get("bingowin_show").CustomizedFun = BetListini;
-			Get("bingowin_show").CustomizedData = bighist;
-			Get("bingowin_show").Create_by_list(bighist, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");
+			//Get("bingowin_show").container.visible = true;
+			//Get("bingowin_show").CustomizedFun = BetListini;
+			//Get("bingowin_show").CustomizedData = bighist;
+			//Get("bingowin_show").Create_by_list(bighist, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");
 			//Get("bingowin_show").FlushObject();
 		}
 		

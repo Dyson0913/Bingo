@@ -26,9 +26,12 @@ package
 		
 		private var _par:MovieClip;
 		
+		
 		private var _credit:Number =-1;
 		private var _clientidx:Number =-1;
 		private var _handshake:Function = null;
+		private var _uuid:String = "";
+		private var _DomainName:String = "";
 		
 		public function Main():void 
 		{
@@ -41,14 +44,15 @@ package
 			result = pass;
 		}
 		
-		public function handshake(credit:Number,Clientidx:int,handshake:Function,playerinfo:Object):void
+	public function handshake(handshakeinfo:Array):void
 		{
-			_credit = credit;
-			_clientidx = Clientidx;
-			_handshake = handshake;
-			result = playerinfo;
-			utilFun.Log("_credit = " + _credit + " client id = " +_clientidx + "_handshake = "+_handshake+ "result = "+result);
-			
+			// credit:Number, Clientidx:int, handshake:Function, uuid:String, DomainName:String
+			_credit = handshakeinfo[0];
+			_clientidx = handshakeinfo[1];
+			_handshake = handshakeinfo[2];	
+			_uuid = handshakeinfo[3];			
+			_DomainName = handshakeinfo[4];
+			utilFun.Log("_credit = " + _credit + " client id = " +_clientidx + "_handshake = "+_handshake+ "_uuid = "+_uuid +" _DomainName ="+_DomainName );			
 		}
 		
 		private function init(e:Event = null):void 
@@ -72,7 +76,7 @@ package
 			
 			var Enter:LoadingView = _context.getObject("Enter") as LoadingView;
 			utilFun.Log("Enter = "+Enter);
-			Enter.FirstLoad([result,_credit,_clientidx,_handshake]);
+				Enter.FirstLoad([_uuid,_credit,_clientidx,_handshake,_DomainName]);
 		}
 	}
 	

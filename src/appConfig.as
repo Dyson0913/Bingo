@@ -70,7 +70,7 @@ package
 		
 		public function appConfig() 
 		{
-			Debug.trace("baccarat init");
+			Debug.trace("bingo init");
 		}
 	
 	}
