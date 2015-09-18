@@ -77,8 +77,16 @@ package View.ViewComponent
 			dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );
 		}
 		
-		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "betfullHint")]
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "CreditNotEnough")]
 		public function no_credit():void
+		{			
+			Get(modelName.HINT_MSG).container.visible = true;
+			GetSingleItem(modelName.HINT_MSG).gotoAndStop(2);
+			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 2, 2, _regular.Fadeout);
+		}
+		
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "betfullHint")]
+		public function betfull():void
 		{			
 			Get(modelName.HINT_MSG).container.visible = true;
 			GetSingleItem(modelName.HINT_MSG).gotoAndStop(2);

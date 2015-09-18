@@ -121,12 +121,14 @@ package View.ViewComponent
 			var bet_ob:Object = _Actionmodel.excutionMsg();
 			var tableNo:int = bet_ob["betType"];		
 			
+			utilFun.Log("select_pan = "+tableNo);
+			
 			//桌號
 			utilFun.SetText( GetSingleItem("bingo_pan")["_panNum"]["tableNo"], String( tableNo));			
 			
 			
 			//押注額 
-			bet_amountFun(  GetSingleItem("bingo_pan")["_pan_amount"], bet_ob["bet_amount"]);
+			bet_amountFun(  GetSingleItem("bingo_pan")["_pan_amount"], bet_ob["total_amount"]);
 			
 			//TODO dynamic can't get
 			//GetSingleItem("bingo_pan")["pan_amount_con"]["pan_amount_0"].CustomizedFun = bet_amountFun;			
@@ -135,6 +137,7 @@ package View.ViewComponent
 			
 			//盤號 TODO clean
 			var balls:Array = _model.getValue("ballarr");
+			utilFun.Log("balls[tableNo]= "+balls[tableNo]);
 			var pan:MultiObject = prepare("select_pan", new MultiObject(), GetSingleItem("bingo_pan"));	
 			pan.CustomizedFun = PanMatrixCustomizedFun;
 			pan.CustomizedData = balls[tableNo]; // select pan_num

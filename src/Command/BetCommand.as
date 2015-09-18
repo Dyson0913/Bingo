@@ -46,6 +46,7 @@ package Command
 			
 			//_model.putValue("coin_list", [100, 500, 1000, 5000, 10000]);
 			_model.putValue("Bet_coin_List", [0, 100, 200, 300, 500, 1000]);
+			//_model.putValue("Bet_coin_List", [0, 100, 100, 100, 200, 500]);
 			_model.putValue("after_bet_credit", 0);
 			_Bet_info.putValue("self", [] ) ;
 		}
@@ -55,15 +56,6 @@ package Command
 			utilFun.Log("idx ="+idx);	
 			
 			if ( _Actionmodel.length() > 0) return false;
-					
-			//var bet_recode:Array = _Bet_info.getValue("self");			
-			//if (bet_recode.length+1 > 12) 
-			//{					
-				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_FULL_HINT));
-				//return false;
-			//}
-			//
-			//
 			
 			//押注金額判定
 			//if ( all_betzone_totoal() + _opration.array_idx("coin_list", "coin_selectIdx") > _model.getValue(modelName.CREDIT))
@@ -77,14 +69,15 @@ package Command
 			
 			var bet:Object;
 			var amount:int = get_amount(idx);
-			utilFun.Log("amount = " + amount);
+			utilFun.Log("amount = " +  (amount - get_total_bet(idx)) );
+			utilFun.Log("get_total_bet = " + get_total_bet(idx));
 			utilFun.Log("coin_list.indexOf(amount) = " + coin_list.indexOf(amount));
-			utilFun.Log("all_betzone_totoal() = " + all_betzone_totoal());
+			utilFun.Log("betzone_totoal() = " + amount );
 			
 			bet = { "betType": idx, 											
-			                           "bet_amount":  amount,		
+			                           "bet_amount":  amount - get_total_bet(idx),		
 									   "bet_idx":coin_list.indexOf(amount),
-									   "total_amount":all_betzone_totoal()
+									   "total_amount":amount
 									   };
 			
 			
@@ -242,7 +235,11 @@ package Command
 			{
 				var bet:Object = bet_recode[i];
 					
-				if ( bet["betType"] == tableNo) return bet["bet_amount"] ;				
+				if ( bet["betType"] == tableNo) 
+				{					
+					var idx:int  = bet["bet_idx"];				
+					return betlist[idx];
+				}
 			}
 			
 			return betlist[1];
@@ -271,12 +268,17 @@ package Command
                     for (var i:int = 0; i < bet_list.length; i++)
                     {
                         var bet:Object = bet_list[i];
+						//utilFun.Log(" bet[betType] ="+ bet["betType"]);
+						//utilFun.Log("bet_ob[betType] ="+bet_ob["betType"]);
+						//utilFun.Log("bet_ob[bet_amount ="+bet_ob["bet_amount"]);
+						//utilFun.Log("bet_ob[total_amount ="+bet_ob["total_amount"]);
                          if ( bet["betType"] == bet_ob["betType"] )
                          {
 							if (  bet_list[i]["bet_amount"] != 0 )
 							{
 								bet_list[i]["bet_amount"] = bet_ob["bet_amount"]
 								bet_list[i]["bet_idx"] = bet_ob["bet_idx"]
+								bet_list[i]["total_amount"] = bet_ob["total_amount"]
 							}
 							else 
 							{
@@ -335,7 +337,7 @@ package Command
 			{
 				var bet_ob:Object = arr[i];
 				if ( type == "table") data.push(bet_ob["betType"]);
-				if ( type == "amount") data.push(bet_ob["bet_amount"]);								
+				if ( type == "amount") data.push(bet_ob["total_amount"]);								
 			}
 			return data;
 		}
@@ -375,8 +377,12 @@ package Command
 			var bet_list:Array = _Bet_info.getValue("self");
 			for (var i:int = 0; i < bet_list.length; i++)
 			{
-				var bet:Object = bet_list[i];				
-				total += bet["bet_amount"];				
+				var bet:Object = bet_list[i];
+				if ( bet["betType"] == type )
+				{
+					total = bet["total_amount"];
+					break;
+				}
 			}
 			
 			return total;
@@ -418,11 +424,12 @@ package Command
 				if ( (bet_list[list_idx]["bet_idx"] +1) > betlist.length-1 ) 
 				{
 					utilFun.Log("over bet list = ");
+					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.NO_CREDIT));
 					return true;
 				}
 				
 				bet["bet_idx"]++;
-				bet_list[list_idx]["bet_amount"] = betlist[bet["bet_idx"]];
+				//bet_list[list_idx]["bet_amount"] = betlist[bet["bet_idx"]];
 				_Bet_info.putValue("self",bet_list);	
 				
 			}
@@ -462,7 +469,7 @@ package Command
 			else
 			{
 				bet["bet_idx"] -= 1;
-				bet_list[list_idx]["bet_amount"] = coin_list[bet["bet_idx"]];
+				//bet_list[list_idx]["bet_amount"] = coin_list[bet["bet_idx"]];
 				_Bet_info.putValue("self",bet_list);
 				betTypeMain(e, TableNo);
 			}

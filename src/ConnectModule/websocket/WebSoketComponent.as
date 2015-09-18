@@ -118,6 +118,8 @@ package ConnectModule.websocket
 						dispatcher(new ValueObject(  result.game_id, "game_id") );
 						 //100桌資訊
 							//result.room_info  [{"bet_tables": 0, "room_no": 0}, {"bet_tables": 0, "room_no": 1},....
+							
+							var room:int = utilFun.Random(50);
 						utilFun.Log("auto send ");
 						var entermsg:Object = {  "id": String(_model.getValue(modelName.UUID)),
 			                                "timestamp":1111,
@@ -125,11 +127,11 @@ package ConnectModule.websocket
 			                               "game_id":result.game_id,
 										   "game_type":"Bingo",										
 										   "game_round":result.game_round,										
-											"room_no":1
+											"room_no":room
 											};
 										   
 						SendMsg(entermsg);
-						_model.putValue("room_num", 1);
+						_model.putValue("room_num", room);
 					}	
 					break;
 					
@@ -156,11 +158,14 @@ package ConnectModule.websocket
 								//TODO fake input
 								is_bet.push( 0);
 								balls.push( arr_lat[i].balls);
+								utilFun.Log("arr_lat[i].balls = "+arr_lat[i].balls);
 								table_no.push( arr_lat[i].table_no);
 							}					
 							_model.putValue("is_betarr",is_bet);
 							_model.putValue("ballarr",balls);
 							_model.putValue("table", table_no);						
+							
+							
 							
 							if ( state == gameState.END_BET ||  state == gameState.NEW_ROUND)
 							{
@@ -313,6 +318,7 @@ package ConnectModule.websocket
 								balls.push( arr_lat[i].balls);
 								table_no.push( arr_lat[i].table_no);
 							}					
+							
 							_model.putValue("is_betarr",is_bet);
 							_model.putValue("ballarr",balls);
 							_model.putValue("table", table_no);						
@@ -556,7 +562,7 @@ package ConnectModule.websocket
 		public function SendBet():void
 		{
 			var ob:Object = _actionqueue.getMsg();
-			var total:Number = parseInt (ob["total_amount"]) + parseInt (ob["bet_amount"]);
+			var total:Number = parseInt (ob["total_amount"]);
 			var bet:Object = {  "id": String(_model.getValue(modelName.UUID)),
 			                                "timestamp":1111,
 											"message_type":"MsgPlayerBet", 
