@@ -84,7 +84,7 @@ package View.ViewComponent
 			utilFun.SetText(mc["_text"], "");
 			
 			//包廂
-			if ( idx == 0) 	utilFun.SetText(mc["_text"], String(99));
+			if ( idx == 0) 	utilFun.SetText(mc["_text"], String(_model.getValue("room_num")));
 			
 			//內盤 (沒人押叫內盤)
 			if ( idx == 1) 	utilFun.SetText(mc["_text"], String(100));
@@ -96,14 +96,56 @@ package View.ViewComponent
 			if( idx ==3) 	utilFun.SetText(mc["_text"], String(0));
 		}
 		
-		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]
+		//[MessageHandler(type = "Model.ModelEvent", selector = "betstateupdate")]
+		//[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]		
+		//[MessageHandler(type = "Model.ModelEvent", selector = "betstateupdate")]
+		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstateupdate")]
 		public function UpdataTableBetInfo():void
-		{				
+		{							
 			//外盤 (有人押叫外盤)		
 			utilFun.SetText(GetSingleItem("bet_view_info", 2)["_text"], String(GetBetCnt()));
 			
 			//內盤 (沒人押叫內盤)			
 			utilFun.SetText( GetSingleItem("bet_view_info", 1)["_text"], String(_model.getValue("NoOne_bet")));			
+			
+			//比自己押注結果更早收到
+			//所有盤號更新
+			Get("betZone").CustomizedFun = BetListCustomizedFun;
+			Get("betZone").CustomizedData = _model.getValue("is_betarr");
+			Get("betZone").FlushObject();
+			
+		}
+		
+			public function BetListCustomizedFun(mc:MovieClip,idx:int,IsBetInfo:Array):void
+		{			
+			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
+			//1,無人 2為自己, 3自己最後一注,4,為他人
+			var arr:Array =  _betCommand.get_my_bet_info("table");
+			var cnt:int =  arr.length;
+			
+			//先調回無人下注
+			mc.gotoAndStop( 1 );
+			
+			//有人下非自己,變黃
+			if ( IsBetInfo[idx] == 1)
+			{
+				var MyBet:int = arr.indexOf(idx)
+				if ( MyBet != -1)
+				{
+					//紅
+					if (  MyBet == (cnt - 1))  
+					{
+						mc.gotoAndStop( (IsBetInfo[idx] + 2) );
+					}
+					else mc.gotoAndStop( (IsBetInfo[idx] + 1) );
+				}
+				else
+				{
+					//黃
+					mc.gotoAndStop( (IsBetInfo[idx] + 3) );
+				}
+			}
+			
 		}
 		
 		public function GetBetCnt():int

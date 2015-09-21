@@ -81,6 +81,7 @@ package View.GameView
 			
 			dispatcher(new Intobject(modelName.Loading, ViewCommand.SWITCH));			
 			//dispatcher(new Intobject(modelName.lobby, ViewCommand.SWITCH) );		
+			//	dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );		
 			
 		}
 		

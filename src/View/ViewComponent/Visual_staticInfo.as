@@ -1,6 +1,7 @@
 package View.ViewComponent 
 {
 	import flash.display.MovieClip;
+	import flash.text.TextField;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -10,6 +11,10 @@ package View.ViewComponent
 	import View.Viewutil.MultiObject;
 	import Res.ResName;
 	import caurina.transitions.Tweener;
+	
+	import flash.text.TextFormat;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormatAlign;
 	
 	/**
 	 * playerinfo present way
@@ -31,16 +36,20 @@ package View.ViewComponent
 			//最佳盤號 次佳盤數字
 			var bestinfo:MultiObject = prepare("best_pan_info", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bestinfo.CustomizedFun = info_initFun;
-			bestinfo.container.x = 768;
-			bestinfo.container.y = 58;
-			bestinfo.Create_by_list(4, [ResName.Paninfo_font], 0, 0, 2, 180, 243, "time_");
+			bestinfo.container.x = 809;
+			bestinfo.container.y = 55;
+			bestinfo.Create_by_list(4, [ResName.Paninfo_font], 0, 0, 2, 180, 243, "time_");			
 			
 			//總球數
 			var totalball_info:MultiObject = prepare("total_ball_info", new MultiObject(), GetSingleItem("_view").parent.parent);
-			totalball_info.CustomizedFun = info_initFun;
-			totalball_info.container.x = 293;
-			totalball_info.container.y = 79;
+			totalball_info.CustomizedFun = textSetting;
+			totalball_info.CustomizedData = [{size:40,color:0xCCCCCC,bold:true}, ""];			
+			totalball_info.container.x = -45;
+			totalball_info.container.y = 89;
 			totalball_info.Create_by_list(1, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
+			
+			//utilFun.SetText(GetSingleItem("best_pan_info", 1)["_text"], String( 4 ));			
+			//utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], String( 10 ));
 			
 			//最佳盤
 			var public_best_pan:MultiObject = prepare("public_best_pan_info", new MultiObject(), GetSingleItem("_view").parent.parent);			
@@ -55,7 +64,9 @@ package View.ViewComponent
 			public_second_pan.container.x = 492.85;
 			public_second_pan.container.y = 368.8;
 			public_second_pan.Create_by_list(26, [ResName.BetButton], 0, 0, 13, 106.25, 80, "time_");
-			//_tool.SetControlMc(public_second_pan.container);
+			
+			//_tool.SetControlMc(totalball_info.container);
+			//_tool.y = 200;
 			//add(_tool);
 		
 		}
@@ -65,11 +76,55 @@ package View.ViewComponent
 			utilFun.SetText(mc["_text"], "");			
 		}
 		
+		public function textSetting(mc:MovieClip, idx:int, data:Array):void
+		{						
+			var str:TextField = dynamic_text(data[idx+1],data[0]);			
+			mc.addChild(str);
+		}
+		
+		public function dynamic_text(text:String,para:Object):TextField
+		{		
+			//utilFun.Log("para ="+para.size);
+			var size:int = para.size;
+			var textColor:uint = 0xFFFFFF;
+			var align:String = TextFormatAlign.LEFT;
+			var bold:Boolean = false;
+			
+			if ( para["color"] != undefined)  textColor = para.color;
+			if( para["align"] != undefined)  align = para.align;
+			if( para["bold"] != undefined)  bold = para.bold;
+						
+			var _NickName:TextField = new TextField();
+			_NickName.width = 626.95;
+			_NickName.height = 134;
+			_NickName.textColor = textColor;
+			_NickName.selectable = false;		
+			//_NickName.autoSize = TextFieldAutoSize.LEFT;				
+			_NickName.wordWrap = true; //auto change line
+			_NickName.multiline = true; //multi line
+			_NickName.maxChars = 300;
+			//"微軟正黑體"
+			var myFormat:TextFormat = new TextFormat();
+			myFormat.size = size;
+			myFormat.align = align;
+			myFormat.bold = bold;
+			myFormat.font = "Microsoft JhengHei";			
+			
+			_NickName.defaultTextFormat = myFormat;				
+			_NickName.text = text;			
+			return _NickName;
+		}
+		
 		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="ballupdate")]
 		public function UpdataTableBetInfo():void
 		{	
-			utilFun.SetText(GetSingleItem("total_ball_info")["_text"], String( _model.getValue("opened_ball_num") ));
+			//utilFun.SetText(GetSingleItem("total_ball_info")["_text"], String( _model.getValue("opened_ball_num") ));
+			utilFun.Clear_ItemChildren(GetSingleItem("total_ball_info"));
+			Get("total_ball_info").CustomizedData =  [{size:40,color:0xCCCCCC,bold:true, align:TextFormatAlign.CENTER}, String( _model.getValue("opened_ball_num"))];		
+			Get("total_ball_info").FlushObject();
+			
+			
 			utilFun.SetText(GetSingleItem("best_pan_info", 0)["_text"], String( _model.getValue("best_remain") ));
 			utilFun.SetText(GetSingleItem("best_pan_info", 2)["_text"], String( _model.getValue("second_remain") ));
 			
@@ -110,9 +165,13 @@ package View.ViewComponent
 		public function sballFun(mc:MovieClip, idx:int, ball:Array):void
 		{
 			//TODO combination setting ,like scale ,set test ,splite to reuse
-			utilFun.scaleXY(mc, 0.3, 0.3);
-			mc.gotoAndStop( Math.ceil( (ball[idx] + 1) / 15) ) ;
-			utilFun.SetText(mc["ballNum"], String(ball[idx]));			
+			utilFun.scaleXY(mc, 0.8, 0.8);
+			var num:int = Math.ceil( (ball[idx] + 1) / 15);
+			mc.gotoAndStop( Math.ceil( (ball[idx] + 1) / 15) ) ;			
+			utilFun.SetText(mc["ballNum"], String(ball[idx]));
+			
+			if ( num == 4 || num == 5) mc["ballNum"].textColor = 0x333333;
+			
 		}
 		
 		public function reposition(mc:MovieClip, idx:int, dis:Array):void
@@ -192,7 +251,7 @@ package View.ViewComponent
 					var sball:MultiObject = prepare("small_ball+"+listname + idx, new MultiObject()  , mc);
 					sball.CustomizedFun = sballFun;		   
 				   sball.CustomizedData = bet.ball_list;
-				   sball.Create_by_list(ball_lenth, [ResName.Ball], 0, 0, ball_lenth, 55, 0, "time_");
+				   sball.Create_by_list(ball_lenth, [ResName.Ballforfour], 0, 0, ball_lenth, 55, 0, "time_");
 				   sball.container.x = 106;
 				   sball.container.y = 10;		
 				}
@@ -202,7 +261,7 @@ package View.ViewComponent
 					ballList.CleanList();
 					ballList.CustomizedFun = sballFun;		   
 				    ballList.CustomizedData = bet.ball_list;
-				    ballList.Create_by_list(ball_lenth, [ResName.Ball], 0, 0, ball_lenth, 55, 0, "time_");
+				    ballList.Create_by_list(ball_lenth, [ResName.Ballforfour], 0, 0, ball_lenth, 55, 0, "time_");
 				    ballList.container.x = 106;
 				    ballList.container.y = 10;		
 				}

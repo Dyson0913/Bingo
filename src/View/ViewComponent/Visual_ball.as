@@ -32,15 +32,17 @@ package View.ViewComponent
 			ball.CustomizedFun = sballFun;		   
 		    ball.CustomizedData = [1];	   
 		    ball.Create_by_list(1, [ResName.Ball], 0, 0, 1, 0, 0, "time_");
-		    ball.container.x = 165;
-		    ball.container.y = 214;		  
+		    ball.container.x = 125;
+		    ball.container.y = 184;		 
+			ball.container.visible = false;
 			
 		   var sball:MultiObject = prepare("small_ball", new MultiObject()  , GetSingleItem("_view").parent.parent);
 		   sball.CustomizedFun = sballFun;		   
 		   sball.CustomizedData = [0.4];	   
 		   sball.Create_by_list(3, [ResName.Ball], 0, 0, 3, 110, 0, "time_");
-		   sball.container.x = 109;
-		   sball.container.y = 413;		  
+		   sball.container.x = 69;
+		   sball.container.y = 392;		  
+		   sball.container.visible = false;  
 		   
 		   var ball_pan:MultiObject = prepare("ball_pan", new MultiObject()  , GetSingleItem("_view").parent.parent);
 		   ball_pan.CustomizedFun = ball_panfun;		   
@@ -48,7 +50,7 @@ package View.ViewComponent
 		   ball_pan.container.x = 443.9;
 		   ball_pan.container.y = 537;	
 		   
-		   	//_tool.SetControlMc(ball.container);
+		   	//_tool.SetControlMc(sball.container);
 			//add(_tool);
 			_model.putValue("open3Balllist", []);						
 			
@@ -88,6 +90,7 @@ package View.ViewComponent
 		{	
 			//big ball
 			var BallNum:int = _model.getValue("Curball");
+			Get(modelName.Open_Ball_Num).container.visible = true;
 			utilFun.SetText(GetSingleItem(modelName.Open_Ball_Num)["ballNum"] , BallNum.toString());
 			GetSingleItem(modelName.Open_Ball_Num).gotoAndStop( Math.ceil( BallNum / 15) ) ;		
 			
@@ -100,8 +103,9 @@ package View.ViewComponent
 			}
 			
 			//左方小球
+			Get("small_ball").container.visible = true;
 			for (var i:int = open3ball.length; i >0 ; i--)
-			{				
+			{			
 				utilFun.SetText(GetSingleItem("small_ball",i-1)["ballNum"], utilFun.Format(open3ball[i-1], 2) );				
 				GetSingleItem("small_ball",i-1).gotoAndStop( Math.ceil( open3ball[i-1] / 15) ) ;
 			}

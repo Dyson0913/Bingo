@@ -207,8 +207,10 @@ package View.ViewComponent
 			}
 			
 		}		
-		
-		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]
+	
+			
+			//[MessageHandler(type = "Model.ModelEvent", selector = "betstateupdate")]
+		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]	
 		public function betlist_update():void
 		{			
 			var tab_no:Array = _betCommand.get_my_bet_info("table");
@@ -229,9 +231,9 @@ package View.ViewComponent
 			
 			//比自己押注結果更早收到
 			//所有盤號更新
-			Get("betZone").CustomizedFun = BetListCustomizedFun;
-			Get("betZone").CustomizedData = _model.getValue("is_betarr");
-			Get("betZone").FlushObject();
+			//Get("betZone").CustomizedFun = BetListCustomizedFun;
+			//Get("betZone").CustomizedData = _model.getValue("is_betarr");
+			//Get("betZone").FlushObject();
 			
 			
 		}		

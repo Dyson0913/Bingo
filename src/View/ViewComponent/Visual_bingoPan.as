@@ -114,7 +114,7 @@ package View.ViewComponent
 					
 		}
 		
-		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]
+		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]		
 		public function select_pan():void
 		{
 			

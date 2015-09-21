@@ -302,7 +302,7 @@ package View.ViewComponent
 			{
 				//utilFun.Log("open ed");
 				mc.gotoAndStop(2);
-				tableNo.textColor = 0xD2D2D2;
+				tableNo.textColor = 0x666666;
 				mc["_mask"].height = 51;
 			}
 			else {

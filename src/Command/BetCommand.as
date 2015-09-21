@@ -89,6 +89,18 @@ package Command
 		
 		public function betbyTable(e:Event, idx:int):Boolean
 		{			
+			//check some body bet		
+			var betstate:Array = _model.getValue("is_betarr");
+			if ( betstate[idx] == 1)
+			{
+				var arr:Array =  get_my_bet_info("table");
+				//別人的
+				if ( arr.indexOf(idx) == -1) return false;				
+			}
+			
+			
+			
+			
 			return add_bet(e, idx);
 			return true;
 		}
@@ -176,6 +188,15 @@ package Command
 					return false;
 				}
 			}
+			
+			var betstate:Array = _model.getValue("is_betarr");
+			if ( betstate[tableNo] == 1)
+			{
+				var arr:Array =  get_my_bet_info("table");
+				//別人的
+				if ( arr.indexOf(tableNo) == -1) return false;				
+			}
+			
 			return true;
 		}
 		

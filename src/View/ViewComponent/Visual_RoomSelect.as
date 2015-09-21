@@ -68,7 +68,9 @@ package View.ViewComponent
 		
 		public function select_room(e:Event, idx:int):Boolean
 		{
-			_model.putValue("room_num", idx);
+			var ob:Object = _pageModel.GetOneDate(idx);
+			utilFun.Log("ob.roomnUm = "+ob.room_no);
+			_model.putValue("room_num", ob.room_no);
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.CHOOSE_ROOM));
 			return true;
 		}
