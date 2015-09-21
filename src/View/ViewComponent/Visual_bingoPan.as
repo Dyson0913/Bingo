@@ -30,7 +30,7 @@ package View.ViewComponent
 		public function init():void
 		{
 			//盤號 內盤,外盤
-			var balls:Array = _model.getValue("ballarr");		
+			var balls:Array = _model.getValue("ballarr");			
 			var bingo_pan:MultiObject = prepare("bingo_pan", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bingo_pan.CustomizedFun = info_initFun;
 			bingo_pan.CustomizedData = balls[0];
@@ -119,9 +119,7 @@ package View.ViewComponent
 		{
 			
 			var bet_ob:Object = _Actionmodel.excutionMsg();
-			var tableNo:int = bet_ob["betType"];		
-			
-			utilFun.Log("select_pan = "+tableNo);
+			var tableNo:int = bet_ob["betType"];			
 			
 			//桌號
 			utilFun.SetText( GetSingleItem("bingo_pan")["_panNum"]["tableNo"], String( tableNo));			
@@ -136,8 +134,7 @@ package View.ViewComponent
 			//GetSingleItem("bingo_pan")["pan_amount_con"]["pan_amount_0"].FlushObject();			
 			
 			//盤號 TODO clean
-			var balls:Array = _model.getValue("ballarr");
-			utilFun.Log("balls[tableNo]= "+balls[tableNo]);
+			var balls:Array = _model.getValue("ballarr");			
 			var pan:MultiObject = prepare("select_pan", new MultiObject(), GetSingleItem("bingo_pan"));	
 			pan.CustomizedFun = PanMatrixCustomizedFun;
 			pan.CustomizedData = balls[tableNo]; // select pan_num

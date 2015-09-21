@@ -11,6 +11,7 @@ package View.GameView
 	import util.DI;
 	import Model.*
 	import util.node;	
+	import View.ViewComponent.Visual_RoomSelect;
 	import View.Viewutil.*;
 	import View.ViewBase.ViewBase;
 	import util.*;
@@ -28,6 +29,8 @@ package View.GameView
 		[Inject]
 		public var _regular:RegularSetting;			
 		
+		[Inject]
+		public var _roomItem:Visual_RoomSelect;
 		
 		public function LobbyView()  
 		{
@@ -41,10 +44,10 @@ package View.GameView
 			if (View.Value != modelName.lobby) return;
 			super.EnterView(View);
 			//清除前一畫面		
-			//var view:MultiObject = prepare("_view", new MultiObject() , this);
-			//view.Create_by_list(1, [ResName.lobby_], 0, 0, 1, 0, 0, "a_");			
+			var view:MultiObject = prepare("_view", new MultiObject() , this);
+			view.Create_by_list(1, [ResName.RoomSelect], 0, 0, 1, 0, 0, "a_");			
 						
-			utilFun.SetTime(connet, 1);
+			_roomItem.init();
 		}			 
 		
 		private function connet():void

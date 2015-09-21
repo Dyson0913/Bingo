@@ -67,6 +67,8 @@ package View.GameView
 			
 			_model.putValue("bingo_color", [0x41A0F0, 0xF01E1E, 0xB9B9B9, 0x23C323, 0xF58C00]);
 			
+			_model.putValue("SelectRoomInfo",[]);
+			
 			_model.putValue("is_betarr",[]);
 			_model.putValue("ballarr",[]);
 			_model.putValue("table", []);
@@ -76,7 +78,9 @@ package View.GameView
 			_model.putValue(modelName.Client_ID, para[2]);
 			_model.putValue(modelName.HandShake_chanel, para[3]);
 			_model.putValue(modelName.Domain_Name, para[4]);
+			
 			dispatcher(new Intobject(modelName.Loading, ViewCommand.SWITCH));			
+			//dispatcher(new Intobject(modelName.lobby, ViewCommand.SWITCH) );		
 			
 		}
 		

@@ -72,9 +72,7 @@ package Model
 		public function  GetOneDate(idx:int):*
 		{			
 			return _ItemList[(_ItemPageIdx+idx)];
-		}
-
-		//TODO SetSelectItem的必要,非即時性才需要的功能
+		}		
 	}
 
 }

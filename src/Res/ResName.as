@@ -8,10 +8,13 @@ package Res
 	{
 		
 		public static const Loading_Scene:String = "Loadingbg";
-		public static const lobby_:String = "bingo_Lobby";
+		public static const RoomSelect:String = "Select_room";
 		public static const Bet_Scene:String = "BetView";
 		public static const Openball_Scene:String = "openball_scene";
 		
+		public static const roomitem:String = "room_item";
+		public static const L_arrow_l:String = "Lobby_arrow_left";
+		public static const L_arrow_r:String = "Lobby_arrow_right";
 		
 		//bet view
 		public static const BetButton:String = "BetTableBtn";
@@ -27,6 +30,7 @@ package Res
 		public static const Ball:String = "DynamicBall";
 		public static const Ball_pan:String = "ballpan";
 		public static const Myticket:String = "My_ticket";
+		public static const empty:String = "emptymc";
 		
 		public static const Paninfo_font:String = "pan_info_font";
 		public static const bingo_pan:String = "Pan";
@@ -37,6 +41,7 @@ package Res
 		
 		public static const Hint:String = "HintMsg";	
 		public static const Winhint:String = "win_hint";	
+		
 		
 		public function ResName() 
 		{

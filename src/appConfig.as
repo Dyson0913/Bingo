@@ -31,7 +31,7 @@ package
 		//model		
 		public var _Model:Model = new Model();
 		public var _MsgModel:MsgQueue = new MsgQueue();
-		public var _Actionmodel:ActionQueue = new ActionQueue();
+		public var _Actionmodel:ActionQueue = new ActionQueue();		
 		
 		
 		//connect module
@@ -59,6 +59,7 @@ package
 		public var _ticket:Visual_ticket = new Visual_ticket();
 		
 		public var _settle:Visual_Settle = new Visual_Settle();
+		public var _roomItem:Visual_RoomSelect = new Visual_RoomSelect();
 		
 		//test
 		public var _test:Visual_testInterface = new Visual_testInterface();

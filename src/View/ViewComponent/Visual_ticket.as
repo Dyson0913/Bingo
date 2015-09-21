@@ -37,7 +37,7 @@ package View.ViewComponent
 			if ( _betCommand.get_my_betlist().length == 0) return;
 			
 			var ball_pan:MultiObject = prepare("ball_pan", new MultiObject()  , GetSingleItem("_view").parent.parent);		  
-		   ball_pan.Create_by_list(1, [ResName.Myticket], 0, 0, 1, 0, 0, "time_");
+		   ball_pan.Create_by_list(1, [ResName.empty], 0, 0, 1, 0, 0, "time_");
 		   ball_pan.container.x = 443.9;
 		   ball_pan.container.y = 537;	
 			

@@ -116,22 +116,10 @@ package ConnectModule.websocket
 					{
 						dispatcher(new ValueObject(  result.game_round, "game_round") );
 						dispatcher(new ValueObject(  result.game_id, "game_id") );
-						 //100桌資訊
-							//result.room_info  [{"bet_tables": 0, "room_no": 0}, {"bet_tables": 0, "room_no": 1},....
-							
-							var room:int = utilFun.Random(50);
-						utilFun.Log("auto send ");
-						var entermsg:Object = {  "id": String(_model.getValue(modelName.UUID)),
-			                                "timestamp":1111,
-											"message_type":"MsgBGPlayerEnterRoom", 
-			                               "game_id":result.game_id,
-										   "game_type":"Bingo",										
-										   "game_round":result.game_round,										
-											"room_no":room
-											};
-										   
-						SendMsg(entermsg);
-						_model.putValue("room_num", room);
+						
+						_model.putValue("SelectRoomInfo",result.room_info);
+						dispatcher(new Intobject(modelName.lobby, ViewCommand.SWITCH) );
+						
 					}	
 					break;
 					
@@ -157,14 +145,12 @@ package ConnectModule.websocket
 							{	
 								//TODO fake input
 								is_bet.push( 0);
-								balls.push( arr_lat[i].balls);
-								utilFun.Log("arr_lat[i].balls = "+arr_lat[i].balls);
+								balls.push( arr_lat[i].ball_list);
 								table_no.push( arr_lat[i].table_no);
 							}					
 							_model.putValue("is_betarr",is_bet);
 							_model.putValue("ballarr",balls);
-							_model.putValue("table", table_no);						
-							
+							_model.putValue("table", table_no);													
 							
 							
 							if ( state == gameState.END_BET ||  state == gameState.NEW_ROUND)
@@ -237,13 +223,17 @@ package ConnectModule.websocket
 					case "MsgBGBetInfo":
 					{
 						var arrlist:Array = result.table_bet_info;							
+						utilFun.Log("is_bet ="+is_bet);
 						var is_bet:Array = _model.getValue("is_betarr");
 						var num:int  = arrlist.length;						
 						is_bet.length = 0;
-						for ( i = 0; i < num ; i++)
-						{							
-							is_bet.push(arrlist[i]["is_bet"]);
-						}						
+						is_bet = arrlist;
+						//for ( i = 0; i < num ; i++)
+						//{							
+							//is_bet.push(arrlist[i]);
+							//
+						//}	
+						utilFun.Log("is_bet ="+is_bet);
 						_model.putValue("is_betarr", is_bet);
 						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
@@ -552,9 +542,17 @@ package ConnectModule.websocket
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="chooseRoom")]
 		public function enterRoom():void
 		{
-			utilFun.Log("send");
-			var choose_room_msg:Object = {"message_type":Message.MSG_TYPE_DISPLAY_ROOMS, "room_no":26 };
-			SendMsg(choose_room_msg);
+			_model.getValue("room_num")
+			var entermsg:Object = {  "id": String(_model.getValue(modelName.UUID)),
+			                              "timestamp":1111,
+											"message_type":"MsgBGPlayerEnterRoom", 
+			                               "game_id":_model.getValue("game_id"),
+										   "game_type":"Bingo",										
+										   "game_round":_model.getValue("game_round"),							
+											"room_no":_model.getValue("room_num")
+											};
+										   
+			SendMsg(entermsg);
 		}
 		
 		
