@@ -27,6 +27,9 @@ package View.ViewComponent
 		
 		private var _best_len:int = 0;
 		
+		private var _first_table:int = -1;
+		private var _first_rest:int = 0;
+		
 		public function Visual_ticket() 
 		{
 			
@@ -246,20 +249,57 @@ package View.ViewComponent
 					if ( ticket_ball.indexOf(openballist[k] ) != -1) count--;
 				}				
 				
-				var table_and_rest:Object;			
-				table_and_rest = { "tableNo": tableNo[i], 											
-										     "rest":  count										 
-										   };
+				//
+				if ( _first_table != tableNo[i]  ) 
+				{
+					var table_and_rest:Object;			
+					table_and_rest = { "tableNo": tableNo[i], 											
+												 "rest":  count										 
+											   };
+					
+					myticket_restball_num.push(table_and_rest);
+				}
 				
-				myticket_restball_num.push(table_and_rest);
+			
 			}			
 			//utilFun.Log("myticket_restball_num = "+ myticket_restball_num);
 			myticket_restball_num.sort(order);			
 			
-			//for (var k:int = 0; k < myticket_restball_num.length; k++)
-			//{
-				//utilFun.Log("after sort rest = " + myticket_restball_num[k]["rest"]  +" table =" + myticket_restball_num[k]["tableNo"]);				
-			//}
+			for (var k:int = 0; k < myticket_restball_num.length; k++)
+			{
+				utilFun.Log("after sort rest = " + myticket_restball_num[k]["rest"]  +" table =" + myticket_restball_num[k]["tableNo"]);				
+			}
+				utilFun.Log("=========== ");
+			
+			//記下第一個桌號,下次排序,排除在外
+			if ( _first_table == -1) 
+			{
+				_first_table = myticket_restball_num[0]["tableNo"];
+				_first_rest = myticket_restball_num[0]["rest"];
+				utilFun.Log("_first Tb="+_first_table + " rest = "+ _first_rest);
+			}
+			else	if (_first_table != -1)
+			{
+				//與第一個差二球,才做交換
+				utilFun.Log("check _first_rest="+_first_rest + " sort first = "+ myticket_restball_num[0]["rest"] );
+				if (  (_first_rest -2) == myticket_restball_num[0]["rest"] )
+				{
+					_first_table = myticket_restball_num[0]["tableNo"];
+					_first_rest = myticket_restball_num[0]["rest"];
+					utilFun.Log("new  Tb="+_first_table + " rest = "+ _first_rest);
+				}
+				else 
+				{
+					//沒有就把目前最少球數的放回第一個
+					var table_and_rest:Object;			
+					table_and_rest = { "tableNo": _first_table, 											
+												 "rest":  _first_rest										 
+											   };
+					
+					myticket_restball_num.unshift(table_and_rest);
+					utilFun.Log("nochange put back  Tb="+_first_table + " rest = "+ _first_rest);
+				}
+			}
 			
 			return myticket_restball_num;
 		}
