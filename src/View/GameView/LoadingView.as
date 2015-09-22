@@ -83,6 +83,7 @@ package View.GameView
 			//dispatcher(new Intobject(modelName.lobby, ViewCommand.SWITCH) );		
 			//	dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );		
 			
+			
 		}
 		
 		[MessageHandler(type="Model.valueObject.Intobject",selector="EnterView")]
@@ -98,7 +99,7 @@ package View.GameView
 			//_regular.strdotloop(view.ItemList[0]["_Text"],20,40);			
 			//Tweener.addTween(view.ItemList[0]["_mask"], { y:view.ItemList[0]["_mask"].y-164, time:3,onComplete:test,transition:"easeInOutQuart"} );			
 		
-			//
+			//dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );		
 			utilFun.SetTime(connet, 0.1);
 			//-------------------------------ticket
 			//_hint.init();

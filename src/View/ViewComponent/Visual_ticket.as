@@ -3,6 +3,7 @@ package View.ViewComponent
 	import flash.display.MovieClip;
 	import flash.text.TextField;
 	import Interface.CollectionsInterface;
+	import View.ViewBase.Visual_Text;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -29,6 +30,9 @@ package View.ViewComponent
 		
 		private var _first_table:int = -1;
 		private var _first_rest:int = 0;
+		
+		[Inject]
+		public var _text:Visual_Text;
 		
 		public function Visual_ticket() 
 		{
@@ -89,7 +93,10 @@ package View.ViewComponent
 			//utilFun.Log(" amount[idx] = " +  amount[idx]);
 			
 			//amount
-			bet_amountFun(  mc["_pan_amount"], amount[idx]);		
+			mc["_pan_amount"].x = -187.6;
+			mc["_pan_amount"].y = -31.9;
+			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, amount[idx]]);
+			//bet_amountFun(  mc["_pan_amount"], amount[idx]);		
 		}
 		
 		public function bet_amountFun(mc:MovieClip, amount:int):void
@@ -228,7 +235,9 @@ package View.ViewComponent
 			var amount:Array = _betCommand.get_my_bet_info("amount");
 			
 			//amount
-			bet_amountFun(  mc["_pan_amount"], amount[idx]);		
+			utilFun.Clear_ItemChildren(mc["_pan_amount"]);
+			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, amount[idx]]);
+		//	bet_amountFun(  mc["_pan_amount"], amount[idx]);		
 		}
 		
 		public function best3_pan(openballist:Array):Array
@@ -314,7 +323,7 @@ package View.ViewComponent
 		//傳回值 -1 表示第一個參數 a 是在第二個參數 b 之前。
 		//傳回值 1 表示第二個參數 b 是在第一個參數 a 之前。
 		//傳回值 0 指出元素都具有相同的排序優先順序。
-		private function order(a, b):int 
+		private function order(a:Object, b:Object):int 
 		{
 			if ( a["rest"] < b["rest"]) return -1;
 			else if ( a["rest"] > b["rest"]) return 1;

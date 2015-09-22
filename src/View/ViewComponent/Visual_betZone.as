@@ -2,6 +2,7 @@ package View.ViewComponent
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import View.ViewBase.Visual_Text;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -23,6 +24,10 @@ package View.ViewComponent
 		
 		[Inject]
 		public var _betCommand:BetCommand;
+		
+		[Inject]
+		public var _text:Visual_Text;
+		
 		
 		public function Visual_betZone() 
 		{
@@ -58,13 +63,20 @@ package View.ViewComponent
 			betmaount.container.y = 159.3;			
 			betmaount.Create_by_list(12,  [ResName.Bet_amount_bg], 0 , 0, 1,0, 47, "Coin_");			
 			
+			//押分數字			
+			var totalball_info:MultiObject = prepare("betamount_num", new MultiObject(), GetSingleItem("_view").parent.parent);
+			totalball_info.CustomizedFun = _text.textSetting;
+			totalball_info.CustomizedData = [{size:40,color:0xB50004,bold:true,align:_text.align_right}, "","","","","","","","","","","",""];			
+			totalball_info.container.x =1061.85;
+			totalball_info.container.y = 154;
+			totalball_info.Create_by_list(12, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");
 			
-			var betmaount_num:MultiObject = prepare("betamount_num", new MultiObject(), GetSingleItem("_view").parent.parent);
-			betmaount_num.container.x = 1558.85;
-			betmaount_num.container.y = 162.3;
-			betmaount_num.CustomizedFun = bet_amountFun;			
-			betmaount_num.CustomizedData = _betCommand.get_my_bet_info("amount");
-			betmaount_num.Create_by_list(12,  [ResName.Bet_amount_num], 0 , 0, 1,0,47 , "Coin_");			
+			//var betmaount_num:MultiObject = prepare("betamount_num", new MultiObject(), GetSingleItem("_view").parent.parent);
+			//betmaount_num.container.x = 1558.85;
+			//betmaount_num.container.y = 162.3;
+			//betmaount_num.CustomizedFun = bet_amountFun;			
+			//betmaount_num.CustomizedData = _betCommand.get_my_bet_info("amount");
+			//betmaount_num.Create_by_list(12,  [ResName.Bet_amount_num], 0 , 0, 1,0,47 , "Coin_");			
 			
 			//押分sub
 			var bet_sub:MultiObject = prepare("betamount_sub", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -91,7 +103,7 @@ package View.ViewComponent
 			cancel_bet.mousedown = _betCommand.cancel_allbet;
 			cancel_bet.mouseup = _betCommand.check;	
 			
-			//_tool.SetControlMc(cancel_bet.container);
+			//_tool.SetControlMc(totalball_info.container);
 			//add(_tool);
 		}		
 		
@@ -225,9 +237,21 @@ package View.ViewComponent
 			Get("betlist").FlushObject();
 			
 			//pan 金額
-			Get("betamount_num").CustomizedFun = bet_amountFun;
-			Get("betamount_num").CustomizedData =  amount_no;
-			Get("betamount_num").FlushObject();
+			//Get("betamount_num").CustomizedFun = bet_amountFun;
+			//Get("betamount_num").CustomizedData =  amount_no;
+			//Get("betamount_num").FlushObject();			
+			//for ( var i:int = 0; i < 12; i++)
+			//{
+				//utilFun.Clear_ItemChildren(GetSingleItem("betamount_num"));	
+			//}
+				
+			var font:Array = [{size:40,color:0xB50004,bold:true,align:_text.align_right}];
+			font = font.concat(amount_no);
+			//utilFun.Log("fornt = "+amount_no);						
+			Get("betamount_num").CustomizedData = font;
+			Get("betamount_num").Create_by_list(12, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");
+			//Get("betamount_num").FlushObject();
+			
 			
 			//比自己押注結果更早收到
 			//所有盤號更新

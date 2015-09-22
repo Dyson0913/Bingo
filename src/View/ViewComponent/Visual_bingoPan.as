@@ -1,7 +1,9 @@
 package View.ViewComponent 
 {
 	import flash.display.MovieClip;
+	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import View.ViewBase.Visual_Text;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -22,6 +24,9 @@ package View.ViewComponent
 		[Inject]
 		public var _Actionmodel:ActionQueue;
 		
+		[Inject]
+		public var _text:Visual_Text;
+		
 		public function Visual_bingoPan() 
 		{
 			
@@ -39,13 +44,22 @@ package View.ViewComponent
 			bingo_pan.Create_by_list(1, [ResName.bingo_pan], 0, 0, 1, 0, 0, "time_");
 			
 			utilFun.SetText( bingo_pan.ItemList[0]["_panNum"]["tableNo"], "2");
-			bet_amountFun( bingo_pan.ItemList[0]["_pan_amount"], 0);
-			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedFun = bet_amountFun;			
-			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedData = [0];
-						
-		
 			
-			//_tool.SetControlMc(bingo_pan.container);
+			bingo_pan.ItemList[0]["_pan_amount"].x = -187.6;
+			bingo_pan.ItemList[0]["_pan_amount"].y = -31.9;
+			_text.textSetting_s(bingo_pan.ItemList[0]["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, ""]);
+			//押分
+			//var totalball_info:MultiObject = prepare("aaa", new MultiObject(), bingo_pan.container);
+			//totalball_info.CustomizedFun = _text.textSetting;
+			//totalball_info.CustomizedData = [{size:40,color:0xB50004,bold:true,align:_text.align_center}, ""];			
+			//totalball_info.container.x =-190;
+			//totalball_info.container.y = -34;
+			//totalball_info.Create_by_list(1, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
+			//bet_amountFun( bingo_pan.ItemList[0]["_pan_amount"], 0);
+			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedFun = bet_amountFun;				
+			
+			//_tool.SetControlMc(bingo_pan.ItemList[0]["_pan_amount"]);
+			//_tool.y = 200;
 			//add(_tool);
 		}
 		
@@ -125,8 +139,16 @@ package View.ViewComponent
 			utilFun.SetText( GetSingleItem("bingo_pan")["_panNum"]["tableNo"], String( tableNo));			
 			
 			
-			//押注額 
-			bet_amountFun(  GetSingleItem("bingo_pan")["_pan_amount"], bet_ob["total_amount"]);
+			//押注額 			
+			utilFun.Clear_ItemChildren(GetSingleItem("bingo_pan")["_pan_amount"]);
+			_text.textSetting_s(GetSingleItem("bingo_pan")["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, bet_ob["total_amount"]]);
+			
+			//var font:Array = [{size:40,color:0xB50004,bold:true,align:_text.align_center}];
+			//font = font.concat(bet_ob["total_amount"]);
+			//utilFun.Log("fornt = "+amount_no);						
+			//Get("select_pan_amount").CustomizedData = font;
+			//Get("select_pan_amount").Create_by_list(1, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
+			//bet_amountFun(  GetSingleItem("bingo_pan")["_pan_amount"], bet_ob["total_amount"]);
 			
 			//TODO dynamic can't get
 			//GetSingleItem("bingo_pan")["pan_amount_con"]["pan_amount_0"].CustomizedFun = bet_amountFun;			

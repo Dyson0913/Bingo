@@ -2,6 +2,7 @@ package View.ViewComponent
 {
 	import flash.display.MovieClip;
 	import flash.text.TextField;
+	import View.ViewBase.Visual_Text;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -25,6 +26,9 @@ package View.ViewComponent
 		[Inject]
 		public var _betCommand:BetCommand;
 		
+		[Inject]
+		public var _text:Visual_Text;
+		
 		public function Visual_staticInfo() 
 		{
 			
@@ -42,7 +46,7 @@ package View.ViewComponent
 			
 			//總球數
 			var totalball_info:MultiObject = prepare("total_ball_info", new MultiObject(), GetSingleItem("_view").parent.parent);
-			totalball_info.CustomizedFun = textSetting;
+			totalball_info.CustomizedFun = _text.textSetting;
 			totalball_info.CustomizedData = [{size:40,color:0xCCCCCC,bold:true}, ""];			
 			totalball_info.container.x = -45;
 			totalball_info.container.y = 89;
@@ -75,46 +79,6 @@ package View.ViewComponent
 		{				
 			utilFun.SetText(mc["_text"], "");			
 		}
-		
-		public function textSetting(mc:MovieClip, idx:int, data:Array):void
-		{						
-			var str:TextField = dynamic_text(data[idx+1],data[0]);			
-			mc.addChild(str);
-		}
-		
-		public function dynamic_text(text:String,para:Object):TextField
-		{		
-			//utilFun.Log("para ="+para.size);
-			var size:int = para.size;
-			var textColor:uint = 0xFFFFFF;
-			var align:String = TextFormatAlign.LEFT;
-			var bold:Boolean = false;
-			
-			if ( para["color"] != undefined)  textColor = para.color;
-			if( para["align"] != undefined)  align = para.align;
-			if( para["bold"] != undefined)  bold = para.bold;
-						
-			var _NickName:TextField = new TextField();
-			_NickName.width = 626.95;
-			_NickName.height = 134;
-			_NickName.textColor = textColor;
-			_NickName.selectable = false;		
-			//_NickName.autoSize = TextFieldAutoSize.LEFT;				
-			_NickName.wordWrap = true; //auto change line
-			_NickName.multiline = true; //multi line
-			_NickName.maxChars = 300;
-			//"微軟正黑體"
-			var myFormat:TextFormat = new TextFormat();
-			myFormat.size = size;
-			myFormat.align = align;
-			myFormat.bold = bold;
-			myFormat.font = "Microsoft JhengHei";			
-			
-			_NickName.defaultTextFormat = myFormat;				
-			_NickName.text = text;			
-			return _NickName;
-		}
-		
 		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="ballupdate")]
 		public function UpdataTableBetInfo():void
@@ -259,12 +223,12 @@ package View.ViewComponent
 				}
 				else
 				{
-					var needSort:Array = bet.ball_list;
-					needSort.sort(order);
+					var needtoSort:Array = bet.ball_list;
+					needtoSort.sort(order);
 					var ballList:MultiObject = Get("small_ball"+listname + idx);
 					ballList.CleanList();
 					ballList.CustomizedFun = sballFun;		   
-				    ballList.CustomizedData = needSort;
+				    ballList.CustomizedData = needtoSort;
 				    ballList.Create_by_list(ball_lenth, [ResName.Ballforfour], 0, 0, ball_lenth, 55, 0, "time_");
 				    ballList.container.x = 101;
 				    //ballList.container.y = 10;		

@@ -9,6 +9,7 @@ package
 	import util.math.Path_Generator;
 	import View.ViewBase.ViewBase;
 	import ConnectModule.websocket.WebSoketComponent;
+	import View.ViewBase.Visual_Text;
 	import View.ViewComponent.*;
 	
 	import View.GameView.*;
@@ -57,7 +58,7 @@ package
 		public var _staticinfo:Visual_staticInfo = new Visual_staticInfo();
 		public var _bingo:Visual_bingoPan = new Visual_bingoPan();
 		public var _ticket:Visual_ticket = new Visual_ticket();
-		
+		public var _text:Visual_Text = new Visual_Text();
 		public var _settle:Visual_Settle = new Visual_Settle();
 		public var _roomItem:Visual_RoomSelect = new Visual_RoomSelect();
 		
