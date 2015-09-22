@@ -165,7 +165,7 @@ package View.ViewComponent
 		public function sballFun(mc:MovieClip, idx:int, ball:Array):void
 		{
 			//TODO combination setting ,like scale ,set test ,splite to reuse
-			utilFun.scaleXY(mc, 0.8, 0.8);
+			//utilFun.scaleXY(mc, 0.8, 0.8);
 			var num:int = Math.ceil( (ball[idx] + 1) / 15);
 			mc.gotoAndStop( Math.ceil( (ball[idx] + 1) / 15) ) ;			
 			utilFun.SetText(mc["ballNum"], String(ball[idx]));
@@ -248,22 +248,26 @@ package View.ViewComponent
 				var listname:String =  dis[2];	
 				if ( Get("small_ball"+listname + idx) == null)
 				{
+					var needSort:Array = bet.ball_list;
+					needSort.sort(order);
 					var sball:MultiObject = prepare("small_ball+"+listname + idx, new MultiObject()  , mc);
 					sball.CustomizedFun = sballFun;		   
-				   sball.CustomizedData = bet.ball_list;
+				   sball.CustomizedData = needSort;
 				   sball.Create_by_list(ball_lenth, [ResName.Ballforfour], 0, 0, ball_lenth, 55, 0, "time_");
-				   sball.container.x = 106;
-				   sball.container.y = 10;		
+				   sball.container.x = 101;
+				   //sball.container.y = 0;		
 				}
 				else
 				{
+					var needSort:Array = bet.ball_list;
+					needSort.sort(order);
 					var ballList:MultiObject = Get("small_ball"+listname + idx);
 					ballList.CleanList();
 					ballList.CustomizedFun = sballFun;		   
-				    ballList.CustomizedData = bet.ball_list;
+				    ballList.CustomizedData = needSort;
 				    ballList.Create_by_list(ball_lenth, [ResName.Ballforfour], 0, 0, ball_lenth, 55, 0, "time_");
-				    ballList.container.x = 106;
-				    ballList.container.y = 10;		
+				    ballList.container.x = 101;
+				    //ballList.container.y = 10;		
 				}
 				//_tool.SetControlMc(sball.container);
 				//add(_tool);
@@ -324,6 +328,13 @@ package View.ViewComponent
 		}
 		
 		
+		
+		private function order(a:int, b:int):int 
+		{
+			if ( a< b) return -1;
+			else if ( a > b) return 1;
+			else return 0;			
+		}
 		
 	}
 

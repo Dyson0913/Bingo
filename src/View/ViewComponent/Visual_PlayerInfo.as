@@ -37,7 +37,7 @@ package View.ViewComponent
 			
 			var bingo_recode:MultiObject = prepare("bingo_recode", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bingo_recode.CustomizedFun = BetListini
-			bingo_recode.CustomizedData = _model.getValue("bighist");
+			bingo_recode.CustomizedData = [];
 			bingo_recode.container.x = 564;
 			bingo_recode.container.y = 970;		
 			bingo_recode.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 75, 0, "time_");
@@ -93,7 +93,7 @@ package View.ViewComponent
 			if ( idx == 2) 	utilFun.SetText(mc["_text"], String(0));
 			
 			//場次
-			if( idx ==3) 	utilFun.SetText(mc["_text"], String(0));
+			if( idx ==3) 	utilFun.SetText(mc["_text"], String(_model.getValue("game_round")));
 		}
 		
 		//[MessageHandler(type = "Model.ModelEvent", selector = "betstateupdate")]

@@ -259,7 +259,14 @@ package View.ViewComponent
 					
 					myticket_restball_num.push(table_and_rest);
 				}
-				
+				else 
+				{
+					//更新候選球數
+					if ( _first_table != -1)
+					{
+						_first_rest = count;
+					}
+				}
 			
 			}			
 			//utilFun.Log("myticket_restball_num = "+ myticket_restball_num);

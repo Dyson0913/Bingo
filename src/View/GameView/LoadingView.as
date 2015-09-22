@@ -93,8 +93,7 @@ package View.GameView
 			super.EnterView(View);
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Loading_Scene], 0, 0, 1, 0, 0, "a_");			
-			_tool = new AdjustTool();				
-			_model.putValue("bighist", []);
+			_tool = new AdjustTool();			
 			_betCommand.bet_init();
 			//_regular.strdotloop(view.ItemList[0]["_Text"],20,40);			
 			//Tweener.addTween(view.ItemList[0]["_mask"], { y:view.ItemList[0]["_mask"].y-164, time:3,onComplete:test,transition:"easeInOutQuart"} );			

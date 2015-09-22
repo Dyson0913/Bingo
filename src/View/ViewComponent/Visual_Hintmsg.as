@@ -97,29 +97,34 @@ package View.ViewComponent
 		public function winhint():void
 		{			
 			Get("winhint").container.visible = true;			
-			//var bingo:Array = _betCommand.get_my_bet_info("table");
-			//var fakebingo:int = utilFun.Random(99);
-			//while ( bingo.indexOf(fakebingo) != -1)
-			//{
-				//fakebingo = utilFun.Random(99);
-			//}			
-			//var bighist:Array = _model.getValue("bighist");
-			//bighist.push(fakebingo);
-			//_model.putValue("bighist", bighist);
-			//_regular.FadeIn( GetSingleItem("winhint"), 2, 2, _regular.Fadeout);
 			
-			//Get("bingowin_show").container.visible = true;
-			//Get("bingowin_show").CustomizedFun = BetListini;
-			//Get("bingowin_show").CustomizedData = bighist;
-			//Get("bingowin_show").Create_by_list(bighist, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");
-			//Get("bingowin_show").FlushObject();
+			var bingo:Array = _betCommand.get_my_bet_info("table");
+			
+			var oblist:Array = _model.getValue("best_list");
+			var tableNo:Array = [];
+			for (var i:int = 0; i < oblist.length ; i++)
+			{
+				tableNo.push(oblist[i].table_no);
+			}
+			utilFun.Log("tableNo ----------"+tableNo);
+			
+			Get("bingowin_show").container.visible = true;
+			Get("bingowin_show").CustomizedFun = BetListini;
+			Get("bingowin_show").CustomizedData = tableNo;
+			Get("bingowin_show").Create_by_list(tableNo.length, [ResName.BetButton], 0, 0, 10, 106.25, 80, "time_");
+			Get("bingowin_show").FlushObject();
 		}
 		
 		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void
 		{
-			utilFun.scaleXY(mc, 0.7, 0.7);
-			var str:String = idx >= bingo_recode.length ? "" : bingo_recode[idx];
-			utilFun.SetText(mc["tableNo"], str);
+			utilFun.scaleXY(mc, 0.7, 0.7);			
+			utilFun.SetText(mc["tableNo"], bingo_recode[idx]);
+			
+			var arr:Array =  _betCommand.get_my_bet_info("table");
+			if ( arr.indexOf(bingo_recode[idx]) !=-1)
+			{
+				mc.gotoAndStop(2);
+			}
 		}
 	}
 
