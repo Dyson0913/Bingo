@@ -169,8 +169,12 @@ package ConnectModule.websocket
 							}
 							else if ( state == gameState.START_OPEN ||  state == gameState.END_ROUND)
 							{
-								_model.putValue("chang_order",0);
-								dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );		
+								_model.putValue("chang_order", 0);
+								
+								 
+								dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );	
+								_model.putValue("openBalllist", result.open_info.opened_history);
+								 dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.HALF_ENTER_UPDATE));
 							}
 								
 					}
