@@ -253,13 +253,30 @@ package ConnectModule.websocket
 					break;
 					case "MsgBPEndRound":
 					{
-						var state:int = 0;
+						//var state:int = 0;
 						//if (  result.game_state == "NewRoundState") state = gameState.NEW_ROUND;
 						//if (  result.game_state == "EndBetState") state = gameState.END_BET;
 						//if (  result.game_state == "OpenState") state = gameState.START_OPEN;
-						if (  result.game_state == "EndRoundState") state = gameState.END_ROUND;
+						//if (  result.game_state == "EndRoundState") state = gameState.END_ROUND;
 						
-						//var result_l:Array = result.result_list)
+						//{"result_list": [ { "bet_type": "11,0", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
+															//{ "bet_type": "11,1", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
+															//{ "bet_type": "11,2", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
+															//{ "bet_type": "11,3", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 } ],
+															//"game_state": "EndRoundState",
+															//"game_result_id": 1111,
+															//"room_no": 11,
+															//"timestamp": 1442993563.346101,
+															//"remain_time": 4,
+															//"game_type": "Bingo",
+															//"bingo_result": [12],
+															//"game_id": "Bingo-1",
+															//"game_round": 0,
+															//"message_type": "MsgBPEndRound", 
+															//"id": "4711ad9661c511e5a6fdf23c9189e2a9"}	
+						
+						dispatcher( new ValueObject(result.result_list, modelName.ROUND_RESULT));
+						dispatcher( new ValueObject(result.bingo_result, modelName.BINGO_TABLE));
 						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.WIN_HINT));
 						

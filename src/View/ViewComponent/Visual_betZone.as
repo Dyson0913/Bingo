@@ -68,7 +68,7 @@ package View.ViewComponent
 			totalball_info.CustomizedFun = _text.textSetting;
 			totalball_info.CustomizedData = [{size:40,color:0xB50004,bold:true,align:_text.align_right}, "","","","","","","","","","","",""];			
 			totalball_info.container.x =1061.85;
-			totalball_info.container.y = 154;
+			totalball_info.container.y = 155;
 			totalball_info.Create_by_list(12, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");
 			
 			//var betmaount_num:MultiObject = prepare("betamount_num", new MultiObject(), GetSingleItem("_view").parent.parent);

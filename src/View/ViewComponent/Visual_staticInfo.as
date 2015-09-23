@@ -134,7 +134,8 @@ package View.ViewComponent
 			mc.gotoAndStop( Math.ceil( (ball[idx] + 1) / 15) ) ;			
 			utilFun.SetText(mc["ballNum"], String(ball[idx]));
 			
-			if ( num == 4 || num == 5) mc["ballNum"].textColor = 0x000000;
+			//if ( num == 4 || num == 5) 
+			mc["ballNum"].textColor = 0xFFFFFF;
 			
 		}
 		

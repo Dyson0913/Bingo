@@ -96,17 +96,16 @@ package View.ViewComponent
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "win_hint")]
 		public function winhint():void
 		{			
-			Get("winhint").container.visible = true;			
+			Get("winhint").container.visible = true;		
 			
-			var bingo:Array = _betCommand.get_my_bet_info("table");
-			
-			var oblist:Array = _model.getValue("best_list");
-			var tableNo:Array = [];
-			for (var i:int = 0; i < oblist.length ; i++)
-			{
-				tableNo.push(oblist[i].table_no);
-			}
-			utilFun.Log("tableNo ----------"+tableNo);
+			//var bingo:Array = _betCommand.get_my_bet_info("table");			
+			//var oblist:Array = _model.getValue("best_list");			
+			//for (var i:int = 0; i < oblist.length ; i++)
+			//{
+				//tableNo.push(oblist[i].table_no);
+			//}
+			var tableNo:Array = _model.getValue(modelName.BINGO_TABLE);
+			utilFun.Log("tableNo ----------"+tableNo.length);
 			
 			Get("bingowin_show").container.visible = true;
 			Get("bingowin_show").CustomizedFun = BetListini;
@@ -117,7 +116,7 @@ package View.ViewComponent
 		
 		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void
 		{
-			utilFun.scaleXY(mc, 0.7, 0.7);			
+			//utilFun.scaleXY(mc, 0.7, 0.7);			
 			utilFun.SetText(mc["tableNo"], bingo_recode[idx]);
 			
 			var arr:Array =  _betCommand.get_my_bet_info("table");
@@ -125,6 +124,7 @@ package View.ViewComponent
 			{
 				mc.gotoAndStop(2);
 			}
+			else mc.gotoAndStop(4);
 		}
 	}
 

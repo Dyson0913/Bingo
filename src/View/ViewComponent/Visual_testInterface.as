@@ -52,7 +52,42 @@ package View.ViewComponent
 			btn.Create_by_list(5, ["BetTableBtn"], 0, 0, 5, 110, 0, "Btn_");
 			
 			//TODO check view to do prepare model
-			///////////////////////////			
+			///////////////////////////	
+			//結算,
+			//{"result_list": [{"bet_type": "13,26", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100.0}], 
+			                         //"game_state": "EndRoundState",
+									 //"game_result_id": 1111, 
+									 //"room_no": 13, 
+									 //"timestamp": 1442992744.347524, 
+									 //"remain_time": 4,
+									 //"game_type": "Bingo",
+									 //"bingo_result": [98], 
+									 //"game_id": "Bingo-1",
+									 //"game_round": 0, 
+									 //"message_type": "MsgBPEndRound", 
+									 //"id": "5ee8687661c311e5a6fdf23c9189e2a9"}
+			
+									//{"result_list": [ { "bet_type": "11,0", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
+															//{ "bet_type": "11,1", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
+															//{ "bet_type": "11,2", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
+															//{ "bet_type": "11,3", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 } ],
+															//"game_state": "EndRoundState",
+															//"game_result_id": 1111,
+															//"room_no": 11,
+															//"timestamp": 1442993563.346101,
+															//"remain_time": 4,
+															//"game_type": "Bingo",
+															//"bingo_result": [12],
+															//"game_id": "Bingo-1",
+															//"game_round": 0,
+															//"message_type": "MsgBPEndRound", 
+															//"id": "4711ad9661c511e5a6fdf23c9189e2a9"}
+										
+									 
+									
+									 
+									 
+			
 			
 			//bet _view
 				//var is_bet:Array = [];
