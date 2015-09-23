@@ -2,6 +2,7 @@ package Command
 {
 	import ConnectModule.websocket.WebSoketInternalMsg;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.net.URLVariables;
 	import Model.*;
 	import util.DI;
@@ -48,6 +49,7 @@ package Command
 			_model.putValue("Bet_coin_List", [0, 100, 200, 300, 500, 1000]);
 			//_model.putValue("Bet_coin_List", [0, 100, 100, 100, 200, 500]);
 			_model.putValue("after_bet_credit", 0);
+			_model.putValue("bet_history", []);
 			_Bet_info.putValue("self", [] ) ;
 		}
 		
@@ -501,7 +503,7 @@ package Command
 		
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "win_hint")]
-		public function re_bet():void
+		public function sort_betinfo():void
 		{
 			//{"result_list": [ { "bet_type": "11,0", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
 															//{ "bet_type": "11,1", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
@@ -515,29 +517,46 @@ package Command
 			if ( bet_list.length == 0 ) return;
 			bet_list.length = 0;
 			
-			var coin_list:Array  = _model.getValue("Bet_coin_List");
-			var result_list:Array = _model.getValue(modelName.ROUND_RESULT);			
+			var result_list:Array = _model.getValue(modelName.ROUND_RESULT);						
+			var history:Array = [];
 			for (var i:int = 0; i < result_list.length; i++)
 			{
 				var betob:Object = result_list[i];
 				var room_and_table:String = betob["bet_type"];
 				var data:Array = room_and_table.split(",");
-				var ob:Object  = { "betType": data[1], 											
-			                           "bet_amount":   betob["bet_amount"],		
-									   "bet_idx":coin_list.indexOf( betob["bet_amount"]),						   
-									   "total_amount":betob["bet_amount"]
-									   };
-				utilFun.Log("put ob = "+ data[1]);
-				utilFun.Log("put ob bet_amount]= "+ betob["bet_amount"]);
-				utilFun.Log("put ob conidx= "+ coin_list.indexOf( betob["bet_amount"]));
-				
-				bet_list.push(ob);
+				history.push(data[1]);
+				//var ob:Object  = { "betType": data[1], 											
+			                           //"bet_amount":   betob["bet_amount"],		
+									   //"bet_idx":coin_list.indexOf( betob["bet_amount"]),						   
+									   //"total_amount":betob["bet_amount"]
+									   //};
+				//utilFun.Log("put ob = "+ data[1]);
+				//utilFun.Log("put ob bet_amount]= "+ betob["bet_amount"]);
+				//utilFun.Log("put ob conidx= "+ coin_list.indexOf( betob["bet_amount"]));
+				//
+				//bet_list.push(ob);
 				
 			}
+			_model.putValue("bet_history", history);
 			
 			_Bet_info.putValue("self", bet_list);
+		}
+		
+		public function re_bet():void
+		{
+			var bet_list:Array = _Bet_info.getValue("self");			
+			if ( bet_list.length == 0 ) return;
 			
-			dispatcher(new ModelEvent(WebSoketInternalMsg.BET_STATE_UPDATE));
+			var bet_list:Array = _model.getValue("bet_history");
+			
+			for (var i:int = 0; i < bet_list.length; i++)
+			{
+				var tabNo:int  = bet_list[i];
+				betTypeMain(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false), tabNo);
+			}
+			
+			
+			
 		}
 		
 		
@@ -547,33 +566,6 @@ package Command
 			var bet_list:Array = _Bet_info.getValue("self");
 			
 			if ( bet_list.length == 0 ) return;
-			
-			
-			//var coin_list:Array  = _model.getValue("Bet_coin_List");
-			//var betinfo:Array = _model.getValue("_bet_info");		
-			//
-			//
-			//for (var i:int = 0; i < betinfo.length; i++)
-			//{
-				//var bet:Object = betinfo[i];
-				//var amount:int = get_amount(bet["table_no"]);
-				//bet = { "betType": bet["table_no"], 											
-						   //"bet_amount":  amount,		
-						   //"bet_idx":coin_list.indexOf(amount)
-					   //};
-					   //
-				//if ( _Bet_info.getValue("self") == null) _Bet_info.putValue("self", [bet]);		
-				//else
-				//{
-					//var bet_list:Array = _Bet_info.getValue("self");
-					//bet_list.push(bet);  
-					//_Bet_info.putValue("self", bet_list);
-					//
-				//}
-			//}			
-			//
-			
-			
 		}
 	}
 

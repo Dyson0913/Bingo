@@ -48,6 +48,9 @@ package View.GameView
 		[Inject]
 		public var _test:Visual_testInterface;
 		
+		[Inject]
+		public var _betCommand:BetCommand;
+		
 		public function betView()  
 		{
 			utilFun.Log("betView");
@@ -74,7 +77,9 @@ package View.GameView
 			_timer.init();
 			_hint.init();
 			_bingo.init();
-			utilFun.Log("bet view= end");			
+			
+			//auto bet
+			_betCommand.re_bet();			
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]

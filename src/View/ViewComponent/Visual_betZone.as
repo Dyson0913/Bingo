@@ -248,7 +248,7 @@ package View.ViewComponent
 			var font:Array = [{size:40,color:0xB50004,bold:true,align:_text.align_right}];
 			font = font.concat(amount_no);
 			//utilFun.Log("fornt = "+amount_no);						
-			Get("betamount_num").CustomizedData = font;
+			Get("betamount_num").CustomizedData = font;			
 			Get("betamount_num").Create_by_list(12, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");
 			//Get("betamount_num").FlushObject();
 			
