@@ -69,6 +69,12 @@ package View.ViewComponent
 		[Inject]
 		public var _bingo:Visual_bingoPan;
 		
+		[Inject]
+		public var _staticinfo:Visual_staticInfo;
+		
+		[Inject]
+		public var _ticket:Visual_ticket;
+		
 		private var _script_item:MultiObject;
 		
 		public function Visual_testInterface() 
@@ -226,10 +232,11 @@ package View.ViewComponent
 			changeBG(ResName.Openball_Scene);
 			
 			_ball.init();
-			//_staticinfo.init();
+			
+			_staticinfo.init();
 			
 			
-			//_ticket.init();	
+			_ticket.init();	
 			
 			//_Bigwin_Msg.init();
 		

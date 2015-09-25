@@ -52,9 +52,6 @@ package View.ViewComponent
 			totalball_info.container.y = 89;
 			totalball_info.Create_by_list(1, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
 			
-			//utilFun.SetText(GetSingleItem("best_pan_info", 1)["_text"], String( 4 ));			
-			//utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], String( 10 ));
-			
 			//最佳盤
 			var public_best_pan:MultiObject = prepare("public_best_pan_info", new MultiObject(), GetSingleItem("_view").parent.parent);			
 			public_best_pan.CustomizedFun = pan_set;

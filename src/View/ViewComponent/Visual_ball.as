@@ -49,6 +49,11 @@ package View.ViewComponent
 		   ball_pan.Create_by_list(1, [ResName.Ball_pan], 0, 0, 1, 0, 0, "time_");
 		   ball_pan.container.x = 443.9;
 		   ball_pan.container.y = 537;	
+		   if ( _betCommand.get_my_betlist().length == 0) 
+		   {
+				
+		   }
+		   	
 		   
 		   	//_tool.SetControlMc(sball.container);
 			//add(_tool);
