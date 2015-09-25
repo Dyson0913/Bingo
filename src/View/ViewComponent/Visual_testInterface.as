@@ -1,5 +1,6 @@
 package View.ViewComponent 
 {
+	import ConnectModule.websocket.WebSoketInternalMsg;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
@@ -48,6 +49,9 @@ package View.ViewComponent
 		public var _timer:Visual_timer;
 		
 		[Inject]
+		public var _playerinfo:Visual_PlayerInfo;
+		
+		[Inject]
 		public var _betzone:Visual_betZone;	
 		
 		[Inject]
@@ -55,6 +59,15 @@ package View.ViewComponent
 		
 		[Inject]
 		public var _text:Visual_Text;
+		
+		[Inject]
+		public var _ball:Visual_ball;
+		
+		[Inject]
+		public var _roomItem:Visual_RoomSelect;
+		
+		[Inject]
+		public var _bingo:Visual_bingoPan;
 		
 		private var _script_item:MultiObject;
 		
@@ -71,13 +84,20 @@ package View.ViewComponent
 			_model.putValue("result_Pai_list", []);
 			_model.putValue("game_round", 1);			
 			
+			var temp:Array = [];
+			for (var i:int = 0; i < 100;i++)
+			{
+				temp.push(0);
+			}
+			_model.putValue("is_betarr",temp);
+			
 			//腳本
 			var script_list:MultiObject = prepare("script_list", new MultiObject() ,GetSingleItem("_view").parent.parent );			
 			script_list.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);			
 			script_list.stop_Propagation = true;
 			script_list.mousedown = script_list_test;			
 			script_list.mouseup = up;			
-			script_list.CustomizedData = [{size:18},"下注腳本","開球腳本","結算腳本"]
+			script_list.CustomizedData = [{size:18},"選桌","下注","開球","結算"]
 			script_list.CustomizedFun = _text.textSetting;			
 			script_list.Create_by_list(script_list.CustomizedData.length -1, [ResName.Paninfo_font], 0, 0, script_list.CustomizedData.length-1, 100, 20, "Btn_");			
 			
@@ -134,49 +154,84 @@ package View.ViewComponent
 		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "0")]
 		public function betScript():void
 		{
-			changeBG(ResName.Bet_Scene);			
+			changeBG(ResName.RoomSelect);			
 			
-		
-			dispatcher(new ModelEvent("display"));
+			//fake model
+			var arr:Array = [];
+			for ( var i:int = 0; i < 100; i++)	
+			{
+				var roomob:Object = { "room_no":i , "bet_tables":i }; 
+				arr.push(roomob);
+			}
+			_model.putValue("SelectRoomInfo",arr);
 			
-			//=============================================Hintmsg
-			_hint.init();
-			_hint.display();
-			
-			
-			_model.putValue(modelName.REMAIN_TIME, 20);					
-			_timer.init();
-			_timer.display();		
+			_roomItem.init();			
 		}	
-		
-		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "00")]
-		public function test00():void
-		{			
-			//_settle.init();
-			//_tool.SetControlMc(playerzone.ItemList[0]);
-			//_tool.SetControlMc(Get(modelName.REMAIN_TIME).container);				
-			//_model.putValue(modelName.PLAYER_POKER, ["2d"]);				
-			//_model.putValue(modelName.BANKER_POKER, ["2d"]);		
-			//_model.putValue(modelName.RIVER_POKER, []);		
-			//_poker.prob_cal();
-						
-		}		
 		
 		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "1")]
 		public function opencardScript():void
 		{					
-			changeBG(ResName.Bet_Scene);
+			changeBG(ResName.Bet_Scene);			
+			
+			_playerinfo.init();
+			
+			//fake model
+			var table:Array = [];
+			for ( var i:int = 0; i < 100; i++)	
+			{				
+				table.push(utilFun.Random(1));
+			}			
+			_model.putValue("is_betarr",table);
+			_betzone.init();
+			
+			//fake model
+			_model.putValue(modelName.REMAIN_TIME, 10);					
+			_timer.init();			
 			
 			
+			_hint.init();
+			
+			var balls:Array = [];
+			for ( var i:int = 0; i < 100; i++)	
+			{		
+				var pan:Array = [];
+				for ( var k:int = 0; k < 24; k++)
+				{
+				    pan.push(k);
+				}
+				balls.push(pan);
+			}						
+			_model.putValue("ballarr",balls);
+			_bingo.init();
+		
+			dispatcher(new ModelEvent("display"));		
+			
+			_regular.Call(this, { onComplete:this.fake_stop_bet}, 10,0, 1, "linear");
+			
+			//TODO 押注功能重構
+			//auto bet
+			//_betCommand.re_bet();			
 		}
 		
+		public function fake_stop_bet():void
+		{
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STOP_HINT));
+		}
 	
 		
 		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "2")]
 		public function settleScript():void
 		{
 		
-			changeBG(ResName.Bet_Scene);
+			changeBG(ResName.Openball_Scene);
+			
+			_ball.init();
+			//_staticinfo.init();
+			
+			
+			//_ticket.init();	
+			
+			//_Bigwin_Msg.init();
 		
 			//var fakePacket:Object =  { "result_list": [
 			                                                                //{"bet_type": "BetBWPlayer", "settle_amount": 200, "odds": 2, "win_state": "WSBWFullHouse", "bet_amount": 100 },

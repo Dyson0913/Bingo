@@ -5,6 +5,7 @@ package View.GameView
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.printing.PrintJob;
 	import flash.text.TextField;
 	import Model.valueObject.*
 	import Res.ResName;
@@ -34,10 +35,7 @@ package View.GameView
 		public var _regular:RegularSetting;	
 		
 		[Inject]
-		public var _timer:Visual_timer;
-		
-		[Inject]
-		public var _hint:Visual_Hintmsg;
+		public var _timer:Visual_timer;		
 		
 		[Inject]
 		public var _ball:Visual_ball;
@@ -50,6 +48,9 @@ package View.GameView
 		
 		[Inject]
 		public var _settle:Visual_Settle;
+		
+		[Inject]
+		public var _Bigwin_Msg:Visual_Bigwin_Msg;
 		
 		[Inject]
 		public var _test:Visual_testInterface;
@@ -74,14 +75,14 @@ package View.GameView
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Openball_Scene], 0, 0, 1, 0, 0, "a_");	
 			
-			//_test.init();
 			
 			_ball.init();
 			_staticinfo.init();
 			
 			
 			_ticket.init();	
-			_hint.init();
+			
+			_Bigwin_Msg.init();
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]

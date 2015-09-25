@@ -5,7 +5,7 @@ package View.ViewBase
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import Model.Model;
-	import Command.ViewCommand;
+	import Command.*;
 	import Interface.ViewComponentInterface;
 	import util.*;
 	import Model.*;
@@ -27,6 +27,9 @@ package View.ViewBase
 		
 		[Inject]
 		public var _viewcom:ViewCommand;
+		
+		[Inject]
+		public var _regular:RegularSetting;
 		
 		public var _tool:AdjustTool;
 		

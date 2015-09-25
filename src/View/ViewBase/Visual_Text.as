@@ -73,12 +73,14 @@ package View.ViewBase
 			_NickName.wordWrap = true; //auto change line
 			_NickName.multiline = true; //multi line
 			_NickName.maxChars = 300;
+			//_NickName.opaqueBackground = 0x0000FF; //blue background
 			//"微軟正黑體"
 			var myFormat:TextFormat = new TextFormat();
 			myFormat.size = size;
 			myFormat.align = align;
 			myFormat.bold = bold;
 			myFormat.font = "Microsoft JhengHei";			
+			
 			
 			_NickName.defaultTextFormat = myFormat;				
 			_NickName.text = text;			

@@ -17,11 +17,12 @@ package View.ViewComponent
 	 */
 	public class Visual_Hintmsg  extends VisualHandler
 	{
-		[Inject]
-		public var _regular:RegularSetting;
 		
 		[Inject]
 		public var _betCommand:BetCommand;
+		
+		private var _frame_Stop_bet:int = 2;
+		private var _frame_uplimit_bet:int = 3;
 		
 		public function Visual_Hintmsg() 
 		{
@@ -33,43 +34,19 @@ package View.ViewComponent
 			var hintmsg:MultiObject = prepare(modelName.HINT_MSG, new MultiObject()  , GetSingleItem("_view").parent.parent);
 			hintmsg.Create_by_list(1, [ResName.Hint], 0, 0, 1, 0, 0, "time_");
 			hintmsg.container.x = 87;
-			hintmsg.container.y = 459;
-			hintmsg.container.visible = false;
-		
+			hintmsg.container.y = 459;		
 			
-			var winhint:MultiObject = prepare("winhint", new MultiObject()  , GetSingleItem("_view").parent.parent);
-			winhint.Create_by_list(1, [ResName.Winhint], 0, 0, 1, 0, 0, "time_");
-			winhint.container.x = 449;
-			winhint.container.y = 103;
-			winhint.container.visible = false;
-			
-			var public_best_pan:MultiObject = prepare("bingowin_show", new MultiObject(), GetSingleItem("_view").parent.parent);			
-			//public_best_pan.CustomizedFun = pan_set;
-			public_best_pan.container.x = 492.85;
-			public_best_pan.container.y = 128.8;
-			public_best_pan.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");
-			public_best_pan.container.visible = false;
 			//_tool.SetControlMc(public_best_pan.container);
-			//add(_tool);
-			
-		}
-		
-		public function pan_set(mc:MovieClip, idx:int, tablelist:Array):void
-		{				
-			mc.visible = false;			
+			//add(_tool);			
 		}
 		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstopHint")]
 		public function display():void
-		{
-			Get(modelName.HINT_MSG).container.visible = true;
-			GetSingleItem(modelName.HINT_MSG).gotoAndStop(1);	
+		{			
+			GetSingleItem(modelName.HINT_MSG).gotoAndStop(_frame_Stop_bet);	
 			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 2, 2, _regular.Fadeout);		
 			
-			Get("bingowin_show").container.visible = false;
-			
-			Tweener.addCaller(Get("bingowin_show").container, { time:2 , count: 1 , transition:"linear",onComplete: this.change } );
-			
+			Tweener.addCaller(this, { time:2 , count: 1 , transition:"linear",onComplete: this.change } );
 		}	
 		
 		public function change():void
@@ -79,53 +56,18 @@ package View.ViewComponent
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "CreditNotEnough")]
 		public function no_credit():void
-		{			
-			Get(modelName.HINT_MSG).container.visible = true;
-			GetSingleItem(modelName.HINT_MSG).gotoAndStop(2);
+		{						
+			GetSingleItem(modelName.HINT_MSG).gotoAndStop(3);
 			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 2, 2, _regular.Fadeout);
 		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "betfullHint")]
 		public function betfull():void
 		{			
-			Get(modelName.HINT_MSG).container.visible = true;
-			GetSingleItem(modelName.HINT_MSG).gotoAndStop(2);
+			GetSingleItem(modelName.HINT_MSG).gotoAndStop(_frame_uplimit_bet);
 			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 2, 2, _regular.Fadeout);
 		}
 		
-		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "win_hint")]
-		public function winhint():void
-		{			
-			Get("winhint").container.visible = true;		
-			
-			//var bingo:Array = _betCommand.get_my_bet_info("table");			
-			//var oblist:Array = _model.getValue("best_list");			
-			//for (var i:int = 0; i < oblist.length ; i++)
-			//{
-				//tableNo.push(oblist[i].table_no);
-			//}
-			var tableNo:Array = _model.getValue(modelName.BINGO_TABLE);
-			utilFun.Log("tableNo ----------"+tableNo.length);
-			
-			Get("bingowin_show").container.visible = true;
-			Get("bingowin_show").CustomizedFun = BetListini;
-			Get("bingowin_show").CustomizedData = tableNo;
-			Get("bingowin_show").Create_by_list(tableNo.length, [ResName.BetButton], 0, 0, 10, 106.25, 80, "time_");
-			Get("bingowin_show").FlushObject();
-		}
-		
-		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void
-		{
-			//utilFun.scaleXY(mc, 0.7, 0.7);			
-			utilFun.SetText(mc["tableNo"], bingo_recode[idx]);
-			
-			var arr:Array =  _betCommand.get_my_bet_info("table");
-			if ( arr.indexOf(bingo_recode[idx]) !=-1)
-			{
-				mc.gotoAndStop(2);
-			}
-			else mc.gotoAndStop(4);
-		}
 	}
 
 }

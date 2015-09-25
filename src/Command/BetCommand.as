@@ -89,6 +89,39 @@ package Command
 			return true;
 		}		
 		
+		public function can_bet(idx:int ):Boolean
+		{
+			var betstate:Array = _model.getValue("is_betarr");
+			if ( betstate[idx] == 1)
+			{
+				var mybet:Array =  get_my_bet_info("table");
+				//別人的
+				if ( mybet.indexOf(idx) == -1) return false;				
+			}
+			
+			return false;
+		}
+		
+		public function check_bet_Acction(e:Event, idx:int):Boolean
+		{
+			//check some body bet	
+			can_bet(idx);
+		
+			
+			var bet_list:Array = _Bet_info.getValue("self");
+			// table no  to bet_list idx 
+			var tableNo :int = -1;
+			
+			if ( idx >= bet_list.length )
+			{
+			    //over idx
+				utilFun.Log("over idx = ");
+				return false
+			}			
+			
+			return false
+		}
+		
 		public function betbyTable(e:Event, idx:int):Boolean
 		{			
 			//check some body bet		
@@ -210,11 +243,16 @@ package Command
 			
 			var bet:Object;
 			var amount:int = get_amount(idx);
+			utilFun.Log("amount = " +  (amount - get_total_bet(idx)) );
+			utilFun.Log("get_total_bet = " + get_total_bet(idx));
+			utilFun.Log("coin_list.indexOf(amount) = " + coin_list.indexOf(amount));
+			utilFun.Log("betzone_totoal() = " + amount );
+			
 			bet = { "betType": idx, 											
-			                           "bet_amount":  amount,		
-									   "bet_idx":coin_list.indexOf(amount)						   
+			                           "bet_amount":  amount - get_total_bet(idx),		
+									   "bet_idx":coin_list.indexOf(amount),
+									   "total_amount":amount
 									   };
-									   
 			//var bet_list:Array =  _model.getValue("Bet_recode_List");
 			//for (var i:int = 0; i < bet_list.length; i++)
 			//{
@@ -222,6 +260,7 @@ package Command
 				//
 				//utilFun.Log("bet_info  = "+bet["betType"] +" amount ="+ bet["bet_amount"]);
 			//}
+			
 			//return true;
 			dispatcher( new ActionEvent(bet, "bet_action"));
 			
@@ -373,8 +412,24 @@ package Command
 			
 			dispatcher(new ModelEvent(WebSoketInternalMsg.BET_UPDATE));
 			
+			if ( CONFIG::debug ) 
+			{
+				var bet_ob:Object = _Actionmodel.excutionMsg();
+				var is_bet:Array = _model.getValue("is_betarr");
+				var num:int  = is_bet.length;						
+				is_bet.splice(bet_ob["betType"], 0, 1);
+				
+				utilFun.Log("fake push is_bet ="+is_bet);
+				_model.putValue("is_betarr", is_bet);						
+				
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
+				utilFun.Log("send info =");
+			}	
+			
+			
 			_Actionmodel.dropMsg();
 			if ( _Actionmodel.length() != 0) dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+				
 		}
 		
 		private function all_betzone_totoal():Number

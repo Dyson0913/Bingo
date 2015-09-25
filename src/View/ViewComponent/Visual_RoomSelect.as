@@ -21,9 +21,6 @@ package View.ViewComponent
 	public class Visual_RoomSelect  extends VisualHandler
 	{
 		[Inject]
-		public var _regular:RegularSetting;
-		
-		[Inject]
 		public var _betCommand:BetCommand;
 		
 		
@@ -35,7 +32,8 @@ package View.ViewComponent
 		}
 		
 		public function init():void
-		{
+		{			
+			
 			var tabob:Object = _model.getValue("SelectRoomInfo");
 			var spider:MultiObject = prepare("spider", new MultiObject()  , GetSingleItem("_view").parent.parent);
 			spider.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [0, 0, 2, 1]);			

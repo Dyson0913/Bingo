@@ -20,9 +20,6 @@ package View.ViewComponent
 	public class Visual_betZone  extends VisualHandler
 	{
 		[Inject]
-		public var _regular:RegularSetting;
-		
-		[Inject]
 		public var _betCommand:BetCommand;
 		
 		[Inject]
@@ -36,16 +33,6 @@ package View.ViewComponent
 		
 		public function init():void
 		{
-			//bet			
-			var betPan:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
-			betPan.container.x = 151.85;
-			betPan.container.y = 235.85;
-			betPan.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,3]);
-			betPan.CustomizedFun = BetListini;
-			betPan.CustomizedData = _model.getValue("is_betarr");
-			betPan.Create_by_list(betPan.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
-			betPan.mousedown = _betCommand.betbyTable;
-			betPan.mouseup =  _betCommand.check;
 			
 			//押分 pan num
 			var betlist:MultiObject = prepare("betlist", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -55,14 +42,14 @@ package View.ViewComponent
 			betlist.CustomizedFun = BetListFun;			
 			betlist.CustomizedData = _betCommand.get_my_bet_info("table");			
 			betlist.Create_by_list(12,  [ResName.Bet_Pan_Num], 0 , 0, 1,0, 47, "Coin_");
-			
-			
+			//
+			//
 			//押分底圖
 			var betmaount:MultiObject = prepare("betamount", new MultiObject(), GetSingleItem("_view").parent.parent);
 			betmaount.container.x = 1520.85;
 			betmaount.container.y = 159.3;			
 			betmaount.Create_by_list(12,  [ResName.Bet_amount_bg], 0 , 0, 1,0, 47, "Coin_");			
-			
+			//
 			//押分數字			
 			var totalball_info:MultiObject = prepare("betamount_num", new MultiObject(), GetSingleItem("_view").parent.parent);
 			totalball_info.CustomizedFun = _text.textSetting;
@@ -70,14 +57,7 @@ package View.ViewComponent
 			totalball_info.container.x =1061.85;
 			totalball_info.container.y = 155;
 			totalball_info.Create_by_list(12, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");
-			
-			//var betmaount_num:MultiObject = prepare("betamount_num", new MultiObject(), GetSingleItem("_view").parent.parent);
-			//betmaount_num.container.x = 1558.85;
-			//betmaount_num.container.y = 162.3;
-			//betmaount_num.CustomizedFun = bet_amountFun;			
-			//betmaount_num.CustomizedData = _betCommand.get_my_bet_info("amount");
-			//betmaount_num.Create_by_list(12,  [ResName.Bet_amount_num], 0 , 0, 1,0,47 , "Coin_");			
-			
+			//
 			//押分sub
 			var bet_sub:MultiObject = prepare("betamount_sub", new MultiObject(), GetSingleItem("_view").parent.parent);
 			bet_sub.container.x = 1523.85;
@@ -86,7 +66,7 @@ package View.ViewComponent
 			bet_sub.Create_by_list(12,  [ResName.Bet_sub], 0 , 0, 1, 0, 47, "Coin_");		
 			bet_sub.mousedown = _betCommand.betbyidx_sub;
 			bet_sub.mouseup = _betCommand.check;
-			
+			//
 			var bet_add:MultiObject = prepare("betamount_add", new MultiObject(), GetSingleItem("_view").parent.parent);
 			bet_add.container.x = 1685.85;
 			bet_add.container.y = 161.3;
@@ -94,7 +74,7 @@ package View.ViewComponent
 			bet_add.Create_by_list(12,  [ResName.Bet_add], 0 , 0, 1, 0, 47, "Coin_");					
 			bet_add.mousedown = _betCommand.betbyidx_add;
 			bet_add.mouseup = _betCommand.check;	
-			
+			//
 			var cancel_bet:MultiObject = prepare("cancel_bet", new MultiObject(), GetSingleItem("_view").parent.parent);
 			cancel_bet.container.x = 974;
 			cancel_bet.container.y = 984;
@@ -102,6 +82,27 @@ package View.ViewComponent
 			cancel_bet.Create_by_list(1,  [ResName.Cancel_ALLBet_Btn], 0 , 0, 1, 0, 0, "Coin_");					
 			cancel_bet.mousedown = _betCommand.cancel_allbet;
 			cancel_bet.mouseup = _betCommand.check;	
+			
+			//bet			
+			var betPan:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
+			betPan.container.x = 151.85;
+			betPan.container.y = 235.85;
+			betPan.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
+			betPan.CustomizedFun = BetListini;
+			betPan.CustomizedData = _model.getValue("is_betarr");
+			betPan.Create_by_list(betPan.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
+			
+			if ( CONFIG::debug ) 
+			{
+				betPan.mousedown = _betCommand.bet_local;
+				//betPan.mouseup =  _betCommand.check;
+			}
+			else
+			{
+				betPan.mousedown = _betCommand.betbyTable;
+				betPan.mouseup =  _betCommand.check;
+			}
+			
 			
 			//_tool.SetControlMc(totalball_info.container);
 			//add(_tool);
@@ -120,34 +121,6 @@ package View.ViewComponent
 			Get("cancel_bet").mouseup = null;			
 		}
 		
-		public function bet_amountFun(mc:MovieClip, idx:int, betamount:Array):void
-		{
-			mc["_num_0"].gotoAndStop(11);
-			mc["_num_1"].gotoAndStop(11);
-			mc["_num_2"].gotoAndStop(11);
-			mc["_num_3"].gotoAndStop(11);
-			mc["_num_4"].gotoAndStop(11);
-			
-			if (betamount &&  betamount[idx] != undefined)
-			{							
-				var arr:Array = String(betamount[idx]).split("");
-				var re:Array = arr.reverse();
-				//utilFun.Log("reverse = "+re);			
-				for ( var i:int = 0; i < 5; i++)
-				{
-					if ( re[i] != undefined)
-					{
-						if ( re[i] == "0" ) re[i] = "10";
-						mc["_num_" + i].gotoAndStop( parseInt(re[i]));
-					}
-					else mc["_num_" + i].gotoAndStop(11);
-					
-				}			
-			}
-		
-			
-		}
-				
 		public function BetListFun(mc:MovieClip, idx:int, IsBetInfo:Array):void
 		{
 			utilFun.scaleXY(mc, 0.7, 0.7);
@@ -236,14 +209,6 @@ package View.ViewComponent
 			Get("betlist").CustomizedData = tab_no;
 			Get("betlist").FlushObject();
 			
-			//pan 金額
-			//Get("betamount_num").CustomizedFun = bet_amountFun;
-			//Get("betamount_num").CustomizedData =  amount_no;
-			//Get("betamount_num").FlushObject();			
-			//for ( var i:int = 0; i < 12; i++)
-			//{
-				//utilFun.Clear_ItemChildren(GetSingleItem("betamount_num"));	
-			//}
 				
 			var font:Array = [{size:40,color:0xB50004,bold:true,align:_text.align_right}];
 			font = font.concat(amount_no);

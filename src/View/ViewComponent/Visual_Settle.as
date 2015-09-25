@@ -15,10 +15,7 @@ package View.ViewComponent
 	 * @author ...
 	 */
 	public class Visual_Settle  extends VisualHandler
-	{
-		[Inject]
-		public var _regular:RegularSetting;
-		
+	{		
 		public function Visual_Settle() 
 		{
 			
