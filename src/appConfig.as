@@ -48,6 +48,7 @@ package
 		//util
 		public var _path:Path_Generator = new Path_Generator();
 		
+		public var _text:Visual_Text = new Visual_Text();
 		
 		//visual		
 		public var _timer:Visual_timer = new Visual_timer();

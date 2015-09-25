@@ -33,26 +33,8 @@ package View.GameView
 	 
 	public class LoadingView extends ViewBase
 	{	
-		private var _mainroad:MultiObject = new MultiObject();
-		private var _localDI:DI = new DI();
-		
-		public var _mainTable:LinkList = new LinkList();
-		public var _bigroadTable:LinkList = new LinkList();        
-		
-		[Inject]
-		public var _regular:RegularSetting;	
-		
 		[Inject]
 		public var _visual_test:Visual_testInterface;
-		
-		[Inject]
-		public var _betCommand:BetCommand;
-		
-		[Inject]
-		public var _ticket:Visual_ticket;
-		
-		[Inject]
-		public var _hint:Visual_Hintmsg;
 		
 		public function LoadingView()  
 		{
@@ -64,6 +46,7 @@ package View.GameView
  		{			
 			//dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH));		
 			//return;
+			_betCommand.bet_init();
 			
 			_model.putValue("bingo_color", [0x41A0F0, 0xF01E1E, 0xB9B9B9, 0x23C323, 0xF58C00]);
 			
@@ -95,19 +78,12 @@ package View.GameView
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Loading_Scene], 0, 0, 1, 0, 0, "a_");			
 			_tool = new AdjustTool();			
-			_betCommand.bet_init();
-			//_regular.strdotloop(view.ItemList[0]["_Text"],20,40);			
-			//Tweener.addTween(view.ItemList[0]["_mask"], { y:view.ItemList[0]["_mask"].y-164, time:3,onComplete:test,transition:"easeInOutQuart"} );			
+			
 		
 			//dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );		
 			utilFun.SetTime(connet, 0.1);
-			//-------------------------------ticket
-			//_hint.init();
+			_visual_test.init();
 			
-			//-------------------------------ticket
-			//_visual_test.init();
-				//_ticket.init();
-			//
 		}
 		private function connet():void
 		{	

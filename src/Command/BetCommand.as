@@ -131,9 +131,7 @@ package Command
 		{
 			var bet_list:Array = _Bet_info.getValue("self");
 			// table no  to bet_list idx 
-			var tableNo :int = -1;
-			
-			var bet_list:Array = _Bet_info.getValue("self");
+			var tableNo :int = -1;			
 			if ( idx >= bet_list.length )
 			{
 				//over idx
