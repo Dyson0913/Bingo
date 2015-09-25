@@ -543,9 +543,7 @@ package Command
 		}
 		
 		public function re_bet():void
-		{
-			var bet_list:Array = _Bet_info.getValue("self");			
-			if ( bet_list.length == 0 ) return;
+		{			
 			
 			var bet_list:Array = _model.getValue("bet_history");
 			
