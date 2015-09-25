@@ -36,6 +36,9 @@ package View.GameView
 		[Inject]
 		public var _visual_test:Visual_testInterface;
 		
+		[Inject]
+		public var _betCommand:BetCommand;
+		
 		public function LoadingView()  
 		{
 			

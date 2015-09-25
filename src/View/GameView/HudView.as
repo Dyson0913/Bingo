@@ -5,8 +5,7 @@ package View.GameView
 	import flash.events.Event;
 	import Model.valueObject.Intobject;
 	import util.DI;
-	import View.ViewBase.ViewBase;
-	import View.Viewutil.SingleObject;
+	import View.ViewBase.ViewBase;	
 	import View.Viewutil.MouseBehavior;;
 	import Model.*;
 	import util.utilFun;
