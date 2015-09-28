@@ -48,7 +48,7 @@ package View.ViewComponent
 		   ball_pan.container.x = 443.9;
 		   ball_pan.container.y = 537;	
 			
-		   var table:Array = _betCommand.get_my_bet_info("table");		 
+		   var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);		 
 		   var totalshow:int = Math.min(table.length, 3);		   
 			var ticket:MultiObject = prepare("ticket", new MultiObject(), ball_pan.container);	
 			ticket.CustomizedFun = info_initFun;
@@ -87,7 +87,7 @@ package View.ViewComponent
 			utilFun.SetText( mc["_panNum"]["tableNo"], String( tableid[idx]));			
 			
 			
-			var amount:Array = _betCommand.get_my_bet_info("amount");
+			var amount:Array = _betCommand.get_my_bet_info(BetCommand.TotalBet);
 			//utilFun.Log("idx = " + idx);
 			//utilFun.Log("amount = " + amount);
 			//utilFun.Log(" amount[idx] = " +  amount[idx]);
@@ -232,7 +232,7 @@ package View.ViewComponent
 			}
 			
 			utilFun.SetText( mc["_panNum"]["tableNo"], String( tableid[idx]));
-			var amount:Array = _betCommand.get_my_bet_info("amount");
+			var amount:Array = _betCommand.get_my_bet_info(BetCommand.TotalBet);
 			
 			//amount
 			utilFun.Clear_ItemChildren(mc["_pan_amount"]);
@@ -242,7 +242,7 @@ package View.ViewComponent
 		
 		public function best3_pan(openballist:Array):Array
 		{
-			var tableNo:Array =  _betCommand.get_my_bet_info("table");			
+			var tableNo:Array =  _betCommand.get_my_bet_info(BetCommand.Table);			
 			var Table_len:int = tableNo.length;
 			//utilFun.Log("Table_len = "+ Table_len);
 			//utilFun.Log("openballist = "+ openballist);

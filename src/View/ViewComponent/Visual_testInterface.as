@@ -210,10 +210,11 @@ package View.ViewComponent
 			_model.putValue("ballarr",balls);
 			_bingo.init();
 		
-			dispatcher(new ModelEvent("display"));		
+			//dispatcher(new ModelEvent("display"));		
 			
-			_regular.Call(this, { onComplete:this.fake_stop_bet}, 10,0, 1, "linear");
+			//_regular.Call(this, { onComplete:this.fake_stop_bet}, 10,0, 1, "linear");
 			
+		
 			//TODO 押注功能重構
 			//auto bet
 			//_betCommand.re_bet();			
@@ -223,7 +224,6 @@ package View.ViewComponent
 		{
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STOP_HINT));
 		}
-	
 		
 		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "2")]
 		public function settleScript():void

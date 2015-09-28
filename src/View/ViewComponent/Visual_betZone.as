@@ -1,5 +1,6 @@
 package View.ViewComponent 
 {
+	import ConnectModule.websocket.WebSoketInternalMsg;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import View.ViewBase.Visual_Text;
@@ -40,7 +41,7 @@ package View.ViewComponent
 			betlist.container.y = 160.3;
 			betlist.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,0]);
 			betlist.CustomizedFun = BetListFun;			
-			betlist.CustomizedData = _betCommand.get_my_bet_info("table");			
+			betlist.CustomizedData = _betCommand.get_my_bet_info(BetCommand.Table);			
 			betlist.Create_by_list(12,  [ResName.Bet_Pan_Num], 0 , 0, 1,0, 47, "Coin_");
 			//
 			//
@@ -64,16 +65,18 @@ package View.ViewComponent
 			bet_sub.container.y = 161.3;
 			bet_sub.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			bet_sub.Create_by_list(12,  [ResName.Bet_sub], 0 , 0, 1, 0, 47, "Coin_");		
-			bet_sub.mousedown = _betCommand.betbyidx_sub;
-			bet_sub.mouseup = _betCommand.check;
+			//bet_sub.mousedown = _betCommand.betbyidx_sub;
+			bet_sub.mousedown = Panel_sub_plus_condition;
+			bet_sub.mouseup = _betCommand.empty_reaction;
 			//
 			var bet_add:MultiObject = prepare("betamount_add", new MultiObject(), GetSingleItem("_view").parent.parent);
 			bet_add.container.x = 1685.85;
 			bet_add.container.y = 161.3;
 			bet_add.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			bet_add.Create_by_list(12,  [ResName.Bet_add], 0 , 0, 1, 0, 47, "Coin_");					
-			bet_add.mousedown = _betCommand.betbyidx_add;
-			bet_add.mouseup = _betCommand.check;	
+			//bet_add.mousedown = _betCommand.betbyidx_add;
+			bet_add.mousedown = Panel_add_plus_condition;
+			bet_add.mouseup = _betCommand.empty_reaction;	
 			//
 			var cancel_bet:MultiObject = prepare("cancel_bet", new MultiObject(), GetSingleItem("_view").parent.parent);
 			cancel_bet.container.x = 974;
@@ -94,7 +97,7 @@ package View.ViewComponent
 			
 			if ( CONFIG::debug ) 
 			{
-				betPan.mousedown = _betCommand.bet_local;
+				betPan.mousedown = add_plus_condition;
 				//betPan.mouseup =  _betCommand.check;
 			}
 			else
@@ -103,10 +106,46 @@ package View.ViewComponent
 				betPan.mouseup =  _betCommand.check;
 			}
 			
-			
+			//	test.mouseup =  _betCommand.check;
 			//_tool.SetControlMc(totalball_info.container);
 			//add(_tool);
 		}		
+		
+		public function add_plus_condition(e:Event, tableNo:int):Boolean
+		{
+			//over 12 bet type
+			if (  _betCommand.Find_Bet_type_idx(tableNo) == -1)
+			{
+				var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);				
+				if ( table.length >= 12 )
+				{
+					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_FULL_HINT));
+					return false;
+				}
+			}
+			
+			return _betCommand.add(e, tableNo);
+		}
+		
+		public function Panel_add_plus_condition(e:Event, idx:int):Boolean
+		{
+			//convert from item idx to Tableno
+			var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);			
+			if (table[idx] == undefined) return false;
+			var tableNo:int = table[idx] ;
+			
+			return add_plus_condition(e, tableNo);
+		}
+		
+		public function Panel_sub_plus_condition(e:Event, idx:int):Boolean
+		{
+			//convert from item idx to Tableno
+			var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);			
+			if (table[idx] == undefined) return false;
+			var tableNo:int = table[idx] ;
+			
+			return _betCommand.sub_amount(e, tableNo);
+		}
 		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstopHint")]
 		public function forbidden():void
@@ -133,7 +172,7 @@ package View.ViewComponent
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_my_bet_info("table");
+			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
 			var cnt:int =  arr.length;
 			
 			//先調回無人下注
@@ -165,7 +204,7 @@ package View.ViewComponent
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_my_bet_info("table");
+			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
 			var cnt:int =  arr.length;
 			
 			//先調回無人下注
@@ -198,8 +237,8 @@ package View.ViewComponent
 		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]	
 		public function betlist_update():void
 		{			
-			var tab_no:Array = _betCommand.get_my_bet_info("table");
-			var amount_no:Array = _betCommand.get_my_bet_info("amount");		
+			var tab_no:Array = _betCommand.get_my_bet_info(BetCommand.Table);
+			var amount_no:Array = _betCommand.get_my_bet_info(BetCommand.TotalBet);		
 			
 			utilFun.Log("tab_no = "+tab_no);
 			utilFun.Log("amount_no = "+amount_no);

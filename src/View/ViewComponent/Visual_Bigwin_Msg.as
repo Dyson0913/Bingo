@@ -75,7 +75,7 @@ package View.ViewComponent
 			//utilFun.scaleXY(mc, 0.7, 0.7);			
 			utilFun.SetText(mc["tableNo"], bingo_recode[idx]);
 			
-			var arr:Array =  _betCommand.get_my_bet_info("table");
+			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
 			if ( arr.indexOf(bingo_recode[idx]) !=-1)
 			{
 				mc.gotoAndStop(2);

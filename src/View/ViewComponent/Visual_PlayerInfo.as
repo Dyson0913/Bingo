@@ -120,7 +120,7 @@ package View.ViewComponent
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_my_bet_info("table");
+			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
 			var cnt:int =  arr.length;
 			
 			//先調回無人下注
