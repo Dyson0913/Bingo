@@ -87,7 +87,7 @@ package View.ViewComponent
 			//倍數提示底圖
 			var listenpai:MultiObject = prepare("listenpai", new MultiObject(), GetSingleItem("_view").parent.parent);			
 			listenpai.container.x =-431;
-			listenpai.container.y = 110;
+			listenpai.container.y = 50.5;
 			listenpai.Create_by_list(1, [ResName.listenpai], 0, 0, 1, 0, 47, "time_")
 			listenpai.container.visible = false;
 			

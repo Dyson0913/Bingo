@@ -44,8 +44,14 @@ package View.ViewComponent
 			switchbtn.container.y = 1000;
 			switchbtn.Create_by_list(1, [ResName.switchbtn], 0, 0, 1, 106.25, 80, "time_");  
 			
+			var selfbingo_panel:MultiObject = prepare("selfbingo_panel", new MultiObject(), GetSingleItem("_view").parent.parent);						
+			selfbingo_panel.container.x = 800;
+			selfbingo_panel.container.y = 380;
+			selfbingo_panel.Create_by_list(1, [ResName.selfbingo_panel], 0, 0, 1, 106.25, 80, "time_");  
+			selfbingo_panel.container.visible = false;
 			
-		   //_tool.SetControlMc(switchbtn.container);
+		   //_tool.SetControlMc(selfbingo_panel.container);
+		   //_tool.y = 200;
 			//add(_tool);
 		}
 		
