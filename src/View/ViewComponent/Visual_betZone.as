@@ -65,7 +65,6 @@ package View.ViewComponent
 			bet_sub.container.y = 161.3;
 			bet_sub.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			bet_sub.Create_by_list(12,  [ResName.Bet_sub], 0 , 0, 1, 0, 47, "Coin_");		
-			//bet_sub.mousedown = _betCommand.betbyidx_sub;
 			bet_sub.mousedown = Panel_sub_plus_condition;
 			bet_sub.mouseup = _betCommand.empty_reaction;
 			//
@@ -74,7 +73,6 @@ package View.ViewComponent
 			bet_add.container.y = 161.3;
 			bet_add.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			bet_add.Create_by_list(12,  [ResName.Bet_add], 0 , 0, 1, 0, 47, "Coin_");					
-			//bet_add.mousedown = _betCommand.betbyidx_add;
 			bet_add.mousedown = Panel_add_plus_condition;
 			bet_add.mouseup = _betCommand.empty_reaction;	
 			//
@@ -83,8 +81,7 @@ package View.ViewComponent
 			cancel_bet.container.y = 984;
 			cancel_bet.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			cancel_bet.Create_by_list(1,  [ResName.Cancel_ALLBet_Btn], 0 , 0, 1, 0, 0, "Coin_");					
-			cancel_bet.mousedown = _betCommand.cancel_allbet;
-			cancel_bet.mouseup = _betCommand.check;	
+			cancel_bet.mousedown = _betCommand.cancel_allbet;			
 			
 			//bet			
 			var betPan:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -97,13 +94,11 @@ package View.ViewComponent
 			
 			if ( CONFIG::debug ) 
 			{
-				betPan.mousedown = add_plus_condition;
-				//betPan.mouseup =  _betCommand.check;
+				betPan.mousedown = add_plus_condition;				
 			}
 			else
 			{
-				betPan.mousedown = _betCommand.betbyTable;
-				betPan.mouseup =  _betCommand.check;
+				betPan.mousedown = add_plus_condition;				
 			}
 			
 			//	test.mouseup =  _betCommand.check;
@@ -113,6 +108,19 @@ package View.ViewComponent
 		
 		public function add_plus_condition(e:Event, tableNo:int):Boolean
 		{
+			//other player 
+			var betstate:Array = _model.getValue("is_betarr");
+			if ( betstate[tableNo] == 1)
+			{
+				var mybet:Array =  _betCommand.get_my_bet_info(BetCommand.Table);				
+				if ( mybet.indexOf(tableNo) == -1) 
+				{
+					utilFun.Log("not my");
+					return false;				
+				}
+			}
+			
+			
 			//over 12 bet type
 			if (  _betCommand.Find_Bet_type_idx(tableNo) == -1)
 			{
@@ -124,7 +132,7 @@ package View.ViewComponent
 				}
 			}
 			
-			return _betCommand.add(e, tableNo);
+			return _betCommand.add_amount(e, tableNo);
 		}
 		
 		public function Panel_add_plus_condition(e:Event, idx:int):Boolean
@@ -150,8 +158,7 @@ package View.ViewComponent
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="betstopHint")]
 		public function forbidden():void
 		{
-			Get("betZone").mousedown = null;
-			Get("betZone").mouseup = null;
+			Get("betZone").mousedown = null;			
 			Get("betamount_sub").mousedown = null;
 			Get("betamount_sub").mouseup = null;
 			Get("betamount_add").mousedown = null;
@@ -269,8 +276,7 @@ package View.ViewComponent
 		[MessageHandler(type = "Model.ModelEvent", selector = "display")]
 		public function display():void
 		{			
-			Get("betzone").mousedown = _betCommand.betbyTable;
-			Get("betzone").mouseup = _betCommand.check;
+			Get("betzone").mousedown = add_plus_condition;			
 			
 			Get("betamount_sub").mousedown = _betCommand.betbyidx_sub;
 			Get("betamount_sub").mouseup = _betCommand.check;
