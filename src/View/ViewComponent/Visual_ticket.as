@@ -41,29 +41,21 @@ package View.ViewComponent
 		
 		public function init():void
 		{			
-			if ( _betCommand.get_my_betlist().length == 0) return;
+			if ( _betCommand.get_my_betlist().length == 0) return;			
 			
-			var ball_pan:MultiObject = prepare("ball_pan", new MultiObject()  , GetSingleItem("_view").parent.parent);		  
-		   ball_pan.Create_by_list(1, [ResName.empty], 0, 0, 1, 0, 0, "time_");
-		   ball_pan.container.x = 443.9;
-		   ball_pan.container.y = 537;	
-			
-		   var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);		 
+		   var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);
+		   
 		   var totalshow:int = Math.min(table.length, 3);		   
-			var ticket:MultiObject = prepare("ticket", new MultiObject(), ball_pan.container);	
+			var ticket:MultiObject = prepare("ticket", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			ticket.CustomizedFun = info_initFun;
 			ticket.CustomizedData =  table;			
-			ticket.container.x = 27;
-			ticket.container.y = 73;
+			ticket.container.x = 470;
+			ticket.container.y = 590;
 			ticket.Create_by_list(totalshow, [ResName.bingo_pan], 0, 0, 3, 470, 0, "time_");
 			
-			//utilFun.SetText( bingo_pan.ItemList[0]["_panNum"]["tableNo"], "2");
-			//bet_amountFun( bingo_pan.ItemList[0]["_pan_amount"], 0);
-			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedFun = bet_amountFun;			
-			//bingo_pan.ItemList[0]["_pan_amount"].CustomizedData = [0];
-			
-			//_tool.SetControlMc(bingo_pan.container);
+			//_tool.SetControlMc(ticket.container);
 			//add(_tool);
+			
 			_model.putValue("openBalllist", []);
 		}
 		
@@ -80,9 +72,12 @@ package View.ViewComponent
 			var pan:MultiObject = prepare("select_pan"+idx, new MultiObject(), mc);	
 			pan.CustomizedFun = PanMatrixCustomizedFun;
 			pan.CustomizedData = balls[idx]; // select pan_num
-			pan.container.x = 60;
-			pan.container.y = 30;
+			pan.container.x = 50;
+			pan.container.y = 33;
 			pan.Create_by_list(25, [ResName.bingo_pancell_new], 0, 0, 5, 63, 63, "time_");
+			
+			//_tool.SetControlMc(pan.container);
+			//add(_tool);
 			
 			utilFun.SetText( mc["_panNum"]["tableNo"], String( tableid[idx]));			
 			
@@ -95,25 +90,13 @@ package View.ViewComponent
 			//amount
 			mc["_pan_amount"].x = -187.6;
 			mc["_pan_amount"].y = -31.9;
-			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, amount[idx]]);
-			//bet_amountFun(  mc["_pan_amount"], amount[idx]);		
+			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, amount[idx]]);			
+			
+			//_tool.SetControlMc(mc["_pan_amount"]);
+			//add(_tool);
 		}
 		
-		public function bet_amountFun(mc:MovieClip, amount:int):void
-		{	
-			var arr:Array = String(amount).split("");
-			var re:Array = arr.reverse();
-			//utilFun.Log("reverse = "+re);			
-			for ( var i:int = 0; i < 4; i++)
-			{
-				if ( re[i] != undefined)
-				{
-					if ( re[i] == "0" ) re[i] = "10";
-					mc["_num_" + i].gotoAndStop( parseInt(re[i]));
-				}
-				else mc["_num_" + i].gotoAndStop(11);
-			}			
-		}
+		
 		
 		public function PanMatrixCustomizedFun(mc:MovieClip,idx:int,CustomizedData:Array):void
 		{			
@@ -236,8 +219,7 @@ package View.ViewComponent
 			
 			//amount
 			utilFun.Clear_ItemChildren(mc["_pan_amount"]);
-			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, amount[idx]]);
-		//	bet_amountFun(  mc["_pan_amount"], amount[idx]);		
+			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, amount[idx]]);		
 		}
 		
 		public function best3_pan(openballist:Array):Array

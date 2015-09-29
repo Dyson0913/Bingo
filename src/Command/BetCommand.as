@@ -109,7 +109,7 @@ package Command
 			return true;
 		}
 		
-		private function betOb(BetType:int):Object
+		public function betOb(BetType:int):Object
 		{
 			var coin_list:Array  = _model.getValue("Bet_coin_List");
 			
@@ -249,6 +249,7 @@ package Command
 		
 		public function get_my_betlist():Array
 		{		
+			 _Bet_info.getValue("self")
 			return _Bet_info.getValue("self");		
 		}
 		

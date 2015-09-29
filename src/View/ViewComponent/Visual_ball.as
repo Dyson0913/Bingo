@@ -34,6 +34,7 @@ package View.ViewComponent
 		
 		public function init():void
 		{
+			//左上角大球
 			var ball:MultiObject = prepare(modelName.Open_Ball_Num, new MultiObject()  , GetSingleItem("_view").parent.parent);
 			ball.CustomizedFun = sballFun;		   
 		    ball.CustomizedData = [1];	   
@@ -42,7 +43,8 @@ package View.ViewComponent
 		    ball.container.y = 184;		 
 			ball.container.visible = false;
 			
-		   var sball:MultiObject = prepare("small_ball", new MultiObject()  , GetSingleItem("_view").parent.parent);
+			//左上角小球
+		   var sball:MultiObject = prepare("small_ball", new MultiObject()  ,GetSingleItem("_view").parent.parent);
 		   sball.CustomizedFun = sballFun;		   
 		   sball.CustomizedData = [0.4];	   
 		   sball.Create_by_list(3, [ResName.Ball], 0, 0, 3, 110, 0, "time_");
@@ -50,16 +52,16 @@ package View.ViewComponent
 		   sball.container.y = 392;		  
 		   sball.container.visible = false;  
 		   
+		   //75開球
 		   var ball_pan:MultiObject = prepare("ball_pan", new MultiObject()  , GetSingleItem("_view").parent.parent);
 		   ball_pan.CustomizedFun = ball_panfun;		   
 		   ball_pan.Create_by_list(1, [ResName.Ball_pan], 0, 0, 1, 0, 0, "time_");
 		   ball_pan.container.x = 443.9;
-		   ball_pan.container.y = 557;	
-		  if ( _betCommand.get_my_betlist().length == 0) 
-		  {
-			ball_pan.ItemList[0].gotoAndStop(2);
-		  }
+		   ball_pan.container.y = 557;
+		   
+			if(  _betCommand.get_my_betlist().length != 0) ball_pan.container.visible = false		 
 		   	
+		  
 		   
 		   	//_tool.SetControlMc(ball_pan.container);
 			//add(_tool);
