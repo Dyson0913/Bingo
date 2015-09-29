@@ -87,19 +87,11 @@ package View.ViewComponent
 			var betPan:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
 			betPan.container.x = 151.85;
 			betPan.container.y = 235.85;
-			betPan.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
+			betPan.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,3,1]);
 			betPan.CustomizedFun = BetListini;
 			betPan.CustomizedData = _model.getValue("is_betarr");
 			betPan.Create_by_list(betPan.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
-			
-			if ( CONFIG::debug ) 
-			{
-				betPan.mousedown = add_plus_condition;				
-			}
-			else
-			{
-				betPan.mousedown = add_plus_condition;				
-			}
+			betPan.mousedown = add_plus_condition;			
 			
 			//	test.mouseup =  _betCommand.check;
 			//_tool.SetControlMc(totalball_info.container);
@@ -188,21 +180,32 @@ package View.ViewComponent
 			//有人下非自己,變黃
 			if ( IsBetInfo[idx] == 1)
 			{
-				var MyBet:int = arr.indexOf(idx)
-				if ( MyBet != -1)
+				var mylast_bet:int = _model.getValue("last_bet_idx");
+				if (mylast_bet != -1)
 				{
-					//紅
-					if (  MyBet == (cnt - 1))  
-					{
-						mc.gotoAndStop( (IsBetInfo[idx] + 2) );
-					}
-					else mc.gotoAndStop( (IsBetInfo[idx] + 1) );
+					//blue
+					mc.gotoAndStop( (IsBetInfo[idx] + 2) );
 				}
 				else
 				{
-					//黃
-					mc.gotoAndStop( (IsBetInfo[idx] + 3) );
+					//red
+					mc.gotoAndStop( (IsBetInfo[idx] + 1) );
 				}
+				//var MyBet:int = arr.indexOf(idx)
+				//if ( MyBet != -1)
+				//{
+					//紅
+					//if (  MyBet == (cnt - 1))  
+					//{
+						//mc.gotoAndStop( (IsBetInfo[idx] + 2) );
+					//}
+					//else mc.gotoAndStop( (IsBetInfo[idx] + 1) );
+				//}
+				//else
+				//{
+					//黃
+					//mc.gotoAndStop( (IsBetInfo[idx] + 3) );
+				//}
 			}
 			
 		}
@@ -278,11 +281,11 @@ package View.ViewComponent
 		{			
 			Get("betzone").mousedown = add_plus_condition;			
 			
-			Get("betamount_sub").mousedown = _betCommand.betbyidx_sub;
-			Get("betamount_sub").mouseup = _betCommand.check;
+			Get("betamount_sub").mousedown = Panel_sub_plus_condition;
+			Get("betamount_sub").mouseup = _betCommand.empty_reaction;
 			
-			Get("betamount_add").mousedown = _betCommand.betbyidx_add;
-			Get("betamount_add").mouseup = _betCommand.check;	
+			Get("betamount_add").mousedown = add_plus_condition;
+			Get("betamount_add").mouseup = _betCommand.empty_reaction;	
 			
 		}
 		

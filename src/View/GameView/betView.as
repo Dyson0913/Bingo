@@ -70,12 +70,14 @@ package View.GameView
 			view.Create_by_list(1, [ResName.Bet_Scene], 0, 0, 1, 0, 0, "a_");	
 			
 			//_test.init();
-					_hint.init();
+			
 			_playerinfo.init();
 			_betzone.init();
 			
 			_timer.init();
-		
+			
+			_hint.init();
+			
 			_bingo.init();
 			
 			//auto bet

@@ -244,7 +244,7 @@ package ConnectModule.websocket
 							//utilFun.Log("item  ="+arrlist[i]);
 							//
 						//}	
-						utilFun.Log("push is_bet ="+is_bet);
+						//utilFun.Log("push is_bet ="+is_bet);
 						_model.putValue("is_betarr", is_bet);
 						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));

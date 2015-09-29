@@ -31,6 +31,7 @@ package Res
 		public static const Ballforfour:String = "Ballist";
 		public static const Ball_pan:String = "ballpan";
 		public static const Myticket:String = "My_ticket";
+		public static const switchbtn:String = "switch_btn";
 		public static const empty:String = "emptymc";
 		
 		public static const Paninfo_font:String = "pan_info_font";

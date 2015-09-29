@@ -17,9 +17,15 @@ package View.ViewComponent
 	 */
 	public class Visual_ball  extends VisualHandler
 	{
+		[Inject]
+		public var _betCommand:BetCommand;
 		
 		[Inject]
 		public var _opration:DataOperation;
+		
+		private var _sball_x_diff:Number = 88;
+		private var _sball_y_diff:Number =  85;
+		private var _sball_scale:Number =  0.4;
 		
 		public function Visual_ball() 
 		{
@@ -48,14 +54,14 @@ package View.ViewComponent
 		   ball_pan.CustomizedFun = ball_panfun;		   
 		   ball_pan.Create_by_list(1, [ResName.Ball_pan], 0, 0, 1, 0, 0, "time_");
 		   ball_pan.container.x = 443.9;
-		   ball_pan.container.y = 537;	
-		   //if ( _betCommand.get_my_betlist().length == 0) 
-		   //{
-				//
-		   //}
+		   ball_pan.container.y = 557;	
+		  if ( _betCommand.get_my_betlist().length == 0) 
+		  {
+			ball_pan.ItemList[0].gotoAndStop(2);
+		  }
 		   	
 		   
-		   	//_tool.SetControlMc(sball.container);
+		   	//_tool.SetControlMc(ball_pan.container);
 			//add(_tool);
 			_model.putValue("open3Balllist", []);						
 			
@@ -69,13 +75,14 @@ package View.ViewComponent
 		}
 		
 		public function ball_panfun(mc:MovieClip, idx:int, IsBetInfo:Array):void
-		{
+		{			
+			
 		   var ball:MultiObject = prepare("opan_pan_ball", new MultiObject()  ,mc);
 		   ball.CustomizedFun = panballFun;
-		   ball.CustomizedData = [0.48];
-		   ball.Create_by_list(75, [ResName.Ball], 0, 0, 15, 88, 96.65, "time_");
-		   ball.container.x = 112.8;
-		   ball.container.y = 42.85;		
+		   ball.CustomizedData = [_sball_scale];
+		   ball.Create_by_list(75, [ResName.Ball], 0, 0, 15, _sball_x_diff, _sball_y_diff, "time_");
+		   ball.container.x = 118.3;
+		   ball.container.y = 18.35;		
 		   	//_tool.SetControlMc(ball.container);
 			//add(_tool);
 		}
@@ -120,8 +127,8 @@ package View.ViewComponent
 			var BallIdx:int =BallNum-1;
 			var BallDisPlayIdx:int = BallNum;
 			
-			var xPos:int = (( BallIdx  % 15 )) *  88;
-			var yPos:int  = Math.floor( BallIdx / 15 )*  96.65;
+			var xPos:int = (( BallIdx  % 15 )) *  _sball_x_diff;
+			var yPos:int  = Math.floor( BallIdx / 15 )*  _sball_y_diff;
 			
 			var openball:MovieClip = GetSingleItem("opan_pan_ball", BallIdx);
 			openball.x = 528;
@@ -131,7 +138,7 @@ package View.ViewComponent
 		
 			
 			utilFun.SetText( openball["ballNum"], utilFun.Format( BallDisPlayIdx, 2 ));
-			Tweener.addTween(openball, { scaleX:0.48, scaleY:0.48, x: xPos, y:yPos, time:1 } );
+			Tweener.addTween(openball, { scaleX:_sball_scale, scaleY:_sball_scale, x: xPos, y:yPos, time:1 } );
 			
 		}
 		
@@ -149,14 +156,14 @@ package View.ViewComponent
 				var BallIdx:int = BallNum - 1;
 				var BallDisPlayIdx:int = BallNum;
 			
-				var xPos:int = (( BallIdx  % 15 )) *  88;
-				var yPos:int  = Math.floor( BallIdx / 15 )*  96.65;				
+				var xPos:int = (( BallIdx  % 15 )) *  _sball_x_diff;
+				var yPos:int  = Math.floor( BallIdx / 15 )*  _sball_y_diff;				
 				var openball:MovieClip = GetSingleItem("opan_pan_ball", BallIdx);
 				utilFun.SetText( openball["ballNum"], utilFun.Format( BallDisPlayIdx, 2 ));
 				
 				openball.visible = true;
 				openball.gotoAndStop( Math.ceil( BallDisPlayIdx / 15 ) );
-				utilFun.scaleXY(openball, 0.48, 0.48);								
+				utilFun.scaleXY(openball, _sball_scale,_sball_scale);								
 			}
 		}	
 		

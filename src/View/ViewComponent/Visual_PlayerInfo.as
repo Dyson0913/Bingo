@@ -55,27 +55,7 @@ package View.ViewComponent
 			//1,無人 2為自己, 3自己最後一注,4,為他人			
 			
 			//先調回無人下注
-			mc.gotoAndStop( 1 );
-			
-			//有人下非自己,變黃
-			//if ( bingo_recode[idx] == 1)
-			//{
-				//var MyBet:int = arr.indexOf(idx)
-				//if ( MyBet != -1)
-				//{
-					//紅
-					//if (  MyBet == (cnt - 1))  
-					//{
-						//mc.gotoAndStop( (bingo_recode[idx] + 2) );
-					//}
-					//else mc.gotoAndStop( (bingo_recode[idx] + 1) );
-				//}
-				//else
-				//{
-					//黃
-					//mc.gotoAndStop( (bingo_recode[idx] + 3) );
-				//}
-			//}
+			mc.gotoAndStop( 1 );			
 			
 		}
 		
@@ -116,34 +96,33 @@ package View.ViewComponent
 			
 		}
 		
-			public function BetListCustomizedFun(mc:MovieClip,idx:int,IsBetInfo:Array):void
+		public function BetListCustomizedFun(mc:MovieClip,idx:int,IsBetInfo:Array):void
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
-			var cnt:int =  arr.length;
+			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);		
 			
 			//先調回無人下注
-			mc.gotoAndStop( 1 );
+			mc.gotoAndStop(1);
 			
 			//有人下非自己,變黃
 			if ( IsBetInfo[idx] == 1)
 			{
-				var MyBet:int = arr.indexOf(idx)
+				var mylast_bet:int = _model.getValue("last_bet_idx");
+			
+				var MyBet:int = arr.indexOf(mylast_bet)				
 				if ( MyBet != -1)
-				{
-					//紅
-					if (  MyBet == (cnt - 1))  
-					{
-						mc.gotoAndStop( (IsBetInfo[idx] + 2) );
-					}
-					else mc.gotoAndStop( (IsBetInfo[idx] + 1) );
-				}
+				{					
+					utilFun.Log("idx = " + idx);
+					utilFun.Log("mylastbet = " + mylast_bet);
+					if (mylast_bet == idx) mc.gotoAndStop(3); //blue
+					else  	mc.gotoAndStop(2);
+				}				
 				else
 				{
-					//黃
-					mc.gotoAndStop( (IsBetInfo[idx] + 3) );
+					mc.gotoAndStop(4);
 				}
+				
 			}
 			
 		}

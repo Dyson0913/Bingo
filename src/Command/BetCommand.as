@@ -50,7 +50,7 @@ package Command
 			_model.putValue(modelName.BET_ZONE, betzone);
 			
 			_model.putValue("Bet_coin_List", [0, 100, 200, 300, 500, 1000]);			
-			_model.putValue("after_bet_credit", 0);
+			_model.putValue("last_bet_idx", -1);
 			_model.putValue("bet_history", []);
 			_Bet_info.putValue("self", [] ) ;
 		}
@@ -96,10 +96,15 @@ package Command
 			//return true;
 			dispatcher( new ActionEvent(betob, "bet_action"));
 			
-			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
-			
-			//fake bet proccess
-			//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+			if ( CONFIG::debug ) 
+			{
+				//fake bet proccess
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+			}
+			else
+			{
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+			}
 			
 			return true;
 		}
@@ -110,13 +115,13 @@ package Command
 			
 			var bet:Object;
 			var amount:int = get_amount_by_type(BetType);
-			utilFun.Log("=================== = "  );
-			utilFun.Log("BetType = " + BetType );
-			utilFun.Log("total_bet = " + total_bet(BetType));
-			utilFun.Log("add amount = " +  (amount - total_bet(BetType)) );			
-			utilFun.Log("coin_list.indexOf(amount) = " + coin_list.indexOf(amount));
-			utilFun.Log("betzone_totoal() = " + amount );
-			utilFun.Log("=================== = "  );
+			//utilFun.Log("=================== = "  );
+			//utilFun.Log("BetType = " + BetType );
+			//utilFun.Log("total_bet = " + total_bet(BetType));
+			//utilFun.Log("add amount = " +  (amount - total_bet(BetType)) );			
+			//utilFun.Log("coin_list.indexOf(amount) = " + coin_list.indexOf(amount));
+			//utilFun.Log("betzone_totoal() = " + amount );
+			//utilFun.Log("=================== = "  );
 			
 			bet = { "betType": BetType, 											
 			                           "bet_amount":  amount - total_bet(BetType),		
@@ -183,6 +188,7 @@ package Command
 			var bet_list:Array = _Bet_info.getValue("self");
 			var idx:int = Find_Bet_type_idx(bet_ob["betType"]);
 			
+			var is_sub:Boolean = false;
 			if (idx ==-1)
 			{
 				delete bet_ob["bet_amount"];
@@ -200,26 +206,41 @@ package Command
 				{
 					utilFun.Log("del item = ");
 					bet_list.splice(idx, 1);	
+					is_sub = true;
 				}
 			}
-		
+			if ( !is_sub) 
+			{
+					utilFun.Log("del last_bet_idx = "+ bet_ob[Table]);
+				_model.putValue("last_bet_idx", bet_ob[Table]);
+			}
+			
 			dispatcher(new ModelEvent(WebSoketInternalMsg.BET_UPDATE));
 			
-			if ( CONFIG::debug ) 
+			utilFun.SetTime(simulat_upate, 0.1);
+			
+			
+			
+		}
+		
+		public function simulat_upate():void
+		{
+			utilFun.Log("simulat_upate ");
+				if ( CONFIG::debug ) 
 			{
-				//var bet_ob:Object = _Actionmodel.excutionMsg();
-				//var is_bet:Array = _model.getValue("is_betarr");
-				//var num:int  = is_bet.length;						
-				//is_bet.splice(bet_ob["betType"], 0, 1);
-				//
-				//utilFun.Log("fake push is_bet ="+is_bet);
-				//_model.putValue("is_betarr", is_bet);						
-				//
-				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
-				//utilFun.Log("send info =");
+				var bet_ob:Object = _Actionmodel.excutionMsg();
+				var is_bet:Array = _model.getValue("is_betarr");
+				var num:int  = is_bet.length;						
+				is_bet.splice(bet_ob["betType"], 0, 1);
+				
+				utilFun.Log("fake push is_bet ="+is_bet);
+				_model.putValue("is_betarr", is_bet);						
+				
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
+				utilFun.Log("send info =");
 			}	
 			
-			
+			//TODO test need to move to here 
 			_Actionmodel.dropMsg();
 			if ( _Actionmodel.length() != 0) dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
 				
@@ -248,14 +269,9 @@ package Command
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "win_hint")]
 		public function sort_betinfo():void
-		{
-			//{"result_list": [ { "bet_type": "11,0", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
-															//{ "bet_type": "11,1", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
-															//{ "bet_type": "11,2", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }, 
-															//{ "bet_type": "11,3", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 } ],
-															//"game_state": "EndRoundState",
-															//"game_result_id": 1111,
-															
+		{			
+			//{ "bet_type": "11,1", "settle_amount": 0, "odds": 90, "win_state": "WSLost", "bet_amount": 100 }			
+			
 			var bet_list:Array = _Bet_info.getValue("self");
 			
 			if ( bet_list.length == 0 ) return;

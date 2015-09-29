@@ -41,7 +41,7 @@ package View.ViewComponent
 		{			
 			var time:int = _model.getValue(modelName.REMAIN_TIME);			
     		var arr:Array = utilFun.arrFormat(time, 2);
-			utilFun.Log("arr ="+time);
+			//utilFun.Log("arr ="+time);
 			if ( arr[0] == 0 ) arr[0] = 10;
 			if ( arr[1] == 0 ) arr[1] = 10;
 			GetSingleItem(modelName.REMAIN_TIME).gotoAndStop(arr[0]);
@@ -59,7 +59,7 @@ package View.ViewComponent
 			}
 			
 			var arr:Array = utilFun.arrFormat(time, 2);			
-			utilFun.Log("arr ="+arr);
+			//utilFun.Log("arr ="+arr);
 			if ( arr[0] == 0 ) arr[0] = 10;
 			if ( arr[1] == 0 ) arr[1] = 10;		
 			GetSingleItem(modelName.REMAIN_TIME).gotoAndStop(arr[0]);

@@ -31,8 +31,7 @@ package View.ViewComponent
 			var winhint:MultiObject = prepare("winhint", new MultiObject()  , GetSingleItem("_view").parent.parent);
 			winhint.Create_by_list(1, [ResName.Winhint], 0, 0, 1, 0, 0, "time_");
 			winhint.container.x = 449;
-			winhint.container.y = 103;
-			//winhint.container.visible = false;
+			winhint.container.y = 103;			
 			
 			var public_best_pan:MultiObject = prepare("bingowin_show", new MultiObject(), GetSingleItem("_view").parent.parent);			
 			public_best_pan.CustomizedFun = pan_set;
@@ -40,19 +39,26 @@ package View.ViewComponent
 			public_best_pan.container.y = 128.8;
 			public_best_pan.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");  
 			
-		   	//_tool.SetControlMc(countDown.container);
+			var switchbtn:MultiObject = prepare("switchbtn", new MultiObject(), GetSingleItem("_view").parent.parent);						
+			switchbtn.container.x = 1770;
+			switchbtn.container.y = 1000;
+			switchbtn.Create_by_list(1, [ResName.switchbtn], 0, 0, 1, 106.25, 80, "time_");  
+			
+			
+		   //_tool.SetControlMc(switchbtn.container);
 			//add(_tool);
 		}
 		
 		public function pan_set(mc:MovieClip, idx:int, tablelist:Array):void
 		{				
-			mc.visible = false;			
+			mc.visible = false;
+			
 		}
 		
-			[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "win_hint")]
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "win_hint")]
 		public function winhint():void
 		{			
-			Get("winhint").container.visible = true;		
+			GetSingleItem("winhint").gotoAndStop(2);
 			
 			//var bingo:Array = _betCommand.get_my_bet_info("table");			
 			//var oblist:Array = _model.getValue("best_list");			

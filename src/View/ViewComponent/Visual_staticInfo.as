@@ -217,7 +217,7 @@ package View.ViewComponent
 				   sball.CustomizedData = needSort;
 				   sball.Create_by_list(ball_lenth, [ResName.Ballforfour], 0, 0, ball_lenth, 55, 0, "time_");
 				   sball.container.x = 101;
-				   //sball.container.y = 0;		
+				   sball.container.y = 8;
 				}
 				else
 				{
@@ -229,7 +229,7 @@ package View.ViewComponent
 				    ballList.CustomizedData = needtoSort;
 				    ballList.Create_by_list(ball_lenth, [ResName.Ballforfour], 0, 0, ball_lenth, 55, 0, "time_");
 				    ballList.container.x = 101;
-				    //ballList.container.y = 10;		
+				    ballList.container.y = 8;
 				}
 				//_tool.SetControlMc(sball.container);
 				//add(_tool);
