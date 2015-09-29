@@ -185,6 +185,7 @@ package ConnectModule.websocket
 							
 						var arr:Array = result.open_info.opened_history;
 						_model.putValue("opened_ball_num", arr.length );
+						_model.putValue("openBalllist", arr);
 						_model.putValue("best_remain", parseInt(result.open_info.best_remain) );
 						_model.putValue("second_remain", parseInt(result.open_info.second_remain) );
 							 

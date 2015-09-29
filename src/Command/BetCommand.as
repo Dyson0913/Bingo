@@ -242,7 +242,11 @@ package Command
 			
 			//TODO test need to move to here 
 			_Actionmodel.dropMsg();
-			if ( _Actionmodel.length() != 0) dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+			if ( _Actionmodel.length() != 0) 
+			{
+				utilFun.Log("dropMsg ");
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+			}
 				
 			
 		}

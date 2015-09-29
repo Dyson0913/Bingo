@@ -1,6 +1,7 @@
 package View.ViewComponent 
 {
 	import flash.display.MovieClip;
+	import View.ViewBase.Visual_Text;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -23,9 +24,16 @@ package View.ViewComponent
 		[Inject]
 		public var _opration:DataOperation;
 		
+		[Inject]
+		public var _text:Visual_Text
+		
 		private var _sball_x_diff:Number = 88;
 		private var _sball_y_diff:Number =  85;
 		private var _sball_scale:Number =  0.4;
+		
+		private var _hint:Boolean;
+		private var _barmove:Boolean;
+		private var _barmove2:Boolean;
 		
 		public function Visual_ball() 
 		{
@@ -61,9 +69,34 @@ package View.ViewComponent
 		   
 			if(  _betCommand.get_my_betlist().length != 0) ball_pan.container.visible = false		 
 		   	
-		  
-		   
-		   	//_tool.SetControlMc(ball_pan.container);
+			//倍數提示底圖
+			var multibyball_bg:MultiObject = prepare("multibyball_bg", new MultiObject(), GetSingleItem("_view").parent.parent);			
+			multibyball_bg.container.x =69;
+			multibyball_bg.container.y = 480;
+			multibyball_bg.Create_by_list(1, [ResName.multibyball], 0, 0, 1, 0, 47, "time_")
+			multibyball_bg.container.visible = false;
+			
+			//倍數提示
+			var multi_by_ball:MultiObject = prepare("multi_by_ball", new MultiObject(), GetSingleItem("_view").parent.parent);
+			multi_by_ball.CustomizedFun = _text.textSetting;
+			multi_by_ball.CustomizedData = [{size:24,color:0xFFFFFF,bold:true}, "54 球     150 倍","60 球     100倍"," 平常     90倍"];			
+			multi_by_ball.container.x =139;
+			multi_by_ball.container.y = 482;
+			multi_by_ball.Create_by_list(3, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");
+			
+			//倍數提示底圖
+			var listenpai:MultiObject = prepare("listenpai", new MultiObject(), GetSingleItem("_view").parent.parent);			
+			listenpai.container.x =-431;
+			listenpai.container.y = 110;
+			listenpai.Create_by_list(1, [ResName.listenpai], 0, 0, 1, 0, 47, "time_")
+			listenpai.container.visible = false;
+			
+			_hint = false;
+			_barmove = false;
+			_barmove2 = false;
+			
+		   //_tool.SetControlMc(listenpai.container);
+		   //_tool.y = 500;
 			//add(_tool);
 			_model.putValue("open3Balllist", []);						
 			
@@ -124,6 +157,38 @@ package View.ViewComponent
 				GetSingleItem("small_ball",i-1).gotoAndStop( Math.ceil( open3ball[i-1] / 15) ) ;
 			}
 			
+			//開球倍率 (525 572)
+			var OpenBallList:Array = _model.getValue("openBalllist");
+			Get("multibyball_bg").container.visible = true;
+			if ( OpenBallList.length +1 >= 54 )
+			{
+				if ( !_barmove)
+				{
+					Tweener.addTween(GetSingleItem("multibyball_bg"), { y:GetSingleItem("multibyball_bg").y + 45, time:1 } ); 
+					_barmove = true;
+				}
+			}
+			if ( OpenBallList.length +1 > 60)  
+			{
+				if ( !_barmove2)
+				{
+					Tweener.addTween(GetSingleItem("multibyball_bg"), { y:GetSingleItem("multibyball_bg").y + 45, time:1 } ); 
+					_barmove2 = true;
+				}
+			}
+			
+			//聽牌提示
+			var best_list:Array = _model.getValue("best_list");
+			if ( best_list[0].ball_list.length == 4) 
+			{
+				if ( !_hint )
+				{
+					Get("listenpai").container.visible = true;
+					Tweener.addTween(GetSingleItem("listenpai"), { x:GetSingleItem("listenpai").x + 429, onComplete:this.hint_over, time:2,transition: "linear" } ); 			
+					_hint = true;
+				}
+			}
+			
 			//server 傳1 base
 			//panball handle
 			var BallIdx:int =BallNum-1;
@@ -142,6 +207,17 @@ package View.ViewComponent
 			utilFun.SetText( openball["ballNum"], utilFun.Format( BallDisPlayIdx, 2 ));
 			Tweener.addTween(openball, { scaleX:_sball_scale, scaleY:_sball_scale, x: xPos, y:yPos, time:1 } );
 			
+		}
+		
+		private function hint_over():void
+		{
+			
+			Tweener.addTween(GetSingleItem("listenpai"), { x:GetSingleItem("listenpai").x-429 ,delay:3, time:2,onComplete:this.hint_back,transition: "linear" } ); 
+		}
+		
+		private function hint_back():void
+		{
+			Get("listenpai").container.visible = false;
 		}
 		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="half_enter_update")]		

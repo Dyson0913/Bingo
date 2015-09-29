@@ -88,8 +88,8 @@ package View.ViewComponent
 			//內盤 (沒人押叫內盤)			
 			utilFun.SetText( GetSingleItem("bet_view_info", 1)["_text"], String(_model.getValue("NoOne_bet")));			
 			
-			//比自己押注結果更早收到
-			//所有盤號更新
+			//實際押注更新資訊
+			//盤號更新
 			Get("betZone").CustomizedFun = BetListCustomizedFun;
 			Get("betZone").CustomizedData = _model.getValue("is_betarr");
 			Get("betZone").FlushObject();
@@ -113,8 +113,8 @@ package View.ViewComponent
 				var MyBet:int = arr.indexOf(mylast_bet)				
 				if ( MyBet != -1)
 				{					
-					utilFun.Log("idx = " + idx);
-					utilFun.Log("mylastbet = " + mylast_bet);
+					//utilFun.Log("idx = " + idx);
+					//utilFun.Log("mylastbet = " + mylast_bet);
 					if (mylast_bet == idx) mc.gotoAndStop(3); //blue
 					else  	mc.gotoAndStop(2);
 				}				

@@ -75,10 +75,8 @@ package View.GameView
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Openball_Scene], 0, 0, 1, 0, 0, "a_");	
 			
-			
-			_ball.init();
 			_staticinfo.init();
-			
+			_ball.init();
 			
 			_ticket.init();	
 			
