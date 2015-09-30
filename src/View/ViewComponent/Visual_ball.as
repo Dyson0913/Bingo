@@ -160,7 +160,7 @@ package View.ViewComponent
 			//開球倍率 (525 572)
 			var OpenBallList:Array = _model.getValue("openBalllist");
 			Get("multibyball_bg").container.visible = true;
-			if ( OpenBallList.length +1 >= 54 )
+			if ( OpenBallList.length +1 > 55 )
 			{
 				if ( !_barmove)
 				{
@@ -168,7 +168,7 @@ package View.ViewComponent
 					_barmove = true;
 				}
 			}
-			if ( OpenBallList.length +1 > 60)  
+			if ( OpenBallList.length +1 > 61)  
 			{
 				if ( !_barmove2)
 				{
@@ -184,7 +184,7 @@ package View.ViewComponent
 				if ( !_hint )
 				{
 					Get("listenpai").container.visible = true;
-					Tweener.addTween(GetSingleItem("listenpai"), { x:GetSingleItem("listenpai").x + 429, onComplete:this.hint_over, time:2,transition: "linear" } ); 			
+					Tweener.addTween(GetSingleItem("listenpai"), { x:GetSingleItem("listenpai").x + 429, onComplete:this.hint_over, time:0.5,transition: "easeOutQuart" } ); 			
 					_hint = true;
 				}
 			}
@@ -212,7 +212,7 @@ package View.ViewComponent
 		private function hint_over():void
 		{
 			
-			Tweener.addTween(GetSingleItem("listenpai"), { x:GetSingleItem("listenpai").x-429 ,delay:3, time:2,onComplete:this.hint_back,transition: "linear" } ); 
+			Tweener.addTween(GetSingleItem("listenpai"), { x:GetSingleItem("listenpai").x-429 ,delay:3, time:0.5,onComplete:this.hint_back,transition: "easeOutQuart" } ); 
 		}
 		
 		private function hint_back():void

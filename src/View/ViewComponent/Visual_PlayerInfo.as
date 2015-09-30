@@ -36,14 +36,17 @@ package View.ViewComponent
 			betview_info.Create_by_list(4, [ResName.Paninfo_font], 0, 0, 4, 300, 0, "time_");
 			
 			var arr:Array = _model.getValue(modelName.BINGO_TABLE);
+			var history:Array = _model.getValue(modelName.BINGO_HISTORY);
+			arr = arr.concat(history);
 			if ( arr.length > 5) 
 			{
 				var len:int = arr.length -5;
-				for ( var i:int = 0; i < len; i++)	arr.shift();				
+				arr = arr.slice(0, 5);
 			}
+			_model.putValue(modelName.BINGO_HISTORY,arr);
 			var bingo_recode:MultiObject = prepare("bingo_recode", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bingo_recode.CustomizedFun = BetListini
-			bingo_recode.CustomizedData = _model.getValue(modelName.BINGO_TABLE);
+			bingo_recode.CustomizedData = _model.getValue(modelName.BINGO_HISTORY);
 			bingo_recode.container.x = 564;
 			bingo_recode.container.y = 970;		
 			bingo_recode.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 75, 0, "time_");
@@ -58,7 +61,8 @@ package View.ViewComponent
 			utilFun.scaleXY(mc, 0.7, 0.7);
 			var str:String = idx >= bingo_recode.length ? "" : bingo_recode[idx];
 			utilFun.SetText(mc["tableNo"], str);
-			//1,無人 2為自己, 3自己最後一注,4,為他人			
+			
+			if ( idx == 0) mc["tableNo"].textColor = 0xFF0000;
 			
 			//先調回無人下注
 			mc.gotoAndStop( 1 );			

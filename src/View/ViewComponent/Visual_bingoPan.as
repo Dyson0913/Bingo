@@ -63,8 +63,8 @@ package View.ViewComponent
 			var pan:MultiObject = prepare("select_pan", new MultiObject(), mc);	
 			pan.CustomizedFun = PanMatrixCustomizedFun;
 			pan.CustomizedData = data ; // select pan_num
-			pan.container.x = 60;
-			pan.container.y = 30;
+			pan.container.x = 50;
+			pan.container.y = 33;
 			pan.Create_by_list(25, [ResName.bingo_pancell_new], 0, 0, 5, 63, 63, "time_");
 			
 			

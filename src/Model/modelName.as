@@ -39,6 +39,7 @@ package Model
 		public static const SETTLE_AMOUNT:int = Num++;
 		public static const ROUND_RESULT:int = Num++;
 		public static const BINGO_TABLE:int = Num++;
+		public static const BINGO_HISTORY:int = Num++;
 		
 		
 		public static const Loading:int  = Num++;
