@@ -173,17 +173,25 @@ package View.ViewComponent
 			//1,無人 2為自己, 3自己最後一注,4,為他人
 			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);				
 			//先調回無人下注
-			mc.gotoAndStop(1);
-			
+			mc.gotoAndStop(1);			
 			//有人下非自己,變黃
 			if ( IsBetInfo[idx] == 1)
 			{
+				
 				var mylast_bet:int = _model.getValue("last_bet_idx");				
-				var MyBet:int = arr.indexOf(mylast_bet)				
-				if ( MyBet != -1)
+				//utilFun.Log("mylast_bet = "+mylast_bet);
+				//utilFun.Log("arr = "+arr);
+				var inMyBet:int = arr.indexOf(idx)				
+				//utilFun.Log("inMyBet = "+inMyBet);
+				//utilFun.Log("idx = "+idx);
+				if ( inMyBet != -1)
 				{					
 					if (mylast_bet == idx) mc.gotoAndStop(3); //blue
-					else  	mc.gotoAndStop(2);
+					else 
+					{
+						
+						mc.gotoAndStop(2);
+					}
 				}				
 				else
 				{
@@ -242,22 +250,20 @@ package View.ViewComponent
 			Get("betlist").CustomizedData = tab_no;
 			Get("betlist").FlushObject();
 			
-				utilFun.Log("1 = ");
 			var font:Array = [{size:40,color:0xB50004,bold:true,align:_text.align_right}];
 			font = font.concat(amount_no);
 			//utilFun.Log("fornt = "+amount_no);						
 			Get("betamount_num").CustomizedData = font;			
 			Get("betamount_num").Create_by_list(amount_no.length, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");
 			//Get("betamount_num").FlushObject();
-			
-			utilFun.Log("2 = ");
+						
 			//比押注更新結果更早收到,更新自己的最後一盤
 			//所有盤號更新
 			Get("betZone").CustomizedFun = BetListCustomizedFun;
 			Get("betZone").CustomizedData = _model.getValue("is_betarr");
 			Get("betZone").FlushObject();
 			
-			utilFun.Log("3 = ");
+			
 		}		
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "display")]

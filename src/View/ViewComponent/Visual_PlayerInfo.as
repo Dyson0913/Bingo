@@ -35,9 +35,15 @@ package View.ViewComponent
 			betview_info.container.y = 80;		
 			betview_info.Create_by_list(4, [ResName.Paninfo_font], 0, 0, 4, 300, 0, "time_");
 			
+			var arr:Array = _model.getValue(modelName.BINGO_TABLE);
+			if ( arr.length > 5) 
+			{
+				var len:int = arr.length -5;
+				for ( var i:int = 0; i < len; i++)	arr.shift();				
+			}
 			var bingo_recode:MultiObject = prepare("bingo_recode", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bingo_recode.CustomizedFun = BetListini
-			bingo_recode.CustomizedData = [];
+			bingo_recode.CustomizedData = _model.getValue(modelName.BINGO_TABLE);
 			bingo_recode.container.x = 564;
 			bingo_recode.container.y = 970;		
 			bingo_recode.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 75, 0, "time_");

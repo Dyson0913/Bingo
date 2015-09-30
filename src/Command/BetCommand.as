@@ -209,11 +209,22 @@ package Command
 					is_sub = true;
 				}
 			}
+			
 			if ( !is_sub) 
 			{
 					utilFun.Log("del last_bet_idx = "+ bet_ob[Table]);
 				_model.putValue("last_bet_idx", bet_ob[Table]);
 			}
+			else
+			{
+			    //退注 把last idx預設	下注最後一筆
+				var lastTable:int = bet_list[bet_list.length - 1][Table];
+				utilFun.Log("lastTable = "+lastTable);
+				
+				_model.putValue("last_bet_idx", lastTable);
+			}
+			
+			_Bet_info.putValue("self", bet_list);
 			
 			dispatcher(new ModelEvent(WebSoketInternalMsg.BET_UPDATE));
 			
