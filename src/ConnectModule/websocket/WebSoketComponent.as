@@ -256,7 +256,7 @@ package ConnectModule.websocket
 					case "MsgBPEndRound":
 					{
 						dispatcher( new ValueObject(result.result_list, modelName.ROUND_RESULT));
-						dispatcher( new ValueObject(result.bingo_result, modelName.BINGO_TABLE));
+						dispatcher( new ValueObject(result.bingo_result, modelName.BINGO_TABLE));						
 						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.WIN_HINT));
 						

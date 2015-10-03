@@ -1,6 +1,7 @@
 package View.ViewComponent 
 {
 	import flash.display.MovieClip;
+	import View.ViewBase.Visual_Text;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -20,6 +21,8 @@ package View.ViewComponent
 		[Inject]
 		public var _betCommand:BetCommand;
 		
+		[Inject]
+		public var _text:Visual_Text;
 		
 		public function Visual_Bigwin_Msg() 
 		{
@@ -44,13 +47,24 @@ package View.ViewComponent
 			switchbtn.container.y = 1000;
 			switchbtn.Create_by_list(1, [ResName.switchbtn], 0, 0, 1, 106.25, 80, "time_");  
 			
-			var selfbingo_panel:MultiObject = prepare("selfbingo_panel", new MultiObject(), GetSingleItem("_view").parent.parent);						
+			
+			//自己中賓果提示
+			var selfbingo_panel:MultiObject = prepare("selfbingo_panel", new MultiObject(),GetSingleItem("_view").parent.parent );						
 			selfbingo_panel.container.x = 800;
 			selfbingo_panel.container.y = 380;
 			selfbingo_panel.Create_by_list(1, [ResName.selfbingo_panel], 0, 0, 1, 106.25, 80, "time_");  
 			selfbingo_panel.container.visible = false;
 			
-		   //_tool.SetControlMc(selfbingo_panel.container);
+			
+			//提示數字
+			var selfbgino_text:MultiObject = prepare("selfbgino_text", new MultiObject(), selfbingo_panel.container);
+			selfbgino_text.CustomizedFun = _text.colortextSetting;
+			selfbgino_text.CustomizedData = [{size:30,color:0xFFFFFF,bold:true,align:_text.align_right}, "100","90","9000"];			
+			selfbgino_text.container.x = -210;
+			selfbgino_text.container.y = 220;
+			selfbgino_text.Create_by_list(3, [ResName.Paninfo_font], 0, 0, 1, 0, 78, "time_");
+			
+		   //_tool.SetControlMc(selfbgino_text.container);
 		   //_tool.y = 200;
 			//add(_tool);
 		}
@@ -80,6 +94,11 @@ package View.ViewComponent
 			Get("bingowin_show").CustomizedData = tableNo;
 			Get("bingowin_show").Create_by_list(tableNo.length, [ResName.BetButton], 0, 0, 10, 106.25, 80, "time_");
 			Get("bingowin_show").FlushObject();
+			
+			//if( tableNo.indexOf
+			
+			
+			
 		}
 		
 		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void

@@ -79,7 +79,7 @@ package View.ViewComponent
 			//倍數提示
 			var multi_by_ball:MultiObject = prepare("multi_by_ball", new MultiObject(), GetSingleItem("_view").parent.parent);
 			multi_by_ball.CustomizedFun = _text.textSetting;
-			multi_by_ball.CustomizedData = [{size:24,color:0xFFFFFF,bold:true}, "54 球     150 倍","60 球     100倍"," 平常     90倍"];			
+			multi_by_ball.CustomizedData = [{size:24,color:0xFFFFFF,bold:true}, "54 球     150 倍","60 球     100 倍"," 平常        90 倍"];			
 			multi_by_ball.container.x =139;
 			multi_by_ball.container.y = 482;
 			multi_by_ball.Create_by_list(3, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");

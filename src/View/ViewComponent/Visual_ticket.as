@@ -196,7 +196,7 @@ package View.ViewComponent
 			}			
 			
 			//pan amount and tableno
-			utilFun.Log("new table = "+ tableNo);
+			//utilFun.Log("new table = "+ tableNo);
 			Get("ticket").CustomizedFun = update_paninfo;
 			Get("ticket").CustomizedData =  tableNo;			
 			Get("ticket").FlushObject();
@@ -263,28 +263,28 @@ package View.ViewComponent
 			//utilFun.Log("myticket_restball_num = "+ myticket_restball_num);
 			myticket_restball_num.sort(order);			
 			
-			for (var k:int = 0; k < myticket_restball_num.length; k++)
-			{
-				utilFun.Log("after sort rest = " + myticket_restball_num[k]["rest"]  +" table =" + myticket_restball_num[k]["tableNo"]);				
-			}
-				utilFun.Log("=========== ");
+			//for (var k:int = 0; k < myticket_restball_num.length; k++)
+			//{
+				//utilFun.Log("after sort rest = " + myticket_restball_num[k]["rest"]  +" table =" + myticket_restball_num[k]["tableNo"]);				
+			//}
+				//utilFun.Log("=========== ");
 			
 			//記下第一個桌號,下次排序,排除在外
 			if ( _first_table == -1) 
 			{
 				_first_table = myticket_restball_num[0]["tableNo"];
 				_first_rest = myticket_restball_num[0]["rest"];
-				utilFun.Log("_first Tb="+_first_table + " rest = "+ _first_rest);
+				//utilFun.Log("_first Tb="+_first_table + " rest = "+ _first_rest);
 			}
 			else	if (_first_table != -1)
 			{
 				//與第一個差二球,才做交換
-				utilFun.Log("check _first_rest="+_first_rest + " sort first = "+ myticket_restball_num[0]["rest"] );
+				//utilFun.Log("check _first_rest="+_first_rest + " sort first = "+ myticket_restball_num[0]["rest"] );
 				if (  (_first_rest -2) == myticket_restball_num[0]["rest"] )
 				{
 					_first_table = myticket_restball_num[0]["tableNo"];
 					_first_rest = myticket_restball_num[0]["rest"];
-					utilFun.Log("new  Tb="+_first_table + " rest = "+ _first_rest);
+					//utilFun.Log("new  Tb="+_first_table + " rest = "+ _first_rest);
 				}
 				else 
 				{
@@ -295,7 +295,7 @@ package View.ViewComponent
 											   };
 					
 					myticket_restball_num.unshift(table_and_rest);
-					utilFun.Log("nochange put back  Tb="+_first_table + " rest = "+ _first_rest);
+					//utilFun.Log("nochange put back  Tb="+_first_table + " rest = "+ _first_rest);
 				}
 			}
 			

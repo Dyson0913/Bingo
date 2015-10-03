@@ -52,6 +52,18 @@ package View.ViewBase
 			mc.addChild(str);
 		}
 		
+		public function colortextSetting(mc:MovieClip, idx:int, data:Array):void
+		{			
+			var textColor:uint = 0xFFFFFF;
+			if ( idx ==2) textColor = 0xFF0000;
+			
+			var ob:Object = data[0];
+			ob["color"] = textColor;
+			var str:TextField = dynamic_text(data[idx + 1], ob);
+			
+			mc.addChild(str);
+		}
+		
 		public function dynamic_text(text:String,para:Object):TextField
 		{		
 			//utilFun.Log("para ="+para.size);

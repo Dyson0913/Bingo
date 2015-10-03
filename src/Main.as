@@ -60,10 +60,10 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
 			//if ( CONFIG::debug ) 
-			{
+			//{
 				Debug.monitor(stage);
 				utilFun.Log("welcome bingo");
-			}			
+			//}			
 			
 			//no thing ,ok
 			_context  = ActionScriptContextBuilder.build(appConfig);
