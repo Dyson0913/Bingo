@@ -5,6 +5,7 @@ package Command
 	import flash.events.MouseEvent;
 	import flash.net.URLVariables;
 	import Model.*;
+	import Model.valueObject.StringObject;
 	import util.DI;
 	import util.utilFun;
 	import View.GameView.*;

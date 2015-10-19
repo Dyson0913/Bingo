@@ -53,12 +53,6 @@ package ConnectModule.websocket
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="connect")]
 		public function Connect():void
 		{
-			//var file:file = File.desktopDirectory.resolvePath("MyTextFile.txt");
-//var stream:FileStream = new FileStream();
-//stream.open(file, FileMode.WRITE);
-//stream.writeUTFBytes("This is my text file.");
-//stream.close();
-
 			//var object:Object = _model.getValue(modelName.LOGIN_INFO);						
 				var uuid:String = _model.getValue(modelName.UUID);			
 			utilFun.Log("uuid =" + uuid);

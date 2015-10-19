@@ -26,16 +26,15 @@ package Command
 		[MessageHandler(type = "Model.ModelEvent", selector = "update_state")]
 		public function state_update():void
 		{
-			var state:int = _model.getValue(modelName.GAMES_STATE);		
+			var state:int = _model.getValue(modelName.GAMES_STATE);			
 			if ( state  == gameState.NEW_ROUND)
-			{
+			{				
 				dispatcher(new ModelEvent("clearn"));
-				dispatcher(new ModelEvent("display"));
-				//clearn();
+				dispatcher(new ModelEvent("display"));			
 			}
 			else if ( state == gameState.END_BET) dispatcher(new ModelEvent("hide"));
-			else if ( state == gameState.START_OPEN) { }
-			else if ( state == gameState.END_ROUND) { }
+			else if ( state == gameState.START_OPEN) dispatcher(new ModelEvent("hide"));
+			else if ( state == gameState.END_ROUND)  dispatcher(new ModelEvent("hide"));
 		}
 	}
 
