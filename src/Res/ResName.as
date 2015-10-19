@@ -15,6 +15,7 @@ package Res
 		public static const roomitem:String = "room_item";
 		public static const L_arrow_l:String = "Lobby_arrow_left";
 		public static const L_arrow_r:String = "Lobby_arrow_right";
+		public static const popBall:String = "fakeBall";
 		
 		//bet view
 		public static const BetButton:String = "BetTableBtn";

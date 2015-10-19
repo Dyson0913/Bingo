@@ -175,6 +175,8 @@ package View.ViewComponent
 			_model.putValue("SelectRoomInfo",arr);
 			
 			_roomItem.init();			
+			
+			
 		}	
 		
 		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "1")]

@@ -65,6 +65,31 @@ package View.ViewComponent
 			//page.container.x = 10;
 			//page.container.y = 502;
 			
+			//TODO
+			var fakeball:MultiObject = prepare("fakeball", new MultiObject(), GetSingleItem("_view").parent.parent);				
+			fakeball.Create_by_list(1, [ResName.popBall], 0 , 0, 2, 1880 , 0, "Bet_");
+			fakeball.container.x = 10;
+			fakeball.container.y = 502;
+			_model.putValue("fakeball", 0);
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_0"]["ballNum"], "1");			
+			
+			Tweener.addCaller(GetSingleItem("fakeball"), { time:10 , count:10, transition:"linear",onUpdate: this.ball_t } );
+			
+		}
+		
+		public function ball_t():void
+		{
+			var cnt:int = _model.getValue("fakeball");
+			cnt++;
+			_model.putValue("fakeball", cnt);
+			if ( cnt %4 ==0)
+			{
+				//93.65 408.45
+				GetSingleItem("fakeball")["_fakeBall_0"].x = 93.65;
+				GetSingleItem("fakeball")["_fakeBall_0"].y = 408.45;
+				
+			}
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_0"], { y:GetSingleItem("fakeball")["_fakeBall_0"].y -176.65, time:1 } );
 		}
 		
 		public function select_room(e:Event, idx:int):Boolean
