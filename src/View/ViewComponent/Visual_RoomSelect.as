@@ -71,9 +71,10 @@ package View.ViewComponent
 			fakeball.container.x = 10;
 			fakeball.container.y = 502;
 			_model.putValue("fakeball", 0);
-			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_0"]["ballNum"], "1");			
+			utilFun.SetText(GetSingleItem("fakeball")["ballNum"], "1");			
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_1"]["ballNum"], "2");			
 			
-			Tweener.addCaller(GetSingleItem("fakeball"), { time:10 , count:10, transition:"linear",onUpdate: this.ball_t } );
+			Tweener.addCaller(this, { time:10 , count:10, transition:"linear",onUpdate: this.ball_t } );
 			
 		}
 		
@@ -82,14 +83,17 @@ package View.ViewComponent
 			var cnt:int = _model.getValue("fakeball");
 			cnt++;
 			_model.putValue("fakeball", cnt);
-			if ( cnt %4 ==0)
-			{
+			//if ( cnt %4 ==0)
+			//{
 				//93.65 408.45
-				GetSingleItem("fakeball")["_fakeBall_0"].x = 93.65;
-				GetSingleItem("fakeball")["_fakeBall_0"].y = 408.45;
-				
-			}
+				//GetSingleItem("fakeball")["_fakeBall_0"].x = 93.65;
+				//GetSingleItem("fakeball")["_fakeBall_0"].y = 408.45;
+				//
+			//}
+			
 			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_0"], { y:GetSingleItem("fakeball")["_fakeBall_0"].y -176.65, time:1 } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_1"], { y:GetSingleItem("fakeball")["_fakeBall_1"].y -176.65, time:1 } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_2"], { y:GetSingleItem("fakeball")["_fakeBall_2"].y -176.65, time:1 } );
 		}
 		
 		public function select_room(e:Event, idx:int):Boolean
