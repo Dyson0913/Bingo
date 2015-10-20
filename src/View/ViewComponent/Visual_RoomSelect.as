@@ -1,6 +1,7 @@
 package View.ViewComponent 
 {
 	import ConnectModule.websocket.WebSoketInternalMsg;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import View.ViewBase.VisualHandler;
@@ -71,29 +72,42 @@ package View.ViewComponent
 			fakeball.container.x = 10;
 			fakeball.container.y = 502;
 			_model.putValue("fakeball", 0);
-			utilFun.SetText(GetSingleItem("fakeball")["ballNum"], "1");			
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_0"]["ballNum"], "1");			
 			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_1"]["ballNum"], "2");			
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_2"]["ballNum"], "3");			
 			
-			Tweener.addCaller(this, { time:10 , count:10, transition:"linear",onUpdate: this.ball_t } );
+			utilFun.Log(" 1 "+GetSingleItem("fakeball")["_fakeBall_0"].y );
+			utilFun.Log(" 2 "+GetSingleItem("fakeball")["_fakeBall_1"].y );
+			utilFun.Log(" 3 "+GetSingleItem("fakeball")["_fakeBall_2"].y );
+			Tweener.addCaller(this, { time:30 , count:20, transition:"linear",onUpdate: this.ball_t } );
+			
+			//47.55 --176.65  = -131.1
+			//228.5                 =  51.85
+			//413.95                = 237.3
+			                             //413.95
 			
 		}
 		
 		public function ball_t():void
 		{
-			var cnt:int = _model.getValue("fakeball");
-			cnt++;
-			_model.putValue("fakeball", cnt);
-			//if ( cnt %4 ==0)
-			//{
-				//93.65 408.45
-				//GetSingleItem("fakeball")["_fakeBall_0"].x = 93.65;
-				//GetSingleItem("fakeball")["_fakeBall_0"].y = 408.45;
-				//
-			//}
 			
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_0"], { y:GetSingleItem("fakeball")["_fakeBall_0"].y -176.65, time:1 } );
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_1"], { y:GetSingleItem("fakeball")["_fakeBall_1"].y -176.65, time:1 } );
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_2"], { y:GetSingleItem("fakeball")["_fakeBall_2"].y -176.65, time:1 } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_0"], { y:GetSingleItem("fakeball")["_fakeBall_0"].y -175.95, time:1 } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_1"], { y:GetSingleItem("fakeball")["_fakeBall_1"].y -175.95, time:1 } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_2"], { y:GetSingleItem("fakeball")["_fakeBall_2"].y -175.95, time:1, onComplete:this.move } );
+			
+		}
+		
+		public function move():void
+		{
+			var cnt:int = _model.getValue("fakeball");
+			utilFun.Log("cnt ="+ cnt);
+			GetSingleItem("fakeball")["_fakeBall_" + cnt].y = 413.95;
+			
+			cnt++;
+			if ( cnt == 3) cnt = 0;
+			_model.putValue("fakeball", cnt);
+			
+			
 		}
 		
 		public function select_room(e:Event, idx:int):Boolean
