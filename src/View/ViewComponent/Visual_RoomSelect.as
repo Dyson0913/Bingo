@@ -64,51 +64,11 @@ package View.ViewComponent
 			//page.CustomizedFun = arror_turn;
 			//page.Create_by_list(2, [ResName.L_arrow_l, ResName.L_arrow_r], 0 , 0, 2, 1880 , 0, "Bet_");
 			//page.container.x = 10;
-			//page.container.y = 502;
+			//page.container.y = 502;			
 			
-			//TODO
-			var fakeball:MultiObject = prepare("fakeball", new MultiObject(), GetSingleItem("_view").parent.parent);				
-			fakeball.Create_by_list(1, [ResName.popBall], 0 , 0, 2, 1880 , 0, "Bet_");
-			fakeball.container.x = 10;
-			fakeball.container.y = 502;
-			_model.putValue("fakeball", 0);
-			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_0"]["ballNum"], "1");			
-			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_1"]["ballNum"], "2");			
-			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_2"]["ballNum"], "3");			
 			
-			utilFun.Log(" 1 "+GetSingleItem("fakeball")["_fakeBall_0"].y );
-			utilFun.Log(" 2 "+GetSingleItem("fakeball")["_fakeBall_1"].y );
-			utilFun.Log(" 3 "+GetSingleItem("fakeball")["_fakeBall_2"].y );
-			Tweener.addCaller(this, { time:30 , count:20, transition:"linear",onUpdate: this.ball_t } );
-			
-			//47.55 --176.65  = -131.1
-			//228.5                 =  51.85
-			//413.95                = 237.3
-			                             //413.95
-			
-		}
+		}	
 		
-		public function ball_t():void
-		{
-			
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_0"], { y:GetSingleItem("fakeball")["_fakeBall_0"].y -175.95, time:1 } );
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_1"], { y:GetSingleItem("fakeball")["_fakeBall_1"].y -175.95, time:1 } );
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_2"], { y:GetSingleItem("fakeball")["_fakeBall_2"].y -175.95, time:1, onComplete:this.move } );
-			
-		}
-		
-		public function move():void
-		{
-			var cnt:int = _model.getValue("fakeball");
-			utilFun.Log("cnt ="+ cnt);
-			GetSingleItem("fakeball")["_fakeBall_" + cnt].y = 413.95;
-			
-			cnt++;
-			if ( cnt == 3) cnt = 0;
-			_model.putValue("fakeball", cnt);
-			
-			
-		}
 		
 		public function select_room(e:Event, idx:int):Boolean
 		{

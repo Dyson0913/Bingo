@@ -11,6 +11,7 @@ package View.GameView
 	import util.DI;
 	import Model.*
 	import util.node;	
+	import View.ViewComponent.Visual_ball;
 	import View.ViewComponent.Visual_RoomSelect;
 	import View.Viewutil.*;
 	import View.ViewBase.ViewBase;
@@ -32,6 +33,7 @@ package View.GameView
 		[Inject]
 		public var _roomItem:Visual_RoomSelect;
 		
+		
 		public function LobbyView()  
 		{
 			
@@ -48,7 +50,10 @@ package View.GameView
 			view.Create_by_list(1, [ResName.RoomSelect], 0, 0, 1, 0, 0, "a_");			
 						
 			_roomItem.init();
+			
+			
 		}			 
+		
 		
 		private function connet():void
 		{				

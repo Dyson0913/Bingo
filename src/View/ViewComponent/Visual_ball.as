@@ -95,11 +95,56 @@ package View.ViewComponent
 			_barmove = false;
 			_barmove2 = false;
 			
-		   //_tool.SetControlMc(listenpai.container);
+			
+			//免洗球
+			var fakeball:MultiObject = prepare("fakeball", new MultiObject(), GetSingleItem("_view").parent.parent);				
+			fakeball.Create_by_list(1, [ResName.popBall], 0 , 0, 2, 1880 , 0, "Bet_");
+			fakeball.container.x = 41;
+			fakeball.container.y = 623;
+			_model.putValue("fakeball", 0);
+			
+			var ballNum:int = utilFun.Random(75);
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_0"]["ballNum"], ballNum.toString());			
+			GetSingleItem("fakeball")["_fakeBall_0"].gotoAndStop( Math.ceil( ballNum / 15) ) ;
+			
+			var ballNum2:int = utilFun.Random(75);
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_1"]["ballNum"], ballNum2.toString());			
+			GetSingleItem("fakeball")["_fakeBall_1"].gotoAndStop( Math.ceil( ballNum2 / 15) ) ;
+			
+			var ballNum3:int = utilFun.Random(75);
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_2"]["ballNum"], ballNum3.toString());
+			GetSingleItem("fakeball")["_fakeBall_2"].gotoAndStop( Math.ceil( ballNum3 / 15) ) ;
+			
+			//Tweener.addCaller(this, { time:30 , count:20, transition:"linear",onUpdate: this.ball_t } );
+			
+		   //_tool.SetControlMc(fakeball.container);
 		   //_tool.y = 500;
 			//add(_tool);
-			_model.putValue("open3Balllist", []);						
+			_model.putValue("open3Balllist", []);				
 			
+			
+			
+		}
+		
+		public function ball_t():void
+		{			
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_0"], { y:GetSingleItem("fakeball")["_fakeBall_0"].y -180.95, time:0.5 } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_1"], { y:GetSingleItem("fakeball")["_fakeBall_1"].y -180.95, time:0.5 } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_2"], { y:GetSingleItem("fakeball")["_fakeBall_2"].y -180.95, time:0.5, onComplete:this.move } );
+			
+		}
+		
+		public function move():void
+		{
+			var cnt:int = _model.getValue("fakeball");
+			utilFun.Log("cnt =" + cnt);
+			var ballNum:int = utilFun.Random(75);
+			GetSingleItem("fakeball")["_fakeBall_" + cnt].y = 413.95;
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_"+ cnt]["ballNum"], ballNum.toString());			
+			GetSingleItem("fakeball")["_fakeBall_" + cnt].gotoAndStop( Math.ceil( ballNum / 15) ) ;		
+			cnt++;
+			if ( cnt == 3) cnt = 0;
+			_model.putValue("fakeball", cnt);
 		}
 		
 		public function sballFun(mc:MovieClip, idx:int, scalesize:Array):void
@@ -135,6 +180,9 @@ package View.ViewComponent
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="ballupdate")]
 		public function display():void
 		{	
+			//fake
+			ball_t();
+			
 			//big ball
 			var BallNum:int = _model.getValue("Curball");
 			Get(modelName.Open_Ball_Num).container.visible = true;
