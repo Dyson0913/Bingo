@@ -53,7 +53,7 @@ package View.GameView
 		public var _Bigwin_Msg:Visual_Bigwin_Msg;
 		
 		[Inject]
-		public var _test:Visual_testInterface;
+		public var _Bigwin_Effect:Visual_Bigwin_Effect
 		
 		public function OpenBallView()  
 		{
@@ -81,6 +81,7 @@ package View.GameView
 			_ticket.init();	
 			
 			_Bigwin_Msg.init();
+			_Bigwin_Effect.init();
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]

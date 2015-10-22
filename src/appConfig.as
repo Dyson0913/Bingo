@@ -60,6 +60,7 @@ package
 		public var _bingo:Visual_bingoPan = new Visual_bingoPan();
 		public var _ticket:Visual_ticket = new Visual_ticket();
 		public var _Bigwin_Msg:Visual_Bigwin_Msg = new Visual_Bigwin_Msg();
+		public var _Bigwin_Effect:Visual_Bigwin_Effect = new Visual_Bigwin_Effect();
 		
 		public var _settle:Visual_Settle = new Visual_Settle();
 		public var _roomItem:Visual_RoomSelect = new Visual_RoomSelect();

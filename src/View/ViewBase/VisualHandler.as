@@ -10,6 +10,7 @@ package View.ViewBase
 	import util.*;
 	import Model.*;
 	import View.Viewutil.AdjustTool;
+	import View.Viewutil.MultiObject;
 	
 	/**
 	 * handle display item how to presentation
@@ -84,6 +85,27 @@ package View.ViewBase
 			return utilFun.prepare(name,ob , _viewcom.currentViewDI , container);
 		}
 		
+		//========================= better way		
+		protected function create(name:*,resNameArr:Array, Stick_in_container:DisplayObjectContainer = null):*
+		{
+			if ( Stick_in_container == null) Stick_in_container = GetSingleItem("_view").parent.parent;
+			var ob:MultiObject = new MultiObject();
+			ob.resList = resNameArr;
+			
+			var sp:Sprite = new Sprite();
+			sp.name  = name;
+			ob.setContainer(sp);
+			return utilFun.prepare(name,ob , _viewcom.currentViewDI , Stick_in_container);
+		}		
+		
+		protected function setFrame(name:*, frame:int):void
+		{
+			var a:MultiObject = Get(name);
+			for ( var i:int = 0; i <  a.ItemList.length; i++)
+			{				
+				GetSingleItem(name, i).gotoAndStop(frame);
+			}
+		}
 	}
 
 }

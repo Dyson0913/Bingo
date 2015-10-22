@@ -37,6 +37,9 @@ package Command
 			SoundAS.addSound("sound_coin", new sound_coin());
 			SoundAS.addSound("sound_msg", new sound_msg());
 			SoundAS.addSound("sound_rebet", new sound_rebet());			
+						
+			SoundAS.addSound("sound_get_big_coin", new sound_get_big_coin());
+			SoundAS.addSound("sound_odd_show", new sound_odd_show());
 			
 			//create lobbycall back
 			var lobbyevent:Function =  _model.getValue(modelName.HandShake_chanel);			
@@ -91,8 +94,16 @@ package Command
 		{
 			if ( _mute == true ) return;
 			SoundAS.playFx(sound.Value);
+		
+			
 		}
 		
+		[MessageHandler(type="Model.valueObject.StringObject",selector="loop_sound")]
+		public function loop_sound(sound:StringObject):void
+		{
+			if ( _mute == true ) return;
+			SoundAS.playLoop(sound.Value);
+		}
 	}
 
 }

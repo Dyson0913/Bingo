@@ -1,6 +1,7 @@
 package View.ViewComponent 
 {
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import View.ViewBase.Visual_Text;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
@@ -8,7 +9,7 @@ package View.ViewComponent
 	import util.*;
 	import Command.*;
 	
-	import View.Viewutil.MultiObject;
+	import View.Viewutil.*;
 	import Res.ResName;
 	import caurina.transitions.Tweener;
 	
@@ -23,6 +24,11 @@ package View.ViewComponent
 		
 		[Inject]
 		public var _text:Visual_Text;
+		
+		[Inject]
+		public var _Bigwin_Effect:Visual_Bigwin_Effect;
+		
+		public const switchbtn:String = "switch_btn";
 		
 		public function Visual_Bigwin_Msg() 
 		{
@@ -42,10 +48,15 @@ package View.ViewComponent
 			public_best_pan.container.y = 128.8;
 			public_best_pan.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");  
 			
-			var switchbtn:MultiObject = prepare("switchbtn", new MultiObject(), GetSingleItem("_view").parent.parent);						
+			var switchbtn:MultiObject = create("switchbtn", [switchbtn]);
+			switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);
+			switchbtn.mousedown = fake_reaction;
+			switchbtn.mouseup = _betCommand.empty_reaction;
+			switchbtn.rollout = _betCommand.empty_reaction;
+			switchbtn.rollover = _betCommand.empty_reaction;
 			switchbtn.container.x = 1770;
 			switchbtn.container.y = 1000;
-			switchbtn.Create_by_list(1, [ResName.switchbtn], 0, 0, 1, 106.25, 80, "time_");  
+			switchbtn.Create_(1, "switchbtn");
 			
 			
 			//自己中賓果提示
@@ -67,6 +78,13 @@ package View.ViewComponent
 		   //_tool.SetControlMc(selfbgino_text.container);
 		   //_tool.y = 200;
 			//add(_tool);
+		}
+		
+		public function fake_reaction(e:Event, idx:int):Boolean
+		{
+			if (!_Bigwin_Effect._playing) _Bigwin_Effect.hitbigwin();
+			else _Bigwin_Effect.stop();
+			return true;
 		}
 		
 		public function pan_set(mc:MovieClip, idx:int, tablelist:Array):void

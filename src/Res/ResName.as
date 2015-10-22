@@ -35,8 +35,7 @@ package Res
 		public static const listenpai:String = "listen";
 		public static const selfbingo_panel:String = "self_bingo_panel";
 		
-		public static const Myticket:String = "My_ticket";
-		public static const switchbtn:String = "switch_btn";
+		public static const Myticket:String = "My_ticket";		
 		public static const empty:String = "emptymc";
 		
 		public static const Paninfo_font:String = "pan_info_font";
@@ -49,6 +48,7 @@ package Res
 		public static const Hint:String = "HintMsg";	
 		public static const Winhint:String = "win_hint";	
 		
+
 		
 		public function ResName() 
 		{
