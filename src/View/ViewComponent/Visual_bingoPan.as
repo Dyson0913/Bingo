@@ -45,13 +45,13 @@ package View.ViewComponent
 			
 			utilFun.SetText( bingo_pan.ItemList[0]["_panNum"]["tableNo"], "2");
 			
-			bingo_pan.ItemList[0]["_pan_amount"].x = -187.6;
-			bingo_pan.ItemList[0]["_pan_amount"].y = -31.9;
-			_text.textSetting_s(bingo_pan.ItemList[0]["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, ""]);
+			bingo_pan.ItemList[0]["_pan_amount"].x = -180.6
+			bingo_pan.ItemList[0]["_pan_amount"].y = -25.9;
+			_text.textSetting_s(bingo_pan.ItemList[0]["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, ""]);
 		
-			//_tool.SetControlMc(bingo_pan.ItemList[0]["_pan_amount"]);
-			//_tool.y = 200;
-			//add(_tool);
+			_tool.SetControlMc(bingo_pan.ItemList[0]["_pan_amount"]);
+			_tool.y = 200;
+			add(_tool);
 		}
 		
 		public function info_initFun(mc:MovieClip, idx:int, data:Array):void
@@ -132,7 +132,7 @@ package View.ViewComponent
 			
 			//押注額 			
 			utilFun.Clear_ItemChildren(GetSingleItem("bingo_pan")["_pan_amount"]);
-			_text.textSetting_s(GetSingleItem("bingo_pan")["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, bet_ob["total_amount"]]);
+			_text.textSetting_s(GetSingleItem("bingo_pan")["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, bet_ob["total_amount"]]);
 			
 			//var font:Array = [{size:40,color:0xB50004,bold:true,align:_text.align_center}];
 			//font = font.concat(bet_ob["total_amount"]);
@@ -151,7 +151,7 @@ package View.ViewComponent
 			var pan:MultiObject = prepare("select_pan", new MultiObject(), GetSingleItem("bingo_pan"));	
 			pan.CustomizedFun = PanMatrixCustomizedFun;
 			pan.CustomizedData = balls[tableNo]; // select pan_num
-			pan.container.x = 60;
+			pan.container.x = 50;
 			pan.container.y = 30;
 			pan.Create_by_list(25, [ResName.bingo_pancell_new], 0, 0, 5, 63, 63, "time_");
 			

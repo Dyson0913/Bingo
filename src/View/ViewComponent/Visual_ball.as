@@ -65,6 +65,13 @@ package View.ViewComponent
 		   sball.container.y = 392;		  
 		   sball.container.visible = false;  
 		   
+		   	//左上角小球 ->
+		   var small_ball_arrow:MultiObject = prepare("small_ball_arrow", new MultiObject()  ,GetSingleItem("_view").parent.parent);
+		   small_ball_arrow.Create_by_list(1, [ResName.ballarrorw], 0, 0, 3, 110, 0, "time_");
+		   small_ball_arrow.container.x = 147;
+		   small_ball_arrow.container.y = 405;		   
+		   small_ball_arrow.container.visible = false; 
+		   
 		   //75開球
 		   var ball_pan:MultiObject = prepare("ball_pan", new MultiObject()  , GetSingleItem("_view").parent.parent);
 		   ball_pan.CustomizedFun = ball_panfun;		   
@@ -104,9 +111,13 @@ package View.ViewComponent
 			//免洗球
 			var fakeball:MultiObject = prepare("fakeball", new MultiObject(), GetSingleItem("_view").parent.parent);				
 			fakeball.Create_by_list(1, [ResName.popBall], 0 , 0, 2, 1880 , 0, "Bet_");
-			fakeball.container.x = 50.6;
-			fakeball.container.y = 551.75;
+			fakeball.container.x = 30.6;
+			fakeball.container.y = 541.75;
 			_model.putValue("fakeball", 1);
+			
+			GetSingleItem("fakeball")["_fakeBall_0"].visible = false;
+			GetSingleItem("fakeball")["_fakeBall_1"].visible = false;
+			GetSingleItem("fakeball")["_fakeBall_2"].visible = false;
 			
 			_first = true;
 			
@@ -136,7 +147,7 @@ package View.ViewComponent
 			//_text.roationsword(	mytemp_ball.ItemList[0]["_mc_4"], "13");		
 			//_text.roationsword(	mytemp_ball.ItemList[0]["_mc_5"], "13");
 			
-		   //_tool.SetControlMc(	mytemp_ball.container);
+		   //_tool.SetControlMc(	small_ball_arrow.container);
 		   //_tool.y = 500;
 			//add(_tool);
 			_model.putValue("open3Balllist", []);				
@@ -147,6 +158,10 @@ package View.ViewComponent
 		
 		public function ball_t():void
 		{			
+			GetSingleItem("fakeball")["_fakeBall_0"].visible = true;
+			GetSingleItem("fakeball")["_fakeBall_1"].visible = true;
+			GetSingleItem("fakeball")["_fakeBall_2"].visible = true;
+			
 			var ontop:int = _model.getValue("fakeball");
 			utilFun.Log("ball_into =" + ontop);		
 			var idx_1:int = ontop;
@@ -199,14 +214,25 @@ package View.ViewComponent
 			idx_3 = ontop;
 			utilFun.Log("idx_1 =" + idx_1 + " idx_2 =" +idx_2 +" idx_3 " + idx_3);		
 			
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_"+idx_1], { y:GetSingleItem("fakeball")["_fakeBall_"+idx_1].y -180.95, time:0.5 } );
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_"+idx_2], { y:GetSingleItem("fakeball")["_fakeBall_"+idx_2].y -180.95, time:0.5 } );
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_"+idx_3], { y:GetSingleItem("fakeball")["_fakeBall_"+idx_3].y -180.95, time:0.5, onComplete:this.move } );
+			//first in display
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_" + idx_3], { y:GetSingleItem("fakeball")["_fakeBall_" + idx_3].y -180.95, time:0.5  } );
+			
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_" + idx_1], { y:GetSingleItem("fakeball")["_fakeBall_" + idx_1].y -180.95, time:0.1, delay:0.3 , onComplete:this.pullbar_open } );
+			GetSingleItem("fakeball")["_pullbar"].gotoAndPlay(2);
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_" + idx_2], { y:GetSingleItem("fakeball")["_fakeBall_" + idx_2].y -180.95, time:0.3,delay:0.3,onComplete:this.move } );
+			
+			
+			
 			
 		}
 		
+		public function pullbar_open():void
+		{		
+			GetSingleItem("fakeball")["_pullbar"].gotoAndStop(1);
+		}
+		
 		public function move():void
-		{
+		{			
 			var cnt:int = _model.getValue("fakeball");
 			utilFun.Log("move =" + cnt);
 			GetSingleItem("fakeball")["_fakeBall_" + cnt].y = 413.95;
@@ -215,8 +241,6 @@ package View.ViewComponent
 			if ( cnt == 3) cnt = 0;				
 			_model.putValue("fakeball", cnt);
 			
-			
-		
 		}
 		
 		public function sballFun(mc:MovieClip, idx:int, scalesize:Array):void
@@ -252,8 +276,8 @@ package View.ViewComponent
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="ballupdate")]
 		public function display():void
 		{	
-			//fake
 			
+			//fake			
 			ball_t();
 			
 			//big ball
@@ -272,6 +296,7 @@ package View.ViewComponent
 			
 			//左方小球
 			Get("small_ball").container.visible = true;
+			Get("small_ball_arrow").container.visible = true;
 			for (var i:int = open3ball.length; i >0 ; i--)
 			{			
 				utilFun.SetText(GetSingleItem("small_ball",i-1)["ballNum"], utilFun.Format(open3ball[i-1], 2) );				

@@ -237,9 +237,10 @@ package Command
 		
 		public function simulat_upate():void
 		{
-			utilFun.Log("simulat_upate ");
-				if ( CONFIG::debug ) 
+		
+			if ( CONFIG::debug ) 
 			{
+				utilFun.Log("simulat_upate ");
 				var bet_ob:Object = _Actionmodel.excutionMsg();
 				var is_bet:Array = _model.getValue("is_betarr");
 				var num:int  = is_bet.length;						

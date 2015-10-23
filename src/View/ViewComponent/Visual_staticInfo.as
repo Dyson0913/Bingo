@@ -75,9 +75,9 @@ package View.ViewComponent
 			public_second_pan.container.y = 368.8;
 			public_second_pan.Create_by_list(26, [ResName.BetButton], 0, 0, 13, 106.25, 80, "time_");
 			
-			_tool.SetControlMc(myroom.container);
-			_tool.y = 200;
-			add(_tool);
+			//_tool.SetControlMc(myroom.container);
+			//_tool.y = 200;
+			//add(_tool);
 		
 		}
 		

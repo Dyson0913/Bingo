@@ -45,6 +45,7 @@ package View.ViewComponent
 			
 		   var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);
 		   
+		   //自己買的盤
 		   var totalshow:int = Math.min(table.length, 3);		   
 			var ticket:MultiObject = prepare("ticket", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			ticket.CustomizedFun = info_initFun;
@@ -88,9 +89,9 @@ package View.ViewComponent
 			//utilFun.Log(" amount[idx] = " +  amount[idx]);
 			
 			//amount
-			mc["_pan_amount"].x = -187.6;
-			mc["_pan_amount"].y = -31.9;
-			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, amount[idx]]);			
+			mc["_pan_amount"].x = -180.6
+			mc["_pan_amount"].y = -25.9;
+			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, amount[idx]]);			
 			
 			//_tool.SetControlMc(mc["_pan_amount"]);
 			//add(_tool);
@@ -219,7 +220,7 @@ package View.ViewComponent
 			
 			//amount
 			utilFun.Clear_ItemChildren(mc["_pan_amount"]);
-			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, bold:true, align:_text.align_center }, amount[idx]]);		
+			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, amount[idx]]);		
 		}
 		
 		public function best3_pan(openballist:Array):Array

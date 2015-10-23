@@ -38,6 +38,7 @@ package Res
 		public static const multibyball:String = "multiby_ball";
 		public static const listenpai:String = "listen";
 		public static const selfbingo_panel:String = "self_bingo_panel";
+		public static const ballarrorw:String = "ball_arrorw";
 		
 		public static const Myticket:String = "My_ticket";		
 		public static const empty:String = "emptymc";
