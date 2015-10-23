@@ -175,8 +175,8 @@ package ConnectModule.websocket
 					
 					case "MsgBGOpenBall":
 					{
-						_model.putValue("Curball", parseInt(result.open_info.current_ball) );
-							
+						_model.putValue("Curball", parseInt(result.open_info.current_ball) );						
+						_model.putValue("waitting_ball",result.open_info.waitting_ball);
 						var arr:Array = result.open_info.opened_history;
 						_model.putValue("opened_ball_num", arr.length );
 						_model.putValue("openBalllist", arr);

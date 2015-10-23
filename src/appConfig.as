@@ -64,6 +64,7 @@ package
 		
 		public var _settle:Visual_Settle = new Visual_Settle();
 		public var _roomItem:Visual_RoomSelect = new Visual_RoomSelect();
+		public var _themes:Visual_themes = new Visual_themes();
 		
 		//test
 		public var _test:Visual_testInterface = new Visual_testInterface();

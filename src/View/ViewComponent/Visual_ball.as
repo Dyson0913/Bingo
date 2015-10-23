@@ -1,6 +1,7 @@
 package View.ViewComponent 
 {
 	import flash.display.MovieClip;
+	import flash.text.TextField;
 	import View.ViewBase.Visual_Text;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
@@ -34,6 +35,10 @@ package View.ViewComponent
 		private var _hint:Boolean;
 		private var _barmove:Boolean;
 		private var _barmove2:Boolean;
+		
+		private var temp_ball:String = "tempball";
+		
+		private var _first:Boolean = true;
 		
 		public function Visual_ball() 
 		{
@@ -70,19 +75,19 @@ package View.ViewComponent
 			if(  _betCommand.get_my_betlist().length != 0) ball_pan.container.visible = false		 
 		   	
 			//倍數提示底圖
-			var multibyball_bg:MultiObject = prepare("multibyball_bg", new MultiObject(), GetSingleItem("_view").parent.parent);			
-			multibyball_bg.container.x =69;
-			multibyball_bg.container.y = 480;
-			multibyball_bg.Create_by_list(1, [ResName.multibyball], 0, 0, 1, 0, 47, "time_")
-			multibyball_bg.container.visible = false;
+			//var multibyball_bg:MultiObject = prepare("multibyball_bg", new MultiObject(), GetSingleItem("_view").parent.parent);			
+			//multibyball_bg.container.x =69;
+			//multibyball_bg.container.y = 480;
+			//multibyball_bg.Create_by_list(1, [ResName.multibyball], 0, 0, 1, 0, 47, "time_")
+			//multibyball_bg.container.visible = false;
 			
 			//倍數提示
-			var multi_by_ball:MultiObject = prepare("multi_by_ball", new MultiObject(), GetSingleItem("_view").parent.parent);
-			multi_by_ball.CustomizedFun = _text.textSetting;
-			multi_by_ball.CustomizedData = [{size:24,color:0xFFFFFF,bold:true}, "54 球     150 倍","60 球     100 倍"," 平常        90 倍"];			
-			multi_by_ball.container.x =139;
-			multi_by_ball.container.y = 482;
-			multi_by_ball.Create_by_list(3, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");
+			//var multi_by_ball:MultiObject = prepare("multi_by_ball", new MultiObject(), GetSingleItem("_view").parent.parent);
+			//multi_by_ball.CustomizedFun = _text.textSetting;
+			//multi_by_ball.CustomizedData = [{size:24,color:0xFFFFFF,bold:true}, "54 球     150 倍","60 球     100 倍"," 平常        90 倍"];			
+			//multi_by_ball.container.x =139;
+			//multi_by_ball.container.y = 482;
+			//multi_by_ball.Create_by_list(3, [ResName.Paninfo_font], 0, 0, 1, 0, 47, "time_");
 			
 			//倍數提示底圖
 			var listenpai:MultiObject = prepare("listenpai", new MultiObject(), GetSingleItem("_view").parent.parent);			
@@ -90,7 +95,7 @@ package View.ViewComponent
 			listenpai.container.y = 50.5;
 			listenpai.Create_by_list(1, [ResName.listenpai], 0, 0, 1, 0, 47, "time_")
 			listenpai.container.visible = false;
-			
+			//
 			_hint = false;
 			_barmove = false;
 			_barmove2 = false;
@@ -99,25 +104,39 @@ package View.ViewComponent
 			//免洗球
 			var fakeball:MultiObject = prepare("fakeball", new MultiObject(), GetSingleItem("_view").parent.parent);				
 			fakeball.Create_by_list(1, [ResName.popBall], 0 , 0, 2, 1880 , 0, "Bet_");
-			fakeball.container.x = 41;
-			fakeball.container.y = 623;
-			_model.putValue("fakeball", 0);
+			fakeball.container.x = 50.6;
+			fakeball.container.y = 551.75;
+			_model.putValue("fakeball", 1);
 			
-			var ballNum:int = utilFun.Random(75);
-			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_0"]["ballNum"], ballNum.toString());			
-			GetSingleItem("fakeball")["_fakeBall_0"].gotoAndStop( Math.ceil( ballNum / 15) ) ;
+			_first = true;
 			
-			var ballNum2:int = utilFun.Random(75);
-			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_1"]["ballNum"], ballNum2.toString());			
-			GetSingleItem("fakeball")["_fakeBall_1"].gotoAndStop( Math.ceil( ballNum2 / 15) ) ;
-			
-			var ballNum3:int = utilFun.Random(75);
-			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_2"]["ballNum"], ballNum3.toString());
-			GetSingleItem("fakeball")["_fakeBall_2"].gotoAndStop( Math.ceil( ballNum3 / 15) ) ;
+			//var ballNum:int = utilFun.Random(75);
+			//utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_0"]["ballNum"], ballNum.toString());			
+			//GetSingleItem("fakeball")["_fakeBall_0"].gotoAndStop( Math.ceil( ballNum / 15) ) ;
+			//
+			//var ballNum2:int = utilFun.Random(75);
+			//utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_1"]["ballNum"], ballNum2.toString());			
+			//GetSingleItem("fakeball")["_fakeBall_1"].gotoAndStop( Math.ceil( ballNum2 / 15) ) ;
+			//
+			//var ballNum3:int = utilFun.Random(75);
+			//utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_2"]["ballNum"], ballNum3.toString());
+			//GetSingleItem("fakeball")["_fakeBall_2"].gotoAndStop( Math.ceil( ballNum3 / 15) ) ;
 			
 			//Tweener.addCaller(this, { time:30 , count:20, transition:"linear",onUpdate: this.ball_t } );
 			
-		   //_tool.SetControlMc(fakeball.container);
+			//免洗球2
+			//var mytemp_ball:MultiObject = prepare("tempball", new MultiObject(), GetSingleItem("_view").parent.parent);				
+			//mytemp_ball.Create_by_list(1, [temp_ball], 0 , 0, 2, 1880 , 0, "Bet_");
+			//mytemp_ball.container.x = 41;
+			//mytemp_ball.container.y = 623;
+			//
+			//_text.roationsword(	mytemp_ball.ItemList[0]["_mc_1"], "13");
+			//_text.roationsword(	mytemp_ball.ItemList[0]["_mc_2"], "13");
+			//_text.roationsword(	mytemp_ball.ItemList[0]["_mc_3"], "13");
+			//_text.roationsword(	mytemp_ball.ItemList[0]["_mc_4"], "13");		
+			//_text.roationsword(	mytemp_ball.ItemList[0]["_mc_5"], "13");
+			
+		   //_tool.SetControlMc(	mytemp_ball.container);
 		   //_tool.y = 500;
 			//add(_tool);
 			_model.putValue("open3Balllist", []);				
@@ -128,23 +147,76 @@ package View.ViewComponent
 		
 		public function ball_t():void
 		{			
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_0"], { y:GetSingleItem("fakeball")["_fakeBall_0"].y -180.95, time:0.5 } );
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_1"], { y:GetSingleItem("fakeball")["_fakeBall_1"].y -180.95, time:0.5 } );
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_2"], { y:GetSingleItem("fakeball")["_fakeBall_2"].y -180.95, time:0.5, onComplete:this.move } );
+			var ontop:int = _model.getValue("fakeball");
+			utilFun.Log("ball_into =" + ontop);		
+			var idx_1:int = ontop;
+			var idx_2:int = ontop;
+			var idx_3:int = ontop;
+			var waiing_ball:Array = _model.getValue("waitting_ball");			
+			var ball_1:int = waiing_ball[0];
+			var ball_2:int = waiing_ball[1];
+			utilFun.Log("ball_1 =" + ball_1);			
+			utilFun.Log("ball_2 =" + ball_2);
+			//第一次不位移
+			if ( _first )
+			{
+				_first = false;
+				var cnt:int = _model.getValue("fakeball");
+				utilFun.Log("first in=" + cnt);			
+				
+				//just set ,no move
+				utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_"+idx_1]["ballNum"], ball_1.toString());			
+				GetSingleItem("fakeball")["_fakeBall_"+idx_1].gotoAndStop( Math.ceil( ball_1 / 15) ) ;
+				
+				idx_2 = cnt + 1;
+				if ( idx_2 == 3) idx_2 = 0;
+				utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_"+idx_2]["ballNum"], ball_2.toString());			
+				GetSingleItem("fakeball")["_fakeBall_"+idx_2].gotoAndStop( Math.ceil( ball_2 / 15) ) ;
+				utilFun.Log("idx_1 =" + idx_1 + " idx_2 =" +idx_2);
+				//cnt++;			
+				//if ( cnt == 3) cnt = 0;
+				//_model.putValue("fakeball", cnt);
+				return;
+			}			
+			
+			//第二次要下移一球 
+			ontop += 1;
+			if ( ontop == 3) ontop = 0;		
+			
+			idx_1 = ontop;
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_"+idx_1]["ballNum"], ball_1.toString());			
+			GetSingleItem("fakeball")["_fakeBall_"+idx_1].gotoAndStop( Math.ceil( ball_1 / 15) ) ;
+			
+			ontop += 1;
+			if ( ontop == 3) ontop = 0;
+			
+			idx_2 = ontop ;
+			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_"+idx_2]["ballNum"], ball_2.toString());			
+			GetSingleItem("fakeball")["_fakeBall_"+idx_2].gotoAndStop( Math.ceil( ball_2 / 15) ) ;
+			
+			ontop += 1;
+			if ( ontop == 3) ontop =0;
+			idx_3 = ontop;
+			utilFun.Log("idx_1 =" + idx_1 + " idx_2 =" +idx_2 +" idx_3 " + idx_3);		
+			
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_"+idx_1], { y:GetSingleItem("fakeball")["_fakeBall_"+idx_1].y -180.95, time:0.5 } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_"+idx_2], { y:GetSingleItem("fakeball")["_fakeBall_"+idx_2].y -180.95, time:0.5 } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_"+idx_3], { y:GetSingleItem("fakeball")["_fakeBall_"+idx_3].y -180.95, time:0.5, onComplete:this.move } );
 			
 		}
 		
 		public function move():void
 		{
 			var cnt:int = _model.getValue("fakeball");
-			utilFun.Log("cnt =" + cnt);
-			var ballNum:int = utilFun.Random(75);
+			utilFun.Log("move =" + cnt);
 			GetSingleItem("fakeball")["_fakeBall_" + cnt].y = 413.95;
-			utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_"+ cnt]["ballNum"], ballNum.toString());			
-			GetSingleItem("fakeball")["_fakeBall_" + cnt].gotoAndStop( Math.ceil( ballNum / 15) ) ;		
-			cnt++;
-			if ( cnt == 3) cnt = 0;
+			
+			cnt += 1;
+			if ( cnt == 3) cnt = 0;				
 			_model.putValue("fakeball", cnt);
+			
+			
+		
 		}
 		
 		public function sballFun(mc:MovieClip, idx:int, scalesize:Array):void
@@ -181,6 +253,7 @@ package View.ViewComponent
 		public function display():void
 		{	
 			//fake
+			
 			ball_t();
 			
 			//big ball
@@ -207,21 +280,21 @@ package View.ViewComponent
 			
 			//開球倍率 (525 572)
 			var OpenBallList:Array = _model.getValue("openBalllist");
-			Get("multibyball_bg").container.visible = true;
+			//Get("multibyball_bg").container.visible = true;
 			if ( OpenBallList.length +1 > 55 )
 			{
 				if ( !_barmove)
 				{
-					Tweener.addTween(GetSingleItem("multibyball_bg"), { y:GetSingleItem("multibyball_bg").y + 45, time:1 } ); 
-					_barmove = true;
+					//Tweener.addTween(GetSingleItem("multibyball_bg"), { y:GetSingleItem("multibyball_bg").y + 45, time:1 } ); 
+					//_barmove = true;
 				}
 			}
 			if ( OpenBallList.length +1 > 61)  
 			{
 				if ( !_barmove2)
 				{
-					Tweener.addTween(GetSingleItem("multibyball_bg"), { y:GetSingleItem("multibyball_bg").y + 45, time:1 } ); 
-					_barmove2 = true;
+					//Tweener.addTween(GetSingleItem("multibyball_bg"), { y:GetSingleItem("multibyball_bg").y + 45, time:1 } ); 
+					//_barmove2 = true;
 				}
 			}
 			

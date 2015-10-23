@@ -7,7 +7,6 @@ package Res
 	public class ResName 
 	{
 		
-		public static const Loading_Scene:String = "Loadingbg";
 		public static const RoomSelect:String = "Select_room";
 		public static const Bet_Scene:String = "BetView";
 		public static const Openball_Scene:String = "openball_scene";
@@ -15,7 +14,12 @@ package Res
 		public static const roomitem:String = "room_item";
 		public static const L_arrow_l:String = "Lobby_arrow_left";
 		public static const L_arrow_r:String = "Lobby_arrow_right";
+		
 		public static const popBall:String = "fakeBall";
+		public static const secondhint:String = "second_hint";
+		public static const besthint:String = "best_hint";
+		
+		
 		
 		//bet view
 		public static const BetButton:String = "BetTableBtn";

@@ -1,5 +1,8 @@
 package View.ViewBase 
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
 	import flash.globalization.DateTimeFormatter;
@@ -97,6 +100,27 @@ package View.ViewBase
 			_NickName.defaultTextFormat = myFormat;				
 			_NickName.text = text;			
 			return _NickName;
+		}
+		
+		public function roationsword(mc:DisplayObjectContainer, str:String):void
+		{
+				//機台編號
+				var t1:TextField = new TextField();  
+				t1.defaultTextFormat = new TextFormat("Microsoft JhengHei", 50,null,true);
+				t1.text =  str;
+				t1.textColor = 0x0000;
+				t1.width= 100;  
+				t1.height = 100;				
+				
+				var b:BitmapData=new BitmapData(t1.width,t1.height,true,0x000000);  
+				b.draw(t1);  
+				var bt:Bitmap=new Bitmap(b); 
+				bt.smoothing = true;  
+				bt.name = "btword";
+				//bt.rotation = 28;
+				//bt.x = 46;
+				//bt.y = -17;
+				mc.addChild(bt); 
 		}
 		
 	}

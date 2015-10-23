@@ -55,6 +55,9 @@ package View.GameView
 		[Inject]
 		public var _Bigwin_Effect:Visual_Bigwin_Effect
 		
+		[Inject]
+		public var _themes:Visual_themes;
+		
 		public function OpenBallView()  
 		{
 			utilFun.Log("OpenBallView");
@@ -82,6 +85,8 @@ package View.GameView
 			
 			_Bigwin_Msg.init();
 			_Bigwin_Effect.init();
+			
+			_themes.init();
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]

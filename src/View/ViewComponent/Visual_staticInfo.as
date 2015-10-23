@@ -36,7 +36,16 @@ package View.ViewComponent
 		
 		public function init():void
 		{
-						
+			//包箱號
+			var room:int = _model.getValue("room_num");			
+			var myroom:MultiObject = prepare("myroom", new MultiObject(), GetSingleItem("_view").parent.parent);
+			myroom.CustomizedFun = _text.textSetting;
+			myroom.CustomizedData = [{size:30,color:0xFF0000}, room.toString()];			
+			myroom.container.x = 532;
+			myroom.container.y = 55;
+			myroom.Create_by_list(1, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
+			
+			
 			//最佳盤號 次佳盤數字
 			var bestinfo:MultiObject = prepare("best_pan_info", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bestinfo.CustomizedFun = info_initFun;
@@ -47,7 +56,7 @@ package View.ViewComponent
 			//總球數
 			var totalball_info:MultiObject = prepare("total_ball_info", new MultiObject(), GetSingleItem("_view").parent.parent);
 			totalball_info.CustomizedFun = _text.textSetting;
-			totalball_info.CustomizedData = [{size:40,color:0xCCCCCC,bold:true}, ""];			
+			totalball_info.CustomizedData = [{size:40,color:0xCCCCCC}, ""];			
 			totalball_info.container.x = -45;
 			totalball_info.container.y = 89;
 			totalball_info.Create_by_list(1, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
@@ -66,9 +75,9 @@ package View.ViewComponent
 			public_second_pan.container.y = 368.8;
 			public_second_pan.Create_by_list(26, [ResName.BetButton], 0, 0, 13, 106.25, 80, "time_");
 			
-			//_tool.SetControlMc(totalball_info.container);
-			//_tool.y = 200;
-			//add(_tool);
+			_tool.SetControlMc(myroom.container);
+			_tool.y = 200;
+			add(_tool);
 		
 		}
 		
@@ -82,7 +91,7 @@ package View.ViewComponent
 		{	
 			//utilFun.SetText(GetSingleItem("total_ball_info")["_text"], String( _model.getValue("opened_ball_num") ));
 			utilFun.Clear_ItemChildren(GetSingleItem("total_ball_info"));
-			Get("total_ball_info").CustomizedData =  [{size:40,color:0xCCCCCC,bold:true, align:TextFormatAlign.CENTER}, String( _model.getValue("opened_ball_num"))];		
+			Get("total_ball_info").CustomizedData =  [{size:40,color:0xCCCCCC, align:TextFormatAlign.CENTER}, String( _model.getValue("opened_ball_num"))];		
 			Get("total_ball_info").FlushObject();
 			
 			

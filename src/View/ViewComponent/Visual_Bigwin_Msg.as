@@ -50,7 +50,7 @@ package View.ViewComponent
 			
 			var switchbtn:MultiObject = create("switchbtn", [switchbtn]);
 			switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);
-			switchbtn.mousedown = fake_reaction;
+			//switchbtn.mousedown = fake_reaction;
 			switchbtn.mouseup = _betCommand.empty_reaction;
 			switchbtn.rollout = _betCommand.empty_reaction;
 			switchbtn.rollover = _betCommand.empty_reaction;

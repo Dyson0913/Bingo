@@ -83,6 +83,8 @@ package View.ViewComponent
 		
 		private var _script_item:MultiObject;
 		
+		
+		
 		public function Visual_testInterface() 
 		{
 			
@@ -132,6 +134,8 @@ package View.ViewComponent
 			//_tool.y = 200;
 			//add(_tool);
 			//
+			
+			
 		}				
 		
 		public function script_list_test(e:Event, idx:int):Boolean
