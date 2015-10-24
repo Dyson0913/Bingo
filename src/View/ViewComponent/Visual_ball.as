@@ -1,7 +1,7 @@
 package View.ViewComponent 
 {
 	import flash.display.MovieClip;
-	import flash.text.TextField;
+	import flash.text.TextField;	
 	import View.ViewBase.Visual_Text;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
@@ -39,6 +39,9 @@ package View.ViewComponent
 		private var temp_ball:String = "tempball";
 		
 		private var _first:Boolean = true;
+		
+		private var _shake_po:Array = [];
+		private var _shake_po2:Array = [];
 		
 		public function Visual_ball() 
 		{
@@ -171,6 +174,21 @@ package View.ViewComponent
 			var ball_2:int = waiing_ball[1];
 			//utilFun.Log("ball_1 =" + ball_1);			
 			//utilFun.Log("ball_2 =" + ball_2);
+			//for ( var i:int = 0; i < 40; i+=2)
+			//{
+				//var pos:int = Math.random() * 5 + 1;
+				//var pos2:int = Math.random() * 5 + 1;
+				//_shake_po[i] = [pos,pos2];
+				//_shake_po[i + 1] = [ -pos, -pos2];
+				//
+				//var pos3:int = Math.random() * 5 + 1;
+				//var pos4:int = Math.random() * 5 + 1;
+				//_shake_po2[i] = [pos3,pos4];
+				//_shake_po2[i + 1] = [ -pos3, -pos4];
+			//}
+			
+			
+			utilFun.Log("_shake_po =" + _shake_po);
 			//第一次不位移
 			if ( _first )
 			{
@@ -184,9 +202,15 @@ package View.ViewComponent
 				idx_2 = cnt + 1;
 				if ( idx_2 == 3) idx_2 = 0;
 				utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_"+idx_2]["ballNum"], ball_2.toString());			
-				GetSingleItem("fakeball")["_fakeBall_"+idx_2].gotoAndStop( Math.ceil( ball_2 / 15) ) ;				
+				GetSingleItem("fakeball")["_fakeBall_" + idx_2].gotoAndStop( Math.ceil( ball_2 / 15) ) ;				
+				
+				
+				//_regular.Call(this, { onUpdate:this.shake,onUpdateParams:[GetSingleItem("fakeball")["_fakeBall_" + idx_1] ] }, 2, 0, 20, "linear");
+				//_regular.Call(this, { onUpdate:this.shake2,onUpdateParams:[GetSingleItem("fakeball")["_fakeBall_" + idx_2] ] }, 2, 0, 20, "linear");
 				return;
 			}			
+			
+			
 			
 			//第二次要下移一球 
 			ontop += 1;
@@ -208,8 +232,24 @@ package View.ViewComponent
 			idx_3 = ontop;
 			//utilFun.Log("idx_1 =" + idx_1 + " idx_2 =" +idx_2 +" idx_3 " + idx_3);		
 			
+			//reset 			
+			//Tweener.pauseTweens(GetSingleItem("fakeball")["_fakeBall_" + idx_1]);
+			//Tweener.pauseTweens(GetSingleItem("fakeball")["_fakeBall_" + idx_2]);
+			//Tweener.pauseTweens(GetSingleItem("fakeball")["_fakeBall_" + idx_3]);
+			//GetSingleItem("fakeball")["_fakeBall_" + idx_1].x = 99.65;
+			//GetSingleItem("fakeball")["_fakeBall_" + idx_1].y = 228.50;
+			//
+			//GetSingleItem("fakeball")["_fakeBall_" + idx_2].x = 99.65;
+			//GetSingleItem("fakeball")["_fakeBall_" + idx_2].y = 413.95;
+			//
+			//GetSingleItem("fakeball")["_fakeBall_" + idx_2].x = 99.65;
+			//GetSingleItem("fakeball")["_fakeBall_" + idx_2].y = 47.55;
+			//
+			//_regular.Call(this, { onUpdate:this.shake,onUpdateParams:[GetSingleItem("fakeball")["_fakeBall_" + idx_1] ] }, 1, 0, 20, "linear");
+			//_regular.Call(this, { onUpdate:this.shake,onUpdateParams:[GetSingleItem("fakeball")["_fakeBall_" + idx_2] ] }, 1, 0, 20, "linear");
+			
 			//first in display
-			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_" + idx_3], { y:GetSingleItem("fakeball")["_fakeBall_" + idx_3].y -180.95, time:0.5  } );
+			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_" + idx_3], { y:GetSingleItem("fakeball")["_fakeBall_" + idx_3].y -180.95, time:0.5,onComplete:this.resetpo,onCompleteParams:[idx_3]  } );
 			
 			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_" + idx_1], { y:GetSingleItem("fakeball")["_fakeBall_" + idx_1].y -180.95, time:0.1, delay:0.3 , onComplete:this.pullbar_open } );
 			GetSingleItem("fakeball")["_pullbar"].gotoAndPlay(2);
@@ -218,6 +258,32 @@ package View.ViewComponent
 			
 			
 			
+			
+		
+			
+			
+		}
+		
+		public function shake(mc:MovieClip):void
+		{
+			mc.x += _shake_po[0][0];
+			mc.y += _shake_po[0][1];			
+			
+			_shake_po.shift();
+		}
+		
+		public function shake2(mc:MovieClip):void
+		{
+			mc.x += _shake_po2[0][0];
+			mc.y += _shake_po2[0][1];			
+			
+			_shake_po2.shift();
+		}
+		
+		public function resetpo(idx:int):void
+		{
+			//GetSingleItem("fakeball")["_fakeBall_" + idx].x = 99.965;
+			//GetSingleItem("fakeball")["_fakeBall_" + idx].y = 413.95;
 		}
 		
 		public function pullbar_open():void
@@ -227,6 +293,8 @@ package View.ViewComponent
 		
 		public function move():void
 		{			
+			
+			
 			var cnt:int = _model.getValue("fakeball");
 			utilFun.Log("move =" + cnt);
 			GetSingleItem("fakeball")["_fakeBall_" + cnt].y = 413.95;

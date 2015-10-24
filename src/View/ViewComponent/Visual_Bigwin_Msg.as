@@ -70,7 +70,7 @@ package View.ViewComponent
 			//提示數字
 			var selfbgino_text:MultiObject = prepare("selfbgino_text", new MultiObject(), selfbingo_panel.container);
 			selfbgino_text.CustomizedFun = _text.colortextSetting;
-			selfbgino_text.CustomizedData = [{size:30,color:0xFFFFFF,bold:true,align:_text.align_right}, "100","90","9000"];			
+			selfbgino_text.CustomizedData = [{size:30,color:0xFFFFFF,align:_text.align_right}, "100","90","9000"];			
 			selfbgino_text.container.x = -210;
 			selfbgino_text.container.y = 220;
 			selfbgino_text.Create_by_list(3, [ResName.Paninfo_font], 0, 0, 1, 0, 78, "time_");
@@ -113,8 +113,36 @@ package View.ViewComponent
 			Get("bingowin_show").Create_by_list(tableNo.length, [ResName.BetButton], 0, 0, 10, 106.25, 80, "time_");
 			Get("bingowin_show").FlushObject();
 			
-			//if( tableNo.indexOf
+			//自己bingo 結算金額
+			var Totalbet:int = 0;
+			var total_settle_amount:int = 0;
+			var odds:int = 0;
+			var i_win:Boolean = false;
 			
+			var result_list:Array = _model.getValue(modelName.ROUND_RESULT);						
+			var history:Array = [];
+			for (var i:int = 0; i < result_list.length; i++)
+			{
+				var betob:Object = result_list[i];
+				//var room_and_table:String = betob["bet_type"];
+				var settle_amount:int = betob["settle_amount"];				
+				if (settle_amount != 0)
+				{
+					total_settle_amount += settle_amount;
+					Totalbet += betob["bet_amount"];				
+					odds = betob["odds"];	
+					i_win = true;
+				}
+			}		
+			
+			if ( i_win)
+			{
+				Get("selfbingo_panel").container.visible = true;
+				
+				GetSingleItem("selfbgino_text", 0).getChildByName("Dy_Text").text = Totalbet.toString();
+				GetSingleItem("selfbgino_text", 1).getChildByName("Dy_Text").text = odds.toString();
+				GetSingleItem("selfbgino_text", 2).getChildByName("Dy_Text").text = total_settle_amount.toString();
+			}
 			
 			
 		}

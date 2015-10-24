@@ -374,6 +374,21 @@ package Command
 			_Bet_info.putValue("self", bet_list);
 		}
 		
+		//"result_list": [{"bet_type": "5,5", "settle_amount": 9000, "odds": 90, "win_state": "WSBingo", "bet_amount": 100.0}]
+		public function result_parse_win_table():Array
+		{
+			var result_list:Array = _model.getValue(modelName.ROUND_RESULT);						
+			var history:Array = [];
+			for (var i:int = 0; i < result_list.length; i++)
+			{
+				var betob:Object = result_list[i];
+				var room_and_table:String = betob["bet_type"];
+				var data:Array = room_and_table.split(",");
+				history.push(data[1]);
+			}			
+			return history;
+		}
+		
 		public function re_bet():void
 		{			
 			

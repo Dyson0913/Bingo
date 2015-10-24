@@ -55,20 +55,9 @@ package View.ViewComponent
 			_pageModel.UpDateModel(_model.getValue("SelectRoomInfo"), 50);			
 			
 			//_tool.SetControlMc(spider.container);
-			//add(_tool);
+			//add(_tool);		
 			
-			//var page:MultiObject = prepare("pagearr", new MultiObject(), GetSingleItem("_view").parent.parent);
-			//page.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);			
-			//page.mousedown = test_reaction;
-			//page.mouseup = reaction;			
-			//page.CustomizedFun = arror_turn;
-			//page.Create_by_list(2, [ResName.L_arrow_l, ResName.L_arrow_r], 0 , 0, 2, 1880 , 0, "Bet_");
-			//page.container.x = 10;
-			//page.container.y = 502;			
-			
-			
-		}	
-		
+		}			
 		
 		public function select_room(e:Event, idx:int):Boolean
 		{
