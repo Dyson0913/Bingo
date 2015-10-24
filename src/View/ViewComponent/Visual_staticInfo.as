@@ -43,6 +43,7 @@ package View.ViewComponent
 			myroom.CustomizedData = [{size:30,color:0xFF0000}, room.toString()];			
 			myroom.container.x = 532;
 			myroom.container.y = 55;
+			myroom.container.visible = true;
 			myroom.Create_by_list(1, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
 			
 			
@@ -298,13 +299,28 @@ package View.ViewComponent
 			}
 		}
 		
-		
-		
 		private function order(a:int, b:int):int 
 		{
 			if ( a< b) return -1;
 			else if ( a > b) return 1;
 			else return 0;			
+		}
+		
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "specail_round")]
+		public function sp():void
+		{
+			Get("myroom").container.visible = false;
+			
+			utilFun.SetText(GetSingleItem("best_pan_info", 0)["_text"], "" );
+			utilFun.SetText(GetSingleItem("best_pan_info", 2)["_text"], "" );
+			
+			utilFun.SetText(GetSingleItem("best_pan_info", 1)["_text"], "");			
+			utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], "");
+			
+			
+			Get("public_best_pan_info").CleanList()			
+			Get("public_second_pan_info")..CleanList();			
+			
 		}
 		
 	}

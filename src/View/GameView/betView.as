@@ -81,7 +81,7 @@ package View.GameView
 			_bingo.init();
 			
 			//auto bet
-			_betCommand.re_bet();			
+			//_betCommand.re_bet();			
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]

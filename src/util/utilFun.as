@@ -276,6 +276,12 @@ package util
 			return Frame + 1;
 		}
 		
+		public static function jumpFrame(CurFrame:int,startframe:int, FrameCycle:int):int
+		{
+			if ( CurFrame != FrameCycle) return FrameCycle;
+			return startframe;
+		}
+		
 		public static function frameAdj(arr:Array):Array
 		{
 			var n:int = arr.length;

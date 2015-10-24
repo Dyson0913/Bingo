@@ -43,21 +43,17 @@ package View.ViewComponent
 			bigwinfire.Create_(1, "bigwinfire");
 			bigwinfire.container.x = 140;
 			bigwinfire.container.y = -90;
+			setFrame("bigwinfire", 1);
 			
 			//大獎字樣集
 			var bigwinCon:MultiObject = create("bigwinmsg",  [Bigwinmsg]);
 			bigwinCon.Create_(1, "bigwinmsg");
 			bigwinCon.container.x = 1111;
 			bigwinCon.container.y = 300;		
-			
-		
+			setFrame("bigwinmsg", 1);		
 			
 			//數字表現
-			var PowerJPNum:MultiObject = create("bigwin_JP_num",  [bigwin_num], bigwinCon.container);			
-			
-			
-			
-			setFrame("bigwinmsg", 1);
+			var PowerJPNum:MultiObject = create("bigwin_JP_num",  [bigwin_num], bigwinCon.container);						
 			setFrame("bigwin_JP_num", 12);
 			
 			_playing = false;

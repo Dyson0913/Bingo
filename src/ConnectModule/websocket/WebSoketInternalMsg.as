@@ -22,6 +22,9 @@ package ConnectModule.websocket
 		public static const HALF_ENTER_UPDATE:String = "half_enter_update";
 		public static const WIN_HINT:String = "win_hint";
 		
+		public static const SPECAIL_ROUND:String = "specail_round";
+		public static const BALL_COMING:String = "ball_coming";
+		
 		[Selector]
 		public var selector:String
 		

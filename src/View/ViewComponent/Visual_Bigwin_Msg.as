@@ -1,5 +1,6 @@
 package View.ViewComponent 
 {
+	import ConnectModule.websocket.WebSoketInternalMsg;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import View.ViewBase.Visual_Text;
@@ -50,7 +51,7 @@ package View.ViewComponent
 			
 			var switchbtn:MultiObject = create("switchbtn", [switchbtn]);
 			switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);
-			//switchbtn.mousedown = fake_reaction;
+			switchbtn.mousedown = fake_reaction;
 			switchbtn.mouseup = _betCommand.empty_reaction;
 			switchbtn.rollout = _betCommand.empty_reaction;
 			switchbtn.rollover = _betCommand.empty_reaction;
@@ -82,8 +83,17 @@ package View.ViewComponent
 		
 		public function fake_reaction(e:Event, idx:int):Boolean
 		{
-			if (!_Bigwin_Effect._playing) _Bigwin_Effect.hitbigwin();
-			else _Bigwin_Effect.stop();
+			//if (!_Bigwin_Effect._playing) _Bigwin_Effect.hitbigwin();
+			//else _Bigwin_Effect.stop();
+			var arr:Array = [];
+			arr.push( 3);
+			arr.push( 5);
+			dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
+						
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.SPECAIL_ROUND));
+			utilFun.Log("send spcical =");
+			
+			
 			return true;
 		}
 		

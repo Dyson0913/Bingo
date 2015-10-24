@@ -116,6 +116,7 @@ package View.ViewComponent
 			fakeball.Create_by_list(1, [ResName.popBall], 0 , 0, 2, 1880 , 0, "Bet_");
 			fakeball.container.x = 30.6;
 			fakeball.container.y = 541.75;
+			fakeball.container.visible = true;
 			_model.putValue("fakeball", 1);
 			
 			GetSingleItem("fakeball")["_fakeBall_0"].visible = false;
@@ -123,19 +124,6 @@ package View.ViewComponent
 			GetSingleItem("fakeball")["_fakeBall_2"].visible = false;
 			
 			_first = true;
-			
-			//var ballNum:int = utilFun.Random(75);
-			//utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_0"]["ballNum"], ballNum.toString());			
-			//GetSingleItem("fakeball")["_fakeBall_0"].gotoAndStop( Math.ceil( ballNum / 15) ) ;
-			//
-			//var ballNum2:int = utilFun.Random(75);
-			//utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_1"]["ballNum"], ballNum2.toString());			
-			//GetSingleItem("fakeball")["_fakeBall_1"].gotoAndStop( Math.ceil( ballNum2 / 15) ) ;
-			//
-			//var ballNum3:int = utilFun.Random(75);
-			//utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_2"]["ballNum"], ballNum3.toString());
-			//GetSingleItem("fakeball")["_fakeBall_2"].gotoAndStop( Math.ceil( ballNum3 / 15) ) ;
-			
 			//Tweener.addCaller(this, { time:30 , count:20, transition:"linear",onUpdate: this.ball_t } );
 			
 			//免洗球2
@@ -153,6 +141,14 @@ package View.ViewComponent
 		   //_tool.SetControlMc(	small_ball_arrow.container);
 		   //_tool.y = 500;
 			//add(_tool);
+			
+			//抽獎球
+			var lottyball:MultiObject = prepare("lottyball", new MultiObject(), GetSingleItem("_view").parent.parent);				
+			lottyball.Create_by_list(1, [ResName.lottyball], 0 , 0, 2, 1880 , 0, "Bet_");
+			lottyball.container.x = 30.6;
+			lottyball.container.y = 541.75;			
+			lottyball.container.visible = false;
+			
 			_model.putValue("open3Balllist", []);				
 			
 			
@@ -187,8 +183,6 @@ package View.ViewComponent
 				//_shake_po2[i + 1] = [ -pos3, -pos4];
 			//}
 			
-			
-			utilFun.Log("_shake_po =" + _shake_po);
 			//第一次不位移
 			if ( _first )
 			{
@@ -452,6 +446,58 @@ package View.ViewComponent
 				utilFun.scaleXY(openball, _sball_scale,_sball_scale);								
 			}
 		}	
+		
+		
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "specail_round")]
+		public function into_sp():void
+		{
+			Get("fakeball").container.visible = false;			
+			Get("lottyball").container.visible = true;
+		}
+		
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "win_hint")]
+		public function winhint():void
+		{
+			Get("fakeball").container.visible = true;			
+			Get("lottyball").container.visible = false;
+		}
+		
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "ball_coming")]
+		public function display_ball():void
+		{			
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);
+			if ( ball.length == 1)
+			{
+				utilFun.Log("first ball");
+				utilFun.SetText(GetSingleItem("lottyball")["lobby_ball"]["ballNum"],ball[0] );		
+				Tweener.addTween(GetSingleItem("lottyball")["lobby_ball"], { y:40.85, time:3, onComplete:this.lo_ok , transition:"easeInOutBounce" } );
+			}
+			else if (ball.length == 2)
+			{
+				//dispatcher(new ModelEvent("pick_seond_ball"));				
+				utilFun.Log("second ball");
+				utilFun.SetText(GetSingleItem("lottyball")["pan_ball"]["ballNum"],ball[1] );		
+				Tweener.addTween(GetSingleItem("lottyball")["pan_ball"], { y:228.75, time:3, onComplete:this.pan_ok , transition:"easeInOutBounce" } );	
+			}
+		}
+		
+		public function lo_ok():void 
+		{
+			dispatcher(new ModelEvent("lotty_first_ok"));
+		}
+		
+		
+		//[MessageHandler(type = "Model.ModelEvent", selector = "pick_seond_ball")]
+		//public function se_ball():void
+		//{
+					//
+		//}
+		
+		public function pan_ok():void 
+		{
+			dispatcher(new ModelEvent("pan_ok"));
+		}
+		
 		
 		
 	}

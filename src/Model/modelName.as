@@ -42,6 +42,9 @@ package Model
 		public static const BINGO_HISTORY:int = Num++;
 		
 		
+		public static const SPCIAL_BALL:int = Num++;		
+		
+		
 		public static const Loading:int  = Num++;
 		public static const lobby:int  = Num++;
 		public static const Bet:int  = Num++;		

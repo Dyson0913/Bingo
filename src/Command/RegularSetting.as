@@ -65,6 +65,17 @@ package Command
 			mc.gotoAndStop( utilFun.cycleFrame(mc.currentFrame,frameNum) )	
 		}	
 		
+		public function Twinkle_by_JumpFrame(mc:MovieClip, t:int, cnt:int,startframe:int,Jumpframe:int):void
+		{
+			Tweener.addCaller(mc, { time:t , count: cnt , transition:"linear", onUpdateParams:[mc,startframe,Jumpframe], onUpdate: this.JumpFrame } );
+		}
+		
+		private function JumpFrame(mc:MovieClip,startframe:int,Jumpframe:int):void
+		{			
+			mc.gotoAndStop( utilFun.jumpFrame(mc.currentFrame,startframe, Jumpframe) )	
+			
+		}	
+		
 		public function strdotloop(s:TextField,Mytime:int ,Mycount:int):void
 		{
 			Tweener.addCaller( s.text, { time:Mytime , count: Mycount , transition:"linear", onUpdateParams:[ s,s.length,4], onUpdate: this.dotloop } );

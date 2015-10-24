@@ -175,6 +175,25 @@ package ConnectModule.websocket
 					
 					case "MsgBGOpenBall":
 					{
+						if ( result.sub_state == "BingoSpecialOpenState")
+						{
+							//no ball notify
+							if ( result.first_ball == undefined)
+							{
+								dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.SPECAIL_ROUND));
+								break;
+							}
+							
+							
+							var arr:Array = [];
+							if ( result.first_ball != "") arr.push( result.first_ball);
+							if ( result.second_ball != "") arr.push( result.second_ball);
+							
+							dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
+						   dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_COMING));
+							break;						   
+						}
+						
 						_model.putValue("Curball", parseInt(result.open_info.current_ball) );						
 						_model.putValue("waitting_ball",result.open_info.waitting_ball);
 						var arr:Array = result.open_info.opened_history;
@@ -243,9 +262,21 @@ package ConnectModule.websocket
 						_model.putValue("is_betarr", is_bet);
 						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
-						utilFun.Log("send info =");
+						
 					}
 					break;
+					
+					//case "MsgBGSpecialRound":
+					//{
+						//var arr:Array = [];
+						//arr.push( result.special_info.first_ball);
+						//arr.push( result.special_info.second_ball);
+						//dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
+						//
+						//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.SPECAIL_ROUND));
+						//utilFun.Log("send spcical =====================================");
+					//}
+					//break;
 					
 					case "MsgBPEndRound":
 					{

@@ -14,6 +14,7 @@ package Res
 		public static const roomitem:String = "room_item";
 		
 		public static const popBall:String = "fakeBall";
+		public static const lottyball:String = "lotty_ball";
 		public static const secondhint:String = "second_hint";
 		public static const besthint:String = "best_hint";
 		
