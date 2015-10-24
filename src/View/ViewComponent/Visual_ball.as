@@ -162,22 +162,20 @@ package View.ViewComponent
 			GetSingleItem("fakeball")["_fakeBall_1"].visible = true;
 			GetSingleItem("fakeball")["_fakeBall_2"].visible = true;
 			
-			var ontop:int = _model.getValue("fakeball");
-			utilFun.Log("ball_into =" + ontop);		
+			var ontop:int = _model.getValue("fakeball");			
 			var idx_1:int = ontop;
 			var idx_2:int = ontop;
 			var idx_3:int = ontop;
 			var waiing_ball:Array = _model.getValue("waitting_ball");			
 			var ball_1:int = waiing_ball[0];
 			var ball_2:int = waiing_ball[1];
-			utilFun.Log("ball_1 =" + ball_1);			
-			utilFun.Log("ball_2 =" + ball_2);
+			//utilFun.Log("ball_1 =" + ball_1);			
+			//utilFun.Log("ball_2 =" + ball_2);
 			//第一次不位移
 			if ( _first )
 			{
 				_first = false;
-				var cnt:int = _model.getValue("fakeball");
-				utilFun.Log("first in=" + cnt);			
+				var cnt:int = _model.getValue("fakeball");				
 				
 				//just set ,no move
 				utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_"+idx_1]["ballNum"], ball_1.toString());			
@@ -186,11 +184,7 @@ package View.ViewComponent
 				idx_2 = cnt + 1;
 				if ( idx_2 == 3) idx_2 = 0;
 				utilFun.SetText(GetSingleItem("fakeball")["_fakeBall_"+idx_2]["ballNum"], ball_2.toString());			
-				GetSingleItem("fakeball")["_fakeBall_"+idx_2].gotoAndStop( Math.ceil( ball_2 / 15) ) ;
-				utilFun.Log("idx_1 =" + idx_1 + " idx_2 =" +idx_2);
-				//cnt++;			
-				//if ( cnt == 3) cnt = 0;
-				//_model.putValue("fakeball", cnt);
+				GetSingleItem("fakeball")["_fakeBall_"+idx_2].gotoAndStop( Math.ceil( ball_2 / 15) ) ;				
 				return;
 			}			
 			
@@ -212,7 +206,7 @@ package View.ViewComponent
 			ontop += 1;
 			if ( ontop == 3) ontop =0;
 			idx_3 = ontop;
-			utilFun.Log("idx_1 =" + idx_1 + " idx_2 =" +idx_2 +" idx_3 " + idx_3);		
+			//utilFun.Log("idx_1 =" + idx_1 + " idx_2 =" +idx_2 +" idx_3 " + idx_3);		
 			
 			//first in display
 			Tweener.addTween(GetSingleItem("fakeball")["_fakeBall_" + idx_3], { y:GetSingleItem("fakeball")["_fakeBall_" + idx_3].y -180.95, time:0.5  } );

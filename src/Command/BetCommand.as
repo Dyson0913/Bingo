@@ -67,6 +67,8 @@ package Command
 				bet_list[find_idx][Bet_idx] -= 1;
 				_Bet_info.putValue("self", bet_list);
 			}
+			
+			//return no_sign_bet(e, table);
 			return bet(e, table);
 		}
 		
@@ -90,6 +92,7 @@ package Command
 			
 		}
 		
+		
 		public function bet(e:Event, betType:int):Boolean
 		{
 			var betob:Object = betOb(betType);
@@ -110,6 +113,10 @@ package Command
 			return true;
 		}
 		
+		//add and sub have sign 
+		//add 100, total = 100
+		//add 100,  total = 200
+		//sub -100,total =100
 		public function betOb(BetType:int):Object
 		{
 			var coin_list:Array  = _model.getValue("Bet_coin_List");
@@ -126,6 +133,53 @@ package Command
 			
 			bet = { "betType": BetType, 											
 			                           "bet_amount":  amount - total_bet(BetType),		
+									   "bet_idx":coin_list.indexOf(amount),
+									   "total_amount":amount
+									   };
+									   
+			return bet;
+		}
+		
+		public function no_sign_bet(e:Event, betType:int):Boolean
+		{
+			var betob:Object = betOb_with_no_sign(betType);
+			
+			//return true;
+			dispatcher( new ActionEvent(betob, "bet_action"));
+			
+			if ( CONFIG::debug ) 
+			{
+				//fake bet proccess
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+			}
+			else
+			{
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_NO_SIGN));
+			}
+			
+			return true;
+		}
+		
+		//add and sub have no sign 
+		//add 100, total = 100
+		//add 100,  total = 200
+		//sub 100,total =100
+		public function betOb_with_no_sign(BetType:int):Object
+		{
+			var coin_list:Array  = _model.getValue("Bet_coin_List");
+			
+			var bet:Object;
+			var amount:int = get_amount_by_type(BetType);
+			//utilFun.Log("=================== = "  );
+			//utilFun.Log("BetType = " + BetType );
+			//utilFun.Log("total_bet = " + total_bet(BetType));
+			//utilFun.Log("add amount = " +  Math.abs( (amount - total_bet(BetType)))  );			
+			//utilFun.Log("coin_list.indexOf(amount) = " + coin_list.indexOf(amount));
+			//utilFun.Log("betzone_totoal() = " + amount );
+			//utilFun.Log("=================== = "  );
+			
+			bet = { "betType": BetType, 											
+			                           "bet_amount":  Math.abs( amount - total_bet(BetType) ),		
 									   "bet_idx":coin_list.indexOf(amount),
 									   "total_amount":amount
 									   };
@@ -213,7 +267,7 @@ package Command
 			
 			if ( !is_sub) 
 			{
-					utilFun.Log("del last_bet_idx = "+ bet_ob[Table]);
+				utilFun.Log("put in = "+ bet_ob[Table]);
 				_model.putValue("last_bet_idx", bet_ob[Table]);
 			}
 			else

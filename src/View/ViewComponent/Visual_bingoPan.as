@@ -49,9 +49,9 @@ package View.ViewComponent
 			bingo_pan.ItemList[0]["_pan_amount"].y = -25.9;
 			_text.textSetting_s(bingo_pan.ItemList[0]["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, ""]);
 		
-			_tool.SetControlMc(bingo_pan.ItemList[0]["_pan_amount"]);
-			_tool.y = 200;
-			add(_tool);
+			//_tool.SetControlMc(bingo_pan.ItemList[0]["_pan_amount"]);
+			//_tool.y = 200;
+			//add(_tool);
 		}
 		
 		public function info_initFun(mc:MovieClip, idx:int, data:Array):void

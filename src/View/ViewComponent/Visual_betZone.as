@@ -242,8 +242,8 @@ package View.ViewComponent
 			var tab_no:Array = _betCommand.get_my_bet_info(BetCommand.Table);
 			var amount_no:Array = _betCommand.get_my_bet_info(BetCommand.TotalBet);		
 			
-			utilFun.Log("tab_no = "+tab_no);
-			utilFun.Log("amount_no = "+amount_no);
+			//utilFun.Log("tab_no = "+tab_no);
+			//utilFun.Log("amount_no = "+amount_no);
 			
 			//自己下注 pan號
 			Get("betlist").CustomizedFun = BetListFun;

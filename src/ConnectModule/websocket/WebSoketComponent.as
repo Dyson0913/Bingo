@@ -296,6 +296,26 @@ package ConnectModule.websocket
 			SendMsg(bet);
 		}
 		
+		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="Bet_nosign")]
+		public function SendBet_no_sign():void
+		{
+			var ob:Object = _actionqueue.getMsg();
+			var total:Number = parseInt (ob["total_amount"]);
+			var bet:Object = {  "id": String(_model.getValue(modelName.UUID)),
+			                                "timestamp":1111,
+											"message_type":"MsgPlayerDecBet", 
+			                               "game_id":_model.getValue("game_id"),
+										   "game_type":"Bingo",										
+										   "game_round":_model.getValue("game_round"),
+											"room_no":_model.getValue("room_num"),
+											"table_no":  ob["betType"],
+										    "dec_amount":ob["bet_amount"],
+											"total_bet_amount":total
+											};
+											
+			SendMsg(bet);
+		}
+		
 		public function SendMsg(msg:Object):void 
 		{
 			var jsonString:String = JSON.encode(msg);
