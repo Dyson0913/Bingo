@@ -404,6 +404,43 @@ package Command
 			
 		}
 		
+		public function batch_rebet():void
+		{
+			var bet:Array = _model.getValue(modelName.SELF_BET);
+			if ( bet.length == 0) return;
+			
+			var bet_list:Array = _Bet_info.getValue("self");
+			
+			for ( var i:int = 0; i < bet.length ; i++)
+			{
+				var bet_ob:Object = create_dir_ob(bet[i]["table_no"], bet[i]["total_bet_amount"]);
+				bet_list.push(bet_ob);  
+				_Bet_info.putValue("self", bet_list);
+				
+				utilFun.Log("put in = "+ bet_ob[Table]);
+				_model.putValue("last_bet_idx", bet_ob[Table]);				
+			}
+			
+			dispatcher(new ModelEvent(WebSoketInternalMsg.BET_UPDATE));
+		}
+		
+		private function create_dir_ob(BetType:int ,total_bet_amount:int):Object
+		{
+			var coin_list:Array  = _model.getValue("Bet_coin_List");
+			var bet:Object;			
+			bet = { "betType": BetType,			                           
+									   "bet_idx":coin_list.indexOf(total_bet_amount),
+									   "total_amount":total_bet_amount
+									   };
+			utilFun.Log("=================== = "  );
+			utilFun.Log("BetType = " + BetType );
+			utilFun.Log("total_bet = " +total_bet_amount);
+			utilFun.Log("coin_list.indexOf(amount) = " +coin_list.indexOf(total_bet_amount));			
+			utilFun.Log("=================== = "  );
+						
+			 return bet;
+		}
+		
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "clearn")]
 		public function Clean_bet():void

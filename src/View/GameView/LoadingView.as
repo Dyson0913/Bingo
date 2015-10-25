@@ -59,6 +59,9 @@ package View.GameView
 			_model.putValue("ballarr",[]);
 			_model.putValue("table", []);
 			
+			_model.putValue(modelName.SELF_BET,[]);
+			
+			
 			//2,開球 3,best 3
 			_model.putValue("select_openball_view_info", 2);
 			

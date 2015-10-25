@@ -121,6 +121,7 @@ package ConnectModule.websocket
 					{
 						//"game_state": "EndBetState"
 						_model.putValue("room_num", result.room_no);
+						dispatcher(new ValueObject(  result.game_round, "game_round") );
 						dispatcher(new ValueObject(  result.remain_time, modelName.REMAIN_TIME) );														
 								var state:int = 0;
 								if (  result.game_state == "NewRoundState") state = gameState.NEW_ROUND;
@@ -197,7 +198,7 @@ package ConnectModule.websocket
 						_model.putValue("Curball", parseInt(result.open_info.current_ball) );						
 						_model.putValue("waitting_ball",result.open_info.waitting_ball);
 						var arr:Array = result.open_info.opened_history;
-						_model.putValue("opened_ball_num", arr.length );
+						_model.putValue("opened_ball_num", arr.length +1 );
 						_model.putValue("openBalllist", arr);
 						_model.putValue("best_remain", parseInt(result.open_info.best_remain) );
 						_model.putValue("second_remain", parseInt(result.open_info.second_remain) );
@@ -213,12 +214,14 @@ package ConnectModule.websocket
 					{
 						if (  result.game_state == "NewRoundState") state = gameState.NEW_ROUND;
 						if (  result.game_state == "EndBetState") state = gameState.END_BET;
+						
+						//deprecated to MsgBGNewRound
 						if ( state == gameState.NEW_ROUND)
 						{							
 							utilFun.Log("new rount go to betview");
+							//dispatcher(new ValueObject(  result.game_round, "game_round") );
 							dispatcher(new ValueObject(  result.remain_time, modelName.REMAIN_TIME) );		
-							dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );		
-							//triger timer,
+							dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );							
 							dispatcher(new ModelEvent("display"));
 						}
 						if (  state == gameState.END_BET)
@@ -285,6 +288,45 @@ package ConnectModule.websocket
 						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.WIN_HINT));
 						
+					}
+					break;
+					
+					case "MsgBGNewRound":
+					{
+						//new betinfo
+						var arrlist:Array = result.table_bet_info;													
+						var is_bet:Array = _model.getValue("is_betarr");
+						var num:int  = arrlist.length;						
+						is_bet.length = 0;
+						is_bet = arrlist;
+						_model.putValue("is_betarr", is_bet);
+						
+						//self betlist
+						//[{"table_no":5,"total_bet_amount":200},{"table_no":7, "total_bet_amount":500}]
+						dispatcher( new ValueObject(result.bet_list, modelName.SELF_BET));
+						
+						dispatcher(new ValueObject(  result.game_round, "game_round") );
+						utilFun.Log("new rount go to betview");
+						dispatcher(new ValueObject(  result.remain_time, modelName.REMAIN_TIME) );		
+						dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );		
+						//triger timer,
+						dispatcher(new ModelEvent("display"));
+												
+						//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
+						
+					}	
+					break;
+					
+					case "MsgBGNewRound":
+					{
+						var arrlist:Array = result.table_bet_info;													
+						var is_bet:Array = _model.getValue("is_betarr");
+						var num:int  = arrlist.length;						
+						is_bet.length = 0;
+						is_bet = arrlist;					
+						_model.putValue("is_betarr", is_bet);
+						
+						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
 					}
 					break;
 				}

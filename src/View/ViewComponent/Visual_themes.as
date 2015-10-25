@@ -109,8 +109,7 @@ package View.ViewComponent
 			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
 			GetSingleItem("second_hint")["panNum"].text = ball[1];
 			
-			//fire
-			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);
+			//fire			
 			GetSingleItem("lottymsg").gotoAndStop(2);
 			
 			var lo:int = ball[0];
@@ -119,6 +118,15 @@ package View.ViewComponent
 			if ( arr[1] == 0 ) arr[1] = 10;
 			GetSingleItem("lottymsg")["_num_0"].gotoAndStop(arr[0]);
 			GetSingleItem("lottymsg")["_num_1"].gotoAndStop(arr[1]);
+			
+			//pan
+			var lo2:int = ball[1];
+			var arr2:Array = utilFun.arrFormat(lo2, 2);			
+			if ( arr2[0] == 0 ) arr2[0] = 10;
+			if ( arr2[1] == 0 ) arr2[1] = 10;
+			GetSingleItem("lottymsg")["_num_2"].gotoAndStop(arr2[0]);
+			GetSingleItem("lottymsg")["_num_3"].gotoAndStop(arr2[1]);
+			
 			utilFun.scaleXY(Get("lottymsg").container,4.0, 4.0);
 			Get("lottymsg").container.alpha = 0;			
 			Tweener.addTween(Get("lottymsg").container, { scaleX: 1, scaleY:1, alpha: 1, time:0.5, transition:"easeInQuart",onComplete:this.fire } );		

@@ -129,7 +129,12 @@ package View.ViewComponent
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="ballupdate")]
 		public function select_pan():void
 		{			
-			if ( _betCommand.get_my_betlist().length == 0) return;	
+			
+			if ( _betCommand.get_my_betlist().length == 0) 
+			{
+				utilFun.Log("select_pan return= "+_betCommand.get_my_betlist().length);
+				return;	
+			}
 			
 			var BallNum:int = _model.getValue("Curball");			
 			
@@ -137,6 +142,7 @@ package View.ViewComponent
 			openballist.push(BallNum);		
 			//_model.putValue("openBalllist",openballist);
 			
+			utilFun.Log("pick best  1 ");
 			//pick best 3
 			var best:Array = best3_pan(openballist);
 			var best3:Array = [];
@@ -156,7 +162,7 @@ package View.ViewComponent
 				best3.push(best[0]);
 			}
 			_best_len = best.length;
-			
+			utilFun.Log("pick best  over ");
 			//open ball ani			
 			//TODO show min start
 			var tableNo:Array = [];
@@ -173,18 +179,15 @@ package View.ViewComponent
 				//change pan number
 				Get("select_pan" + i).CustomizedData  = balls[best3[i]["tableNo"]];
 				Get("select_pan" + i).CustomizedFun = PanMatrixCustomizedFun;	
-				Get("select_pan" + i).FlushObject();
-				
+				Get("select_pan" + i).FlushObject();				
 				//open num mark
 				
 				Get("select_pan" + i).CustomizedData  = openball;
 				Get("select_pan" + i).CustomizedFun = PanBallcolor;	
-				Get("select_pan" + i).FlushObject();
-				
+				Get("select_pan" + i).FlushObject();				
 				//new num mark
 				Get("select_pan" + i).CustomizedFun = SelfPanBallAni;
 				Get("select_pan" + i).FlushObject();				
-				
 				
 				//var arr:Array = Get("select_pan" + i).CustomizedData;			
 				//var count:int = 24;
@@ -192,8 +195,9 @@ package View.ViewComponent
 				//{
 					//if ( arr.indexOf(openballist[k] ) != -1) count--;
 				//}				
-				utilFun.SetText( Get("ticket").ItemList[i]["_rest_ball"], best3[i]["rest"]);
+				utilFun.SetText( Get("ticket").ItemList[i]["_rest_ball"], best3[i]["rest"]);				
 				tableNo.push( best3[i]["tableNo"]);
+				
 			}			
 			
 			//pan amount and tableno
@@ -201,6 +205,7 @@ package View.ViewComponent
 			Get("ticket").CustomizedFun = update_paninfo;
 			Get("ticket").CustomizedData =  tableNo;			
 			Get("ticket").FlushObject();
+			
 		}
 		
 		public function update_paninfo(mc:MovieClip, idx:int, tableid:Array):void
@@ -227,21 +232,22 @@ package View.ViewComponent
 		{
 			var tableNo:Array =  _betCommand.get_my_bet_info(BetCommand.Table);			
 			var Table_len:int = tableNo.length;
-			//utilFun.Log("Table_len = "+ Table_len);
-			//utilFun.Log("openballist = "+ openballist);
+			utilFun.Log("Table_len = "+ Table_len);
+			utilFun.Log("openballist = "+ openballist);
 			var balls:Array = _model.getValue("ballarr");
 			var myticket_restball_num:Array = [];
 			for ( var i:int = 0; i < Table_len ; i++)
 			{			
 				var count:int = 24;
 				var ticket_ball:Array = balls[tableNo[i]] ;
-				//utilFun.Log("ticket_ball = "+ ticket_ball);
+				utilFun.Log("ticket_ball = "+ ticket_ball);
 				for (  var k:int = 0; k < openballist.length ; k++)
 				{
 					if ( ticket_ball.indexOf(openballist[k] ) != -1) count--;
 				}				
 				
-				//
+				utilFun.Log("_first_table = "+ _first_table +" table "+ tableNo[i] );
+				utilFun.Log("count = " + count);
 				if ( _first_table != tableNo[i]  ) 
 				{
 					var table_and_rest:Object;			
@@ -253,6 +259,7 @@ package View.ViewComponent
 				}
 				else 
 				{
+					
 					//更新候選球數
 					if ( _first_table != -1)
 					{
@@ -263,7 +270,12 @@ package View.ViewComponent
 			}			
 			//utilFun.Log("myticket_restball_num = "+ myticket_restball_num);
 			myticket_restball_num.sort(order);			
-			
+			utilFun.Log("sort ovre = ");
+			if ( Table_len == 1 ) 
+			{
+				utilFun.Log("Table_len =1 return ");
+				return myticket_restball_num;
+			}
 			//for (var k:int = 0; k < myticket_restball_num.length; k++)
 			//{
 				//utilFun.Log("after sort rest = " + myticket_restball_num[k]["rest"]  +" table =" + myticket_restball_num[k]["tableNo"]);				
@@ -300,6 +312,7 @@ package View.ViewComponent
 				}
 			}
 			
+			utilFun.Log("myticket_restball_num ="+myticket_restball_num);
 			return myticket_restball_num;
 		}
 		

@@ -43,6 +43,7 @@ package Model
 		
 		
 		public static const SPCIAL_BALL:int = Num++;		
+		public static const SELF_BET:int = Num++;		
 		
 		
 		public static const Loading:int  = Num++;

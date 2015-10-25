@@ -82,6 +82,7 @@ package View.GameView
 			
 			//auto bet
 			//_betCommand.re_bet();			
+			_betCommand.batch_rebet();
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]
