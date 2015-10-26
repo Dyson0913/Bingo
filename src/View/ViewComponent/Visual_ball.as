@@ -329,6 +329,12 @@ package View.ViewComponent
 			
 		}
 		
+		public function pl(BallNum:int):void
+		{
+				dispatcher(new StringObject("sound_bingo_" + BallNum, "sound" ) );
+			
+		}
+		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="ballupdate")]
 		public function display():void
 		{	
@@ -341,6 +347,16 @@ package View.ViewComponent
 			Get(modelName.Open_Ball_Num).container.visible = true;
 			utilFun.SetText(GetSingleItem(modelName.Open_Ball_Num)["ballNum"] , BallNum.toString());
 			GetSingleItem(modelName.Open_Ball_Num).gotoAndStop( Math.ceil( BallNum / 15) ) ;		
+			
+			if( BallNum  >=1 && BallNum <=15) dispatcher(new StringObject("sound_bingo_b","sound" ) );
+			if( BallNum  >=16 && BallNum <=30) dispatcher(new StringObject("sound_bingo_i","sound" ) );
+			if( BallNum  >=31 && BallNum <=45) dispatcher(new StringObject("sound_bingo_n","sound" ) );
+			if( BallNum  >=46 && BallNum <=60) dispatcher(new StringObject("sound_bingo_g","sound" ) );
+			if( BallNum  >=61 && BallNum <=75) dispatcher(new StringObject("sound_bingo_o","sound" ) );
+			Tweener.addCaller( this,{time:0.5, count:1, onComplete:this.pl, onCompleteParams:[BallNum]});			
+			
+			
+			
 			
 			//3 smaill ball
 			var open3ball:Array = _model.getValue("open3Balllist");

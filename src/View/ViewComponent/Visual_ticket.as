@@ -142,7 +142,7 @@ package View.ViewComponent
 			openballist.push(BallNum);		
 			//_model.putValue("openBalllist",openballist);
 			
-			utilFun.Log("pick best  1 ");
+			//utilFun.Log("pick best  1 ");
 			//pick best 3
 			var best:Array = best3_pan(openballist);
 			var best3:Array = [];
@@ -162,7 +162,7 @@ package View.ViewComponent
 				best3.push(best[0]);
 			}
 			_best_len = best.length;
-			utilFun.Log("pick best  over ");
+			//utilFun.Log("pick best  over ");
 			//open ball ani			
 			//TODO show min start
 			var tableNo:Array = [];
@@ -232,22 +232,22 @@ package View.ViewComponent
 		{
 			var tableNo:Array =  _betCommand.get_my_bet_info(BetCommand.Table);			
 			var Table_len:int = tableNo.length;
-			utilFun.Log("Table_len = "+ Table_len);
-			utilFun.Log("openballist = "+ openballist);
+			//utilFun.Log("Table_len = "+ Table_len);
+			//utilFun.Log("openballist = "+ openballist);
 			var balls:Array = _model.getValue("ballarr");
 			var myticket_restball_num:Array = [];
 			for ( var i:int = 0; i < Table_len ; i++)
 			{			
 				var count:int = 24;
 				var ticket_ball:Array = balls[tableNo[i]] ;
-				utilFun.Log("ticket_ball = "+ ticket_ball);
+				//utilFun.Log("ticket_ball = "+ ticket_ball);
 				for (  var k:int = 0; k < openballist.length ; k++)
 				{
 					if ( ticket_ball.indexOf(openballist[k] ) != -1) count--;
 				}				
 				
-				utilFun.Log("_first_table = "+ _first_table +" table "+ tableNo[i] );
-				utilFun.Log("count = " + count);
+				//utilFun.Log("_first_table = "+ _first_table +" table "+ tableNo[i] );
+				//utilFun.Log("count = " + count);
 				if ( _first_table != tableNo[i]  ) 
 				{
 					var table_and_rest:Object;			
@@ -270,10 +270,10 @@ package View.ViewComponent
 			}			
 			//utilFun.Log("myticket_restball_num = "+ myticket_restball_num);
 			myticket_restball_num.sort(order);			
-			utilFun.Log("sort ovre = ");
+			//utilFun.Log("sort ovre = ");
 			if ( Table_len == 1 ) 
 			{
-				utilFun.Log("Table_len =1 return ");
+				//utilFun.Log("Table_len =1 return ");
 				return myticket_restball_num;
 			}
 			//for (var k:int = 0; k < myticket_restball_num.length; k++)
@@ -312,7 +312,7 @@ package View.ViewComponent
 				}
 			}
 			
-			utilFun.Log("myticket_restball_num ="+myticket_restball_num);
+			//utilFun.Log("myticket_restball_num ="+myticket_restball_num);
 			return myticket_restball_num;
 		}
 		
