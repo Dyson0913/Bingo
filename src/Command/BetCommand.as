@@ -95,8 +95,12 @@ package Command
 		
 		public function bet(e:Event, betType:int):Boolean
 		{
-			var betob:Object = betOb(betType);
-			
+			if (_Actionmodel.length() != 0)
+			{
+				utilFun.Log("too quick forbiden");
+				return false;
+			}
+			var betob:Object = betOb(betType);			
 			//return true;
 			dispatcher( new ActionEvent(betob, "bet_action"));
 			
