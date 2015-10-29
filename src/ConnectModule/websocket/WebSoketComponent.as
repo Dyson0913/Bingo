@@ -231,6 +231,7 @@ package ConnectModule.websocket
 					}
 					break;
 					
+					case "MsgPlayerDecBet":
 					case "MsgPlayerBet":
 					{
 						if (result.result == 0)

@@ -171,19 +171,19 @@ package View.ViewComponent
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);				
+			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
+			
 			//先調回無人下注
 			mc.gotoAndStop(1);			
 			//有人下非自己,變黃
 			if ( IsBetInfo[idx] == 1)
-			{
-				
+			{				
 				var mylast_bet:int = _model.getValue("last_bet_idx");				
-				//utilFun.Log("mylast_bet = "+mylast_bet);
-				//utilFun.Log("arr = "+arr);
+				utilFun.Log("mylast_bet = "+mylast_bet);
+				utilFun.Log("arr = "+arr);
 				var inMyBet:int = arr.indexOf(idx)				
-				//utilFun.Log("inMyBet = "+inMyBet);
-				//utilFun.Log("idx = "+idx);
+				utilFun.Log("inMyBet = "+inMyBet);
+				utilFun.Log("idx = "+idx);
 				if ( inMyBet != -1)
 				{					
 					if (mylast_bet == idx) mc.gotoAndStop(3); //blue
@@ -195,7 +195,7 @@ package View.ViewComponent
 				}				
 				else
 				{
-					mc.gotoAndStop(4);
+					mc.gotoAndStop(5);
 				}
 				
 			}

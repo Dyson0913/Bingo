@@ -68,8 +68,8 @@ package Command
 				_Bet_info.putValue("self", bet_list);
 			}
 			
-			//return no_sign_bet(e, table);
-			return bet(e, table);
+			return no_sign_bet(e, table);
+			//return bet(e, table);
 		}
 		
 		public function add_amount(e:Event, table:int):Boolean
@@ -258,8 +258,8 @@ package Command
 			{				
 				delete bet_ob["bet_amount"];				
 				bet_list[idx] = bet_ob;				
-				//utilFun.Log("af bet_idx= "+bet_list[idx]["bet_idx"]);
-				//utilFun.Log("af total_amount= " + bet_list[idx]["total_amount"]);
+				utilFun.Log("af bet_idx= "+bet_list[idx]["bet_idx"]);
+				utilFun.Log("af total_amount= " + bet_list[idx]["total_amount"]);
 				
 				if ( bet_list[idx]["total_amount"] == 0)
 				{
