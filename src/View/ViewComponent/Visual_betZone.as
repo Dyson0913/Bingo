@@ -178,20 +178,19 @@ package View.ViewComponent
 			//有人下非自己,變黃
 			if ( IsBetInfo[idx] == 1)
 			{				
-				var mylast_bet:int = _model.getValue("last_bet_idx");				
-				utilFun.Log("mylast_bet = "+mylast_bet);
 				utilFun.Log("arr = "+arr);
-				var inMyBet:int = arr.indexOf(idx)				
+				var inMyBet:int = arr.indexOf(idx)	
 				utilFun.Log("inMyBet = "+inMyBet);
+				utilFun.Log("inMyBet check 1 = "+ typeof(inMyBet));
+				utilFun.Log("inMyBet check 2= "+ (inMyBet != -1));
 				utilFun.Log("idx = "+idx);
 				if ( inMyBet != -1)
 				{					
+					var mylast_bet:int = _model.getValue("last_bet_idx");
+					utilFun.Log("mylast_bet = "+mylast_bet);
 					if (mylast_bet == idx) mc.gotoAndStop(3); //blue
-					else 
-					{
-						
-						mc.gotoAndStop(2);
-					}
+					else  mc.gotoAndStop(2);
+					
 				}				
 				else
 				{

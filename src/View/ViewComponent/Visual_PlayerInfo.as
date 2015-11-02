@@ -117,14 +117,13 @@ package View.ViewComponent
 			
 			//有人下非自己,變黃
 			if ( IsBetInfo[idx] == 1)
-			{
-				var mylast_bet:int = _model.getValue("last_bet_idx");
-			
-				var MyBet:int = arr.indexOf(mylast_bet)				
+			{				
+				var MyBet:int = arr.indexOf(idx)				
 				if ( MyBet != -1)
 				{					
-					//utilFun.Log("idx = " + idx);
-					//utilFun.Log("mylastbet = " + mylast_bet);
+					var mylast_bet:int = _model.getValue("last_bet_idx");
+					utilFun.Log("player info idx = " + idx);
+					utilFun.Log("player info mylastbet = " + mylast_bet);
 					if (mylast_bet == idx) mc.gotoAndStop(3); //blue
 					else  	mc.gotoAndStop(2);
 				}				

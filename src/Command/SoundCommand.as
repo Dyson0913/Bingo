@@ -179,9 +179,7 @@ package Command
 		public function playSound(sound:StringObject):void
 		{
 			if ( _mute == true ) return;
-			SoundAS.playFx(sound.Value);
-		
-			
+			SoundAS.playFx(sound.Value);			
 		}
 		
 		[MessageHandler(type="Model.valueObject.StringObject",selector="loop_sound")]
