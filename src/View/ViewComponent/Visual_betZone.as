@@ -108,6 +108,8 @@ package View.ViewComponent
 				if ( mybet.indexOf(tableNo) == -1) 
 				{
 					utilFun.Log("not my");
+					_model.putValue("last_bet_idx",tableNo);					
+					pan_update();
 					return false;				
 				}
 			}
@@ -126,6 +128,8 @@ package View.ViewComponent
 			
 			return _betCommand.add_amount(e, tableNo);
 		}
+		
+		
 		
 		public function Panel_add_plus_condition(e:Event, idx:int):Boolean
 		{
@@ -171,70 +175,50 @@ package View.ViewComponent
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
 			
 			//先調回無人下注
-			mc.gotoAndStop(1);			
-			//有人下非自己,變黃
-			if ( IsBetInfo[idx] == 1)
-			{				
-				utilFun.Log("arr = "+arr);
-				var inMyBet:int = arr.indexOf(idx)	
-				utilFun.Log("inMyBet = "+inMyBet);
-				utilFun.Log("inMyBet check 1 = "+ typeof(inMyBet));
-				utilFun.Log("inMyBet check 2= "+ (inMyBet != -1));
-				utilFun.Log("idx = "+idx);
-				if ( inMyBet != -1)
-				{					
-					var mylast_bet:int = _model.getValue("last_bet_idx");
-					utilFun.Log("mylast_bet = "+mylast_bet);
-					if (mylast_bet == idx) mc.gotoAndStop(3); //blue
-					else  mc.gotoAndStop(2);
-					
-				}				
-				else
-				{
-					mc.gotoAndStop(5);
-				}
-				
-			}
+			mc.gotoAndStop(1);
 			
+			//有人下非自己,變黃
+			if ( IsBetInfo[idx] != 1) return;
+			
+			var frame:int = color_setting(idx);			
+			mc.gotoAndStop(frame);			
 		}
 		
 		public function BetListini(mc:MovieClip,idx:int,IsBetInfo:Array):void
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
-			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
-			var cnt:int =  arr.length;
+			//1,無人 2為自己, 3自己最後一注,4,為他人			
 			
 			//先調回無人下注
-			mc.gotoAndStop( 1 );
-			if ( idx > 49) mc.y +=15.2;
+			mc.gotoAndStop( 1 );		
+			if ( idx > 49) mc.y += 15.2;
+			
 			//有人下非自己,變黃
-			if ( IsBetInfo[idx] == 1)
-			{
-				var MyBet:int = arr.indexOf(idx)
-				if ( MyBet != -1)
-				{
-					//紅
-					if (  MyBet == (cnt - 1))  
-					{
-						mc.gotoAndStop( (IsBetInfo[idx] + 2) );
-					}
-					else mc.gotoAndStop( (IsBetInfo[idx] + 1) );
-				}
-				else
-				{
-					//黃
-					mc.gotoAndStop( (IsBetInfo[idx] + 3) );
-				}
+			if ( IsBetInfo[idx] != 1) return;	
+			
+			var frame:int = color_setting( idx);			
+			mc.gotoAndStop(frame);
+		}
+		
+		public function color_setting(idx:int):int
+		{
+			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
+			var inMyBet:int = arr.indexOf(idx);
+			var mylast_bet:int = _model.getValue("last_bet_idx");
+			if ( inMyBet != -1)
+			{			
+				if (mylast_bet == idx) return 3; //blue
+				else  return 2; //red
 			}
 			
-		}		
-	
+			//點別人己下的盤
+			if (mylast_bet == idx) return 6;
 			
-			//[MessageHandler(type = "Model.ModelEvent", selector = "betstateupdate")]
+			return 5;
+		}
+		
 		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]	
 		public function betlist_update():void
 		{			
@@ -257,13 +241,17 @@ package View.ViewComponent
 			//Get("betamount_num").FlushObject();
 						
 			//比押注更新結果更早收到,更新自己的最後一盤
+			pan_update();			
+		}		
+		
+		[MessageHandler(type = "Model.ModelEvent", selector = "pan_update")]
+		public function pan_update():void
+		{
 			//所有盤號更新
 			Get("betZone").CustomizedFun = BetListCustomizedFun;
 			Get("betZone").CustomizedData = _model.getValue("is_betarr");
 			Get("betZone").FlushObject();
-			
-			
-		}		
+		}
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "display")]
 		public function display():void

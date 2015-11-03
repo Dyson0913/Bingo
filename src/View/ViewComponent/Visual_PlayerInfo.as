@@ -99,41 +99,7 @@ package View.ViewComponent
 			utilFun.SetText( GetSingleItem("bet_view_info", 1)["_text"], String(_model.getValue("NoOne_bet")));			
 			
 			//實際押注更新資訊
-			//盤號更新
-			Get("betZone").CustomizedFun = BetListCustomizedFun;
-			Get("betZone").CustomizedData = _model.getValue("is_betarr");
-			Get("betZone").FlushObject();
-			
-		}
-		
-		public function BetListCustomizedFun(mc:MovieClip,idx:int,IsBetInfo:Array):void
-		{			
-			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
-			//1,無人 2為自己, 3自己最後一注,4,為他人
-			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);		
-			
-			//先調回無人下注
-			mc.gotoAndStop(1);
-			
-			//有人下非自己,變黃
-			if ( IsBetInfo[idx] == 1)
-			{				
-				var MyBet:int = arr.indexOf(idx)				
-				if ( MyBet != -1)
-				{					
-					var mylast_bet:int = _model.getValue("last_bet_idx");
-					utilFun.Log("player info idx = " + idx);
-					utilFun.Log("player info mylastbet = " + mylast_bet);
-					if (mylast_bet == idx) mc.gotoAndStop(3); //blue
-					else  	mc.gotoAndStop(2);
-				}				
-				else
-				{
-					mc.gotoAndStop(4);
-				}
-				
-			}
-			
+			dispatcher(new ModelEvent("pan_update"));
 		}
 		
 		public function GetBetCnt():int
