@@ -85,13 +85,14 @@ package View.ViewComponent
 			
 			//bet			
 			var betPan:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
+			var data:Array = _model.getValue("is_betarr");
 			betPan.container.x = 151.85;
 			betPan.container.y = 235.85;
 			betPan.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,3,1]);
 			betPan.CustomizedFun = BetListini;
-			betPan.CustomizedData = _model.getValue("is_betarr");
-			betPan.Create_by_list(betPan.CustomizedData.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
-			betPan.mousedown = add_plus_condition;			
+			betPan.CustomizedData = [data,_betCommand.get_my_bet_info(BetCommand.Table)];
+			betPan.Create_by_list(data.length,  [ResName.BetButton], 0 , 0, 10, 110.25, 71, "Coin_");
+			betPan.mousedown = add_plus_condition;	
 			
 			//	test.mouseup =  _betCommand.check;
 			//_tool.SetControlMc(totalball_info.container);
@@ -171,7 +172,7 @@ package View.ViewComponent
 			
 		}
 		
-		public function BetListCustomizedFun(mc:MovieClip,idx:int,IsBetInfo:Array):void
+		public function BetListCustomizedFun(mc:MovieClip,idx:int,data:Array):void
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人
@@ -180,32 +181,33 @@ package View.ViewComponent
 			mc.gotoAndStop(1);
 			
 			//有人下非自己,變黃
+			var IsBetInfo:Array  = data[0];
 			if ( IsBetInfo[idx] != 1) return;
 			
-			var frame:int = color_setting(idx);			
+			var frame:int = color_setting(idx,data[1]);			
 			mc.gotoAndStop(frame);			
 		}
 		
-		public function BetListini(mc:MovieClip,idx:int,IsBetInfo:Array):void
+		public function BetListini(mc:MovieClip,idx:int,data:Array):void
 		{			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人			
 			
 			//先調回無人下注
 			mc.gotoAndStop( 1 );		
-			if ( idx > 49) mc.y += 15.2;
-			
+			if ( idx > 49) mc.y += 15.2;			
 			//有人下非自己,變黃
+			var IsBetInfo:Array  = data[0];
+			var arr:Array  = data[1];		
 			if ( IsBetInfo[idx] != 1) return;	
 			
-			var frame:int = color_setting( idx);			
+			var frame:int = color_setting(idx,data[1]);			
 			mc.gotoAndStop(frame);
 		}
 		
-		public function color_setting(idx:int):int
-		{
-			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
-			var inMyBet:int = arr.indexOf(idx);
+		public function color_setting(idx:int,arr:Array):int
+		{			
+			var inMyBet:int = arr.indexOf(idx);		
 			var mylast_bet:int = _model.getValue("last_bet_idx");
 			if ( inMyBet != -1)
 			{			
@@ -249,7 +251,7 @@ package View.ViewComponent
 		{
 			//所有盤號更新
 			Get("betZone").CustomizedFun = BetListCustomizedFun;
-			Get("betZone").CustomizedData = _model.getValue("is_betarr");
+			Get("betZone").CustomizedData = [_model.getValue("is_betarr"),_betCommand.get_my_bet_info(BetCommand.Table)];
 			Get("betZone").FlushObject();
 		}
 		
