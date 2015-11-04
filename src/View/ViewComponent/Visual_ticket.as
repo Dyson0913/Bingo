@@ -130,11 +130,7 @@ package View.ViewComponent
 		public function select_pan():void
 		{			
 			
-			if ( _betCommand.get_my_betlist().length == 0) 
-			{
-				utilFun.Log("select_pan return= "+_betCommand.get_my_betlist().length);
-				return;	
-			}
+			if ( _betCommand.get_my_betlist().length == 0) return;	
 			
 			var BallNum:int = _model.getValue("Curball");			
 			
@@ -246,8 +242,7 @@ package View.ViewComponent
 					if ( ticket_ball.indexOf(openballist[k] ) != -1) count--;
 				}				
 				
-				//utilFun.Log("_first_table = "+ _first_table +" table "+ tableNo[i] );
-				//utilFun.Log("count = " + count);
+				utilFun.Log("_first_table = "+ _first_table +" table "+ tableNo[i] +" count = " + count );				
 				if ( _first_table != tableNo[i]  ) 
 				{
 					var table_and_rest:Object;			

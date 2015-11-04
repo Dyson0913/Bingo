@@ -29,11 +29,13 @@ package View.ViewComponent
 		{
 						
 			//盤號 內盤,外盤
-			var betview_info:MultiObject = prepare("bet_view_info", new MultiObject(), GetSingleItem("_view").parent.parent);	
+			var betview_info:MultiObject = create("bet_view_info",  [ResName.Paninfo_font]);
 			betview_info.CustomizedFun = betview_fun			
 			betview_info.container.x = 267;
 			betview_info.container.y = 80;		
-			betview_info.Create_by_list(4, [ResName.Paninfo_font], 0, 0, 4, 300, 0, "time_");
+			betview_info.Posi_CustzmiedFun = _regular.Posi_xy_Setting;
+			betview_info.Post_CustomizedData = [[0.0], [300, 0], [600, 0], [888, 0]];
+			betview_info.Create_(4, "bet_view_info");
 			
 			var arr:Array = _model.getValue(modelName.BINGO_TABLE);
 			var history:Array = _model.getValue(modelName.BINGO_HISTORY);

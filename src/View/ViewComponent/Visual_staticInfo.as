@@ -104,10 +104,30 @@ package View.ViewComponent
 			var second_list:Array  = _model.getValue("second_list");
 			utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], String( second_list.length ));
 			
-						
-			
+			var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);			
+			table.sort(order_bet_table);			
+			//TODO sort
 			var bet:Object = best_list[0];			
 			var ball_lenth:int =  bet.ball_list.length;
+			best_list.sort(order_table);
+			
+			var table_no:Array = [];
+			for ( var i:int = 0; i < best_list.length ; i++)
+			{
+				var ob:Object = best_list[i];
+				table_no.push(ob["table_no"]);
+			}			
+			
+			for ( var i: int = 0; i < table.length; i++)
+			{
+				var find_idx:int = table_no.indexOf(table[i]);
+				if ( find_idx == -1) continue;				
+				var ob1:Array  = best_list.slice(find_idx, find_idx+1);
+				var fir:Object =  ob1[0];				
+				best_list.splice(find_idx, 1);
+				best_list.unshift(fir);				
+			}			
+			
 			var dis:Array = [best_list,ball_lenth,"best"];		
 			//utilFun.Log("best_list ball_lenth = " + ball_lenth) ;		
 			
@@ -118,7 +138,26 @@ package View.ViewComponent
 			Get("public_best_pan_info").customized();
 			
 			bet = second_list[0];
-			ball_lenth=  bet.ball_list.length;
+			ball_lenth =  bet.ball_list.length;
+			second_list.sort(order_table);
+			
+			var table_no2:Array = [];
+			for ( var i:int = 0; i < second_list.length ; i++)
+			{
+				var ob:Object = second_list[i];
+				table_no2.push(ob["table_no"]);
+			}
+			
+			for ( var i: int = 0; i < table.length; i++)
+			{
+				var find_idx:int = table_no2.indexOf(table[i]);
+				if ( find_idx == -1) continue;
+				var ob2:Array = second_list.slice(find_idx, find_idx+1);
+				var fir2:Object =  ob2[0];
+				second_list.splice(find_idx,1);
+				second_list.unshift(fir2);	
+			}
+			
 			dis = [second_list, ball_lenth,"second"];
 			//utilFun.Log("second_list ball_lenth =" + sball_lenth) ;
 			Get("public_second_pan_info").Posi_CustzmiedFun = reposition;						
@@ -127,6 +166,26 @@ package View.ViewComponent
 			
 			//utilFun.Log("down") ;
 		}
+		
+		//傳回值 -1 表示第一個參數 a 是在第二個參數 b 之前。
+		//傳回值 1 表示第二個參數 b 是在第一個參數 a 之前。
+		//傳回值 0 指出元素都具有相同的排序優先順序。
+		private function order_table(a:Object, b:Object):int 
+		{
+			if ( a["table_no"] < b["table_no"]) return -1;
+			else if ( a["table_no"] > b["table_no"]) return 1;
+			else return 0;
+		}	
+		
+		//self bet table 
+		//TODO check why can't  big -> small ><
+		private function order_bet_table(a:int, b:int):int 
+		{
+			if ( a < b) return -1;
+			else if ( a > b) return 1;
+			else return 0;			
+		}
+		
 		
 		public function pan_set(mc:MovieClip, idx:int, tablelist:Array):void
 		{				
@@ -299,9 +358,12 @@ package View.ViewComponent
 			}
 		}
 		
+		// ><  big -> small
+		// <> small -> big
+		 //small ball order
 		private function order(a:int, b:int):int 
 		{
-			if ( a< b) return -1;
+			if (  a < b) return -1;
 			else if ( a > b) return 1;
 			else return 0;			
 		}
