@@ -28,7 +28,7 @@ package Res
 		public static const Bet_amount_num:String = "bet_num_small";
 		public static const Bet_add:String = "add";
 		public static const Bet_sub:String = "sub";
-		public static const Cancel_ALLBet_Btn:String = "Cancel_ALL_Bet_Btn";
+		
 		
 		
 		public static const Ball:String = "DynamicBall";

@@ -45,8 +45,7 @@ package Command
 			var betzone:Array = [];
 			for ( var i:int = 0; i < 100; i++)
 			{
-				betzone.push(i);
-			 
+				betzone.push(i);			 
 			}
 			_model.putValue(modelName.BET_ZONE, betzone);
 			
@@ -174,13 +173,13 @@ package Command
 			
 			var bet:Object;
 			var amount:int = get_amount_by_type(BetType);
-			//utilFun.Log("=================== = "  );
-			//utilFun.Log("BetType = " + BetType );
-			//utilFun.Log("total_bet = " + total_bet(BetType));
-			//utilFun.Log("add amount = " +  Math.abs( (amount - total_bet(BetType)))  );			
-			//utilFun.Log("coin_list.indexOf(amount) = " + coin_list.indexOf(amount));
-			//utilFun.Log("betzone_totoal() = " + amount );
-			//utilFun.Log("=================== = "  );
+			utilFun.Log("=================== = "  );
+			utilFun.Log("BetType = " + BetType );
+			utilFun.Log("total_bet = " + total_bet(BetType));
+			utilFun.Log("add amount = " +  Math.abs( (amount - total_bet(BetType)))  );			
+			utilFun.Log("coin_list.indexOf(amount) = " + coin_list.indexOf(amount));
+			utilFun.Log("betzone_totoal() = " + amount );
+			utilFun.Log("=================== = "  );
 			
 			bet = { "betType": BetType, 											
 			                           "bet_amount":  Math.abs( amount - total_bet(BetType) ),		
@@ -222,15 +221,30 @@ package Command
 		
 		public function cancel_allbet(e:Event, idx:int):Boolean
 		{
-			var bet_list:Array = _Bet_info.getValue("self");			
-			for ( var i:int = 0; i < bet_list.length ; i++)
+			if ( _Actionmodel.length() != 0)  
 			{
-				var bet:Object = bet_list[i];			
-				bet["bet_amount"] = 0;				
-				dispatcher( new ActionEvent(bet, "bet_action"));			
-			}		
+				utilFun.Log("action queue return ");
+				return false;			
+			}
 			
-			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+			var bet_list:Array = _Bet_info.getValue("self");			
+			var n:int =  bet_list.length;
+			if ( n == 0)
+			{
+				utilFun.Log("no bet  return ");
+				return false;			
+			}
+			for ( var i:int = 0; i < n; i++)
+			{
+				var bet:Object = bet_list[i];				
+				bet[Bet_idx] = 0 ;
+				var sub_betob:Object   = betOb_with_no_sign(bet["betType"]);			
+				
+				dispatcher( new ActionEvent(sub_betob, "bet_action"));
+				
+			}		
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_NO_SIGN));
+			
 			return true;
 		}
 		
@@ -258,13 +272,14 @@ package Command
 			{				
 				delete bet_ob["bet_amount"];				
 				bet_list[idx] = bet_ob;				
-				utilFun.Log("af bet_idx= "+bet_list[idx]["bet_idx"]);
-				utilFun.Log("af total_amount= " + bet_list[idx]["total_amount"]);
+				//utilFun.Log("af bet_idx= "+bet_list[idx]["bet_idx"]);
+				//utilFun.Log("af total_amount= " + bet_list[idx]["total_amount"]);
 				
 				if ( bet_list[idx]["total_amount"] == 0)
 				{
 					utilFun.Log("del item = ");
 					bet_list.splice(idx, 1);	
+					utilFun.Log("del item bet_list= "+bet_list.length);
 					is_sub = true;
 				}
 			}
@@ -277,10 +292,12 @@ package Command
 			else
 			{
 			    //退注 把last idx預設	下注最後一筆
-				var lastTable:int = bet_list[bet_list.length - 1][Table];
-				utilFun.Log("lastTable = "+lastTable);
-				
-				_model.putValue("last_bet_idx", lastTable);
+				if ( bet_list.length != 0)
+				{
+					var lastTable:int = bet_list[bet_list.length - 1][Table];
+					utilFun.Log("lastTable = "+lastTable);				
+					_model.putValue("last_bet_idx", lastTable);
+				}
 			}
 			
 			_Bet_info.putValue("self", bet_list);
@@ -316,7 +333,7 @@ package Command
 			if ( _Actionmodel.length() != 0) 
 			{
 				utilFun.Log("dropMsg ");
-				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_NO_SIGN));
 			}
 				
 			
@@ -436,11 +453,11 @@ package Command
 									   "bet_idx":coin_list.indexOf(total_bet_amount),
 									   "total_amount":total_bet_amount
 									   };
-			utilFun.Log("=================== = "  );
-			utilFun.Log("BetType = " + BetType );
-			utilFun.Log("total_bet = " +total_bet_amount);
-			utilFun.Log("coin_list.indexOf(amount) = " +coin_list.indexOf(total_bet_amount));			
-			utilFun.Log("=================== = "  );
+			//utilFun.Log("=================== = "  );
+			//utilFun.Log("BetType = " + BetType );
+			//utilFun.Log("total_bet = " +total_bet_amount);
+			//utilFun.Log("coin_list.indexOf(amount) = " +coin_list.indexOf(total_bet_amount));			
+			//utilFun.Log("=================== = "  );
 						
 			 return bet;
 		}

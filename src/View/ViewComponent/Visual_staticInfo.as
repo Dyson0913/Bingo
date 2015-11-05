@@ -382,7 +382,7 @@ package View.ViewComponent
 			
 			
 			Get("public_best_pan_info").CleanList()			
-			Get("public_second_pan_info")..CleanList();			
+			Get("public_second_pan_info").CleanList();			
 			
 		}
 		

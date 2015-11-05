@@ -26,6 +26,7 @@ package View.ViewComponent
 		[Inject]
 		public var _text:Visual_Text;
 		
+		public const Cancel_ALLBet_Btn:String = "Cancel_ALL_Bet_Btn";
 		
 		public function Visual_betZone() 
 		{
@@ -80,8 +81,9 @@ package View.ViewComponent
 			cancel_bet.container.x = 974;
 			cancel_bet.container.y = 984;
 			cancel_bet.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
-			cancel_bet.Create_by_list(1,  [ResName.Cancel_ALLBet_Btn], 0 , 0, 1, 0, 0, "Coin_");					
+			cancel_bet.Create_by_list(1,  [Cancel_ALLBet_Btn], 0 , 0, 1, 0, 0, "Coin_");					
 			cancel_bet.mousedown = _betCommand.cancel_allbet;			
+			cancel_bet.mouseup = _betCommand.empty_reaction;		
 			
 			//bet			
 			var betPan:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -130,8 +132,6 @@ package View.ViewComponent
 			return _betCommand.add_amount(e, tableNo);
 		}
 		
-		
-		
 		public function Panel_add_plus_condition(e:Event, idx:int):Boolean
 		{
 			//convert from item idx to Tableno
@@ -166,8 +166,8 @@ package View.ViewComponent
 		
 		public function BetListFun(mc:MovieClip, idx:int, IsBetInfo:Array):void
 		{
-			utilFun.scaleXY(mc, 0.7, 0.7);
-			var str:String = idx >= IsBetInfo.length ? "" : IsBetInfo[idx];
+			utilFun.scaleXY(mc, 0.7, 0.7);			
+			var str:String = idx >= IsBetInfo.length ? "" : IsBetInfo[idx];			
 			utilFun.SetText( mc["tableNo"],str );	
 			
 		}
@@ -179,13 +179,14 @@ package View.ViewComponent
 			
 			//先調回無人下注
 			mc.gotoAndStop(1);
-			
+			mc["tableNo"].textColor = 0xD2D2D2;
 			//有人下非自己,變黃
 			var IsBetInfo:Array  = data[0];
 			if ( IsBetInfo[idx] != 1) return;
 			
 			var frame:int = color_setting(idx,data[1]);			
-			mc.gotoAndStop(frame);			
+			mc.gotoAndStop(frame);
+			if ( frame == 5) mc["tableNo"].textColor = 0x666666;
 		}
 		
 		public function BetListini(mc:MovieClip,idx:int,data:Array):void
@@ -194,7 +195,8 @@ package View.ViewComponent
 			//1,無人 2為自己, 3自己最後一注,4,為他人			
 			
 			//先調回無人下注
-			mc.gotoAndStop( 1 );		
+			mc.gotoAndStop( 1 );
+			mc["tableNo"].textColor = 0xD2D2D2;
 			if ( idx > 49) mc.y += 15.2;			
 			//有人下非自己,變黃
 			var IsBetInfo:Array  = data[0];
@@ -203,6 +205,7 @@ package View.ViewComponent
 			
 			var frame:int = color_setting(idx,data[1]);			
 			mc.gotoAndStop(frame);
+			if ( frame == 5) mc["tableNo"].textColor = 0x666666;
 		}
 		
 		public function color_setting(idx:int,arr:Array):int

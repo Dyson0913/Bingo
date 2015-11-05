@@ -385,7 +385,7 @@ package ConnectModule.websocket
 											"table_no":  ob["betType"],
 										    "dec_amount":ob["bet_amount"],
 											"total_bet_amount":total
-											};
+											};											
 											
 			SendMsg(bet);
 		}

@@ -21,6 +21,7 @@ package View.ViewComponent
 	{
 		public const bigwinfire:String = "bigwin_fire";
 		public const lottymsg:String = "lotty_msg";	
+		public const Dark:String = "Dark";	
 		
 		public function Visual_themes() 
 		{
@@ -40,31 +41,43 @@ package View.ViewComponent
 			besthint.container.x = 417.9;
 			besthint.container.y = 81.95;
 			
+			//押暗
+			var DarkItem:MultiObject = create("Dark",  [Dark]);
+			DarkItem.Create_(1, "Dark");
+			GetSingleItem("Dark")["_bg"].alpha = 0;
+			
 			//金幣泉
 			var bigwinfire:MultiObject = create("lotty_fire", [bigwinfire]);
 			bigwinfire.Create_(1, "lotty_fire");
-			bigwinfire.container.x = 140;
-			bigwinfire.container.y = -90;
+			bigwinfire.container.x = 90;
+			bigwinfire.container.y = -140;
 			setFrame("lotty_fire", 1);
 			
 			//大獎字樣集
 			var lottymsg:MultiObject = create("lottymsg",  [lottymsg]);
 			lottymsg.Create_(1, "lottymsg");
-			lottymsg.container.x = 1111;
-			lottymsg.container.y = 500;		
+			lottymsg.container.x = 1000;
+			lottymsg.container.y = 300;
 			setFrame("lottymsg", 1);
 			
-		   //_tool.SetControlMc(lottymsg.container);
+			
+			
+		   //_tool.SetControlMc(bigwinfire.container);
 		   //_tool.y = 200;
 			//add(_tool);
 			
 			GetSingleItem("_view")["_CurBal"].visible = true;
+			
+			
 		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "specail_round")]
 		public function sp():void
 		{
 			GetSingleItem("besthint").gotoAndStop(2);
+			//TODO wintype _wintype
+			//GetSingleItem("besthint")[" _wintype"].gotoAndStop(2);
+			
 			_regular.Twinkle_by_JumpFrame(GetSingleItem("besthint"), 30, 90, 2, 3);
 			
 			GetSingleItem("second_hint").gotoAndStop(2);
@@ -76,6 +89,7 @@ package View.ViewComponent
 		public function winhint():void
 		{
 			//hide spical item
+			GetSingleItem("Dark")["_bg"].alpha = 0;
 			GetSingleItem("besthint").gotoAndStop(1);
 			Tweener.pauseTweens(GetSingleItem("besthint"));
 			GetSingleItem("second_hint").gotoAndStop(1);
@@ -108,13 +122,16 @@ package View.ViewComponent
 		[MessageHandler(type = "Model.ModelEvent", selector = "pan_ok")]		
 		public function pan_ok():void
 		{			
-			
+			GetSingleItem("Dark")["_bg"].alpha = 0.5;
 			GetSingleItem("second_hint").gotoAndStop(5);
 			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
 			GetSingleItem("second_hint")["panNum"].text = ball[1];
 			
 			//fire			
-			GetSingleItem("lottymsg").gotoAndStop(2);
+			//TODO wintype _wintype
+			GetSingleItem("lottymsg").gotoAndStop(2);			
+			//GetSingleItem("lottymsg").gotoAndStop(1);
+			
 			
 			var lo:int = ball[0];
 			var arr:Array = utilFun.arrFormat(lo, 2);			
