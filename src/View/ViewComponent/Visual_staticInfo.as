@@ -372,6 +372,7 @@ package View.ViewComponent
 		public function sp():void
 		{
 			Get("myroom").container.visible = false;
+			Get("total_ball_info").container.visible = false;
 			
 			utilFun.SetText(GetSingleItem("best_pan_info", 0)["_text"], "" );
 			utilFun.SetText(GetSingleItem("best_pan_info", 2)["_text"], "" );

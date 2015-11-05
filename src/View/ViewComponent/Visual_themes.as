@@ -57,6 +57,8 @@ package View.ViewComponent
 		   //_tool.SetControlMc(lottymsg.container);
 		   //_tool.y = 200;
 			//add(_tool);
+			
+			GetSingleItem("_view")["_CurBal"].visible = true;
 		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "specail_round")]
@@ -66,6 +68,8 @@ package View.ViewComponent
 			_regular.Twinkle_by_JumpFrame(GetSingleItem("besthint"), 30, 90, 2, 3);
 			
 			GetSingleItem("second_hint").gotoAndStop(2);
+			
+			GetSingleItem("_view")["_CurBal"].visible = false;
 		}	
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "win_hint")]

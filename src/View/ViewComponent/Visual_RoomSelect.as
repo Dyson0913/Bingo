@@ -52,7 +52,7 @@ package View.ViewComponent
 			spider.customized();
 			
 			_pageModel = new PageStyleModel();
-			_pageModel.UpDateModel(_model.getValue("SelectRoomInfo"), 50);			
+			_pageModel.UpDateModel(_model.getValue("SelectRoomInfo"), 100);			
 			
 			//_tool.SetControlMc(spider.container);
 			//add(_tool);		
