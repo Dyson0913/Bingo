@@ -32,6 +32,9 @@ package View.ViewBase
 		[Inject]
 		public var _regular:RegularSetting;
 		
+		[Inject]
+		public var _opration:DataOperation;
+		
 		public var _tool:AdjustTool;
 		
 		public function VisualHandler() 

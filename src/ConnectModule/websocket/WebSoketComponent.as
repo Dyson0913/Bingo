@@ -14,9 +14,7 @@ package ConnectModule.websocket
 	import Model.*;	
 	
 	
-	import Model.valueObject.*;
-		
-	import View.GameView.CardType;
+	import Model.valueObject.*;	
 	
 	import util.utilFun;	
 	import ConnectModule.websocket.Message
@@ -154,21 +152,25 @@ package ConnectModule.websocket
 						is_bet = arrlist;												
 						_model.putValue("is_betarr", arrlist);
 							
-							if ( state == gameState.END_BET ||  state == gameState.NEW_ROUND)
+							if ( state == gameState.NEW_ROUND)
 							{
 								_model.putValue("chang_order",1);
 								dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );		
 								//triger timer,
 								dispatcher(new ModelEvent("display"));
 							}
-							else if ( state == gameState.START_OPEN ||  state == gameState.END_ROUND)
+							else if (  state == gameState.END_BET )
 							{
 								_model.putValue("chang_order", 0);
-								
+								dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );	
+							}
+							else if ( state == gameState.START_OPEN ||  state == gameState.END_ROUND)
+							{
+								_model.putValue("chang_order", 0);								
 								 
 								dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );	
 								_model.putValue("openBalllist", result.open_info.opened_history);
-								 dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.HALF_ENTER_UPDATE));
+								dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.HALF_ENTER_UPDATE));
 							}
 								
 					}

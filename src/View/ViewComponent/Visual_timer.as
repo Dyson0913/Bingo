@@ -16,10 +16,6 @@ package View.ViewComponent
 	 */
 	public class Visual_timer  extends VisualHandler
 	{
-		
-		[Inject]
-		public var _opration:DataOperation;
-		
 		public function Visual_timer() 
 		{
 			

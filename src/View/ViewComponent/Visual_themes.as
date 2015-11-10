@@ -22,6 +22,7 @@ package View.ViewComponent
 		public const bigwinfire:String = "bigwin_fire";
 		public const lottymsg:String = "lotty_msg";	
 		public const Dark:String = "Dark";	
+		public const Roller_2:String = "Roller";	
 		
 		public function Visual_themes() 
 		{
@@ -60,15 +61,52 @@ package View.ViewComponent
 			lottymsg.container.y = 300;
 			setFrame("lottymsg", 1);
 			
+			//roller
+			var Roller_2:MultiObject = create("Roller_2",  [Roller_2]);
+			Roller_2.Create_(1, "Roller_2");
+			Roller_2.container.x = 10.8;
+			Roller_2.container.y = 113.6;
 			
+			GetSingleItem("Roller_2")["_title"].gotoAndStop(2);
 			
-		   //_tool.SetControlMc(bigwinfire.container);
+			//Tweener.addTween(GetSingleItem("Roller_2")["_num_1"], { y: -140, time:1, transition:"easeInQuart" } );		
+			_model.putValue("roll_idx", [1, 2]);	
+			var arr:Array _model.getValue("roll_idx");
+					
+			
+			//utilFun.Log(" first " + _opration.array_Item_loop("roll_idx") );		
+			//y: -139 * N,
+			var N:int = 9;
+			Tweener.addTween(GetSingleItem("Roller_2")["_num_"+arr[0]], { y: -1390, time:2, transition:"easeInQuart" } );
+			Tweener.addTween(GetSingleItem("Roller_2")["_num_"+arr[1]], { y: -1390 * 2, time:2, transition:"easeInQuart", onComplete:this.fuzzy } );
+			
+			//_regular.Call
+		   //_tool.SetControlMc(Roller_2.container);
 		   //_tool.y = 200;
 			//add(_tool);
 			
 			GetSingleItem("_view")["_CurBal"].visible = true;
 			
 			
+		}
+		
+		public function fuzzy():void
+		{
+			var arr:Array _model.getValue("roll_idx");			
+			GetSingleItem("Roller_2")["_num_"+arr[0]].gotoAndStop(2);
+			GetSingleItem("Roller_2")["_num_"+arr[1]].gotoAndStop(2);
+			
+			
+			var N:int = 9;
+			Tweener.addTween(GetSingleItem("Roller_2")["_num_1"], { y: -139 *N, time:2, transition:"easeInQuart", onComplete:this.fuzzyag } );		
+			
+		}
+		
+		public function fuzzyag():void
+		{
+			GetSingleItem("Roller_2")["_num_1"].y = 0;
+			var N:int = 9;
+			Tweener.addTween(GetSingleItem("Roller_2")["_num_1"], { y: -139 *N, time:2, transition:"easeInQuart", onComplete:this.fuzzyag } );		
 		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "specail_round")]

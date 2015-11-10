@@ -23,9 +23,6 @@ package View.ViewComponent
 		public var _betCommand:BetCommand;
 		
 		[Inject]
-		public var _opration:DataOperation;
-		
-		[Inject]
 		public var _text:Visual_Text
 		
 		private var _sball_x_diff:Number = 88;

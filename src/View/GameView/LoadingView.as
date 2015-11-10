@@ -93,8 +93,8 @@ package View.GameView
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.empty], 0, 0, 1, 0, 0, "a_");			
 			
-			utilFun.SetTime(connet, 0.1);
-			//_visual_test.init();
+			//utilFun.SetTime(connet, 0.1);
+			_visual_test.init();
 			
 			
 			

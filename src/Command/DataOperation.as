@@ -1,6 +1,9 @@
 package Command 
 {
 	import Model.Model;
+	import util.utilFun;
+	import View.Viewutil.*;
+	
 	/**
 	 * data operation
 	 * @author hhg
@@ -55,6 +58,30 @@ package Command
 			var idx:int = _model.getValue(idx_name);
 			
 			return data[idx];
+		}
+		
+		
+		/**
+		 * loop a item to back. e.x 1,2 ....N  -> 2.3.....N
+		 * @param	data_name 
+		 * @param	start
+		 * @param	len
+		 * @return
+		 * splice ( start,del_num,new item)
+		 */
+		public function  array_Item_loop(data_name:*,start:int =0,len:int =1):Array
+		{
+			var data:Array = _model.getValue(data_name);
+			
+			var Mistake_proofing_start:int = Math.min(start, data.length);
+			var Mistake_proofing_len:int = Math.min(start + len, data.length);
+			
+			var Item:Array = data.slice(Mistake_proofing_start, Mistake_proofing_len);
+			data.splice(start, len);
+			data.push.apply(data, Item);
+			
+			_model.putValue(data_name, data);
+			return _model.getValue(data_name);
 		}
 	}
 
