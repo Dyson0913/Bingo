@@ -62,23 +62,23 @@ package View.ViewComponent
 			setFrame("lottymsg", 1);
 			
 			//roller
-			var Roller_2:MultiObject = create("Roller_2",  [Roller_2]);
-			Roller_2.Create_(1, "Roller_2");
-			Roller_2.container.x = 10.8;
-			Roller_2.container.y = 113.6;
-			
-			GetSingleItem("Roller_2")["_title"].gotoAndStop(2);
+			//var Roller_2:MultiObject = create("Roller_2",  [Roller_2]);
+			//Roller_2.Create_(1, "Roller_2");
+			//Roller_2.container.x = 10.8;
+			//Roller_2.container.y = 113.6;
+			//
+			//GetSingleItem("Roller_2")["_title"].gotoAndStop(2);
 			
 			//Tweener.addTween(GetSingleItem("Roller_2")["_num_1"], { y: -140, time:1, transition:"easeInQuart" } );		
-			_model.putValue("roll_idx", [1, 2]);	
-			var arr:Array _model.getValue("roll_idx");
-					
-			
+			//_model.putValue("roll_idx", [1, 2]);	
+			//var arr:Array _model.getValue("roll_idx");
+					//
+			//
 			//utilFun.Log(" first " + _opration.array_Item_loop("roll_idx") );		
 			//y: -139 * N,
-			var N:int = 9;
-			Tweener.addTween(GetSingleItem("Roller_2")["_num_"+arr[0]], { y: -1390, time:2, transition:"easeInQuart" } );
-			Tweener.addTween(GetSingleItem("Roller_2")["_num_"+arr[1]], { y: -1390 * 2, time:2, transition:"easeInQuart", onComplete:this.fuzzy } );
+			//var N:int = 9;
+			//Tweener.addTween(GetSingleItem("Roller_2")["_num_"+arr[0]], { y: -1390, time:2, transition:"easeInQuart" } );
+			//Tweener.addTween(GetSingleItem("Roller_2")["_num_"+arr[1]], { y: -1390 * 2, time:2, transition:"easeInQuart", onComplete:this.fuzzy } );
 			
 			//_regular.Call
 		   //_tool.SetControlMc(Roller_2.container);
@@ -92,7 +92,7 @@ package View.ViewComponent
 		
 		public function fuzzy():void
 		{
-			var arr:Array _model.getValue("roll_idx");			
+			var arr:Array = _model.getValue("roll_idx");			
 			GetSingleItem("Roller_2")["_num_"+arr[0]].gotoAndStop(2);
 			GetSingleItem("Roller_2")["_num_"+arr[1]].gotoAndStop(2);
 			
