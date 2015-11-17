@@ -14,6 +14,8 @@ package View.ViewComponent
 	import Res.ResName;
 	import caurina.transitions.Tweener;
 	
+	
+	
 	/**
 	 * timer present way
 	 * @author ...
@@ -25,11 +27,6 @@ package View.ViewComponent
 		
 		[Inject]
 		public var _text:Visual_Text;
-		
-		[Inject]
-		public var _Bigwin_Effect:Visual_Bigwin_Effect;
-		
-		public const switchbtn:String = "switch_btn";
 		
 		public function Visual_Bigwin_Msg() 
 		{
@@ -47,18 +44,7 @@ package View.ViewComponent
 			public_best_pan.CustomizedFun = pan_set;
 			public_best_pan.container.x = 492.85;
 			public_best_pan.container.y = 128.8;
-			public_best_pan.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");  
-			
-			var switchbtn:MultiObject = create("switchbtn", [switchbtn]);
-			switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);
-			//switchbtn.mousedown = fake_reaction;
-			switchbtn.mouseup = _betCommand.empty_reaction;
-			switchbtn.rollout = _betCommand.empty_reaction;
-			switchbtn.rollover = _betCommand.empty_reaction;
-			switchbtn.container.x = 1770;
-			switchbtn.container.y = 1000;
-			switchbtn.Create_(1, "switchbtn");
-			
+			public_best_pan.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 106.25, 80, "time_");		
 			
 			//自己中賓果提示
 			var selfbingo_panel:MultiObject = prepare("selfbingo_panel", new MultiObject(),GetSingleItem("_view").parent.parent );						
@@ -76,26 +62,11 @@ package View.ViewComponent
 			selfbgino_text.container.y = 220;
 			selfbgino_text.Create_by_list(3, [ResName.Paninfo_font], 0, 0, 1, 0, 78, "time_");
 			
+		
 		   //_tool.SetControlMc(selfbgino_text.container);
 		   //_tool.y = 200;
 			//add(_tool);
-		}
-		
-		public function fake_reaction(e:Event, idx:int):Boolean
-		{
-			//if (!_Bigwin_Effect._playing) _Bigwin_Effect.hitbigwin();
-			//else _Bigwin_Effect.stop();
-			var arr:Array = [];
-			arr.push( 3);
-			arr.push( 5);
-			dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
-						
-			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.SPECAIL_ROUND));
-			utilFun.Log("send spcical =");
-			
-			
-			return true;
-		}
+		}	
 		
 		public function pan_set(mc:MovieClip, idx:int, tablelist:Array):void
 		{				

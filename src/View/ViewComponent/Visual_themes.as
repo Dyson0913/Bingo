@@ -1,5 +1,6 @@
 package View.ViewComponent 
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import View.ViewBase.Visual_Text;
@@ -13,16 +14,29 @@ package View.ViewComponent
 	import Res.ResName;
 	import caurina.transitions.Tweener;
 	
+	import flash.filters.*;
+	
 	/**
 	 * timer present way
 	 * @author ...
 	 */
 	public class Visual_themes  extends VisualHandler
 	{
+		[Inject]
+		public var _betCommand:BetCommand;
+		
 		public const bigwinfire:String = "bigwin_fire";
 		public const lottymsg:String = "lotty_msg";	
 		public const Dark:String = "Dark";	
-		public const Roller_2:String = "Roller";	
+		public const Roller_2:String = "Roller";
+		public const Roller_Num:String = "RollerNum";
+		
+		public const switchbtn:String = "switch_btn";
+		private var blur:BlurFilter = new BlurFilter();
+		private var _speed:Array   = [1,1,1,1];
+		private var _acum:Array  = [1, 1, 1, 1];
+		private var _dec:Array = [0, 0, 0, 0];
+		private var _count:int = 0;
 		
 		public function Visual_themes() 
 		{
@@ -40,10 +54,10 @@ package View.ViewComponent
 			var besthint:MultiObject = prepare("besthint", new MultiObject()  , GetSingleItem("_view").parent.parent);
 			besthint.Create_by_list(1, [ResName.besthint], 0, 0, 1, 0, 0, "time_");
 			besthint.container.x = 417.9;
-			besthint.container.y = 81.95;
+			besthint.container.y = 81.95;			
 			
 			//押暗
-			var DarkItem:MultiObject = create("Dark",  [Dark]);
+			var DarkItem:MultiObject = create("Dark",  [Dark]);			
 			DarkItem.Create_(1, "Dark");
 			GetSingleItem("Dark")["_bg"].alpha = 0;
 			
@@ -60,6 +74,32 @@ package View.ViewComponent
 			lottymsg.container.x = 1000;
 			lottymsg.container.y = 300;
 			setFrame("lottymsg", 1);
+			
+			_model.putValue("roll_idx", [0, 1, 2, 3]);			
+			//test roller
+			var Roller_Num:MultiObject = create("Roller_Num",  [Roller_Num]);
+			Roller_Num.CustomizedData = [4, 88, 140];
+			Roller_Num.CustomizedFun = _regular.Posi_Colum_first_Setting;
+			Roller_Num.container.x = 1000;
+			Roller_Num.container.y = 300;
+			Roller_Num.Create_(4, "Roller_Num");
+			GetSingleItem("Roller_Num").gotoAndStop(10);
+			GetSingleItem("Roller_Num",1).gotoAndStop(1);
+			GetSingleItem("Roller_Num", 2).gotoAndStop(2);
+			GetSingleItem("Roller_Num", 3).gotoAndStop(3);			
+			roller();
+		
+			blur = new BlurFilter(0,0,1);
+			//畫面按鈕,在押暗後生成,才按的到
+			var switchbtn:MultiObject = create("switchbtn", [switchbtn]);
+			switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			
+			switchbtn.mousedown = fake_reaction;
+			switchbtn.mouseup = _betCommand.empty_reaction;
+			switchbtn.rollout = _betCommand.empty_reaction;
+			switchbtn.rollover = _betCommand.empty_reaction;
+			switchbtn.container.x = 1770;
+			switchbtn.container.y = 1000;
+			switchbtn.Create_(1, "switchbtn");
 			
 			//roller
 			//var Roller_2:MultiObject = create("Roller_2",  [Roller_2]);
@@ -86,8 +126,83 @@ package View.ViewComponent
 			//add(_tool);
 			
 			GetSingleItem("_view")["_CurBal"].visible = true;
+			_count = 0;
 			
 			
+			
+		}
+		
+			public function fake_reaction(e:Event, idx:int):Boolean
+			{								
+				_speed = [1,1,1,1];
+				_acum  = [1, 1, 1, 1];
+				_count = 0;
+				roller();
+				return true;
+			}
+		
+		public function roller():void
+		{
+			var arr = 	_model.getValue("roll_idx");
+			utilFun.Log(" roller =" + arr );			
+			Tweener.addTween(GetSingleItem("Roller_Num", arr[0]), { time:10,   transition:"linear", onUpdate:this.reset, onUpdateParams:[GetSingleItem("Roller_Num",arr[0]), arr[0]] } );		
+			Tweener.addTween(GetSingleItem("Roller_Num",arr[1]), {  time:10, transition:"linear",onUpdate:this.reset,onUpdateParams:[GetSingleItem("Roller_Num",arr[1]),arr[1]] } );		
+			Tweener.addTween(GetSingleItem("Roller_Num",arr[2]), {  time:10, transition:"linear", onUpdate:this.reset, onUpdateParams:[GetSingleItem("Roller_Num", arr[2]),arr[2]] } );		
+			Tweener.addTween(GetSingleItem("Roller_Num",arr[3]), {  time:10, transition:"linear",onUpdate:this.reset,onUpdateParams:[GetSingleItem("Roller_Num",arr[3]),arr[3]] } );		
+			
+		}
+		
+		public function reset(mc:DisplayObjectContainer,idx:int):void
+		{
+			if ( _speed[idx] == 0) 
+			{
+				Tweener.pauseTweens(GetSingleItem("Roller_Num", idx));
+				utilFun.Log("re move listen= " +idx + " mc " + mc.y);
+				
+				return;
+			}
+		   
+		   mc.y  -= _speed[idx];
+		   _speed[idx] += _acum[idx];
+		    utilFun.Log("y = " + _speed[idx]  + " idx =" +idx);
+		  if ( _speed[idx] <= 0 ) _speed[idx] = 0;
+		   //top speed
+		   if ( _speed[idx] >= 30)   _speed[idx] = 30;		  
+		 
+		   
+		   //de speed
+		   if ( _dec[idx] ) 
+		   {			   
+			   _acum[idx] = -0.5;		   
+			   _dec[idx] = 0;
+		   }
+		   
+		   if ( _speed[idx] > 20) blur.blurY =  30 ;
+		   else blur.blurY =  0 ;
+			mc.filters = [blur];
+		   //
+			if ( mc.y < -140) 
+			{				
+				mc.y = 420 ;				
+				var arr:Array  = _opration.array_Item_loop("roll_idx");
+				utilFun.Log("arr = " + arr);
+				var toMc:MovieClip = mc as MovieClip;
+				var frame:int = arr[3];
+				if ( frame == 0) frame = 10;
+				toMc.gotoAndStop(frame);
+				//start condi
+				if ( arr[0] == 0) 
+				{
+					_count ++;
+					utilFun.Log("_count = "+_count);
+					if ( _count == 5)
+					{
+						utilFun.Log("de_cred");
+						_dec = [1, 1, 1, 1];
+					}
+				}
+				
+			}
 		}
 		
 		public function fuzzy():void

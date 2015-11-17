@@ -331,8 +331,7 @@ package View.ViewComponent
 			{
 				mc.gotoAndStop(2);
 				//tx.textColor = 0xD2D2D2;
-				//63
-				_regular.Call
+				//63				
 				Tweener.addTween(mc["_mask"], {height:51, time:1, onStartParams:[tableNo,0xD2D2D2],onStart:this.open_handle, onComplete:this.open_handle,onCompleteParams:[tableNo,0x666666] });
 			}			
 		}
