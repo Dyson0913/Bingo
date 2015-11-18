@@ -222,7 +222,7 @@ package View.Viewutil
 			var cnt:int = ItemList.length;
 			for ( var i:int = 0; i < cnt; i++)
 			{
-				_Container.removeChild(ItemList[i]);
+				if( _Container.contains(ItemList[i]) ) 	_Container.removeChild(ItemList[i]);
 			}
 			
 			ItemList.length = 0;
@@ -259,6 +259,11 @@ package View.Viewutil
 		public function put_to_lsit(viewcomponent:ViewComponentInterface):void
 		{
 			ItemList.push(viewcomponent);
+		}
+		
+		public function put_item_reference(Item_from_some_where:DisplayObjectContainer):void
+		{
+			ItemList.push(Item_from_some_where);
 		}
 		
 		public function Getidx(name:String):int 
