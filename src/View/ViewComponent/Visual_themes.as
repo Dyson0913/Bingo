@@ -120,6 +120,10 @@ package View.ViewComponent
 			Roller_2.ItemList[0]["_num_1"].gotoAndStop(1);
 			Roller_2.ItemList[0]["_num_2"].gotoAndStop(2);
 			Roller_2.ItemList[0]["_num_3"].gotoAndStop(3);
+			Roller_2.ItemList[0]["_num2_0"].gotoAndStop(10);
+			Roller_2.ItemList[0]["_num2_1"].gotoAndStop(1);
+			Roller_2.ItemList[0]["_num2_2"].gotoAndStop(2);
+			Roller_2.ItemList[0]["_num2_3"].gotoAndStop(3);
 			Roller_2.container.x = 10.8;
 			Roller_2.container.y = 113.6;
 			
@@ -132,8 +136,10 @@ package View.ViewComponent
 			Roller_Num.put_item_reference(Roller_2.ItemList[0]["_num_2"]);
 			Roller_Num.put_item_reference(Roller_2.ItemList[0]["_num_3"]);			
 			
-			_model.putValue("roll_idx", [0, 1, 2, 3]);			
+			_model.putValue("roll_idx", [0, 1, 2, 3]);
+			_model.putValue("roll_symble", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 			_count = 0;
+			
 			//test roller
 			//var Roller_Num:MultiObject = create("Roller_Num",  [Roller_Num],Roller_2.container);
 			//Roller_Num.CustomizedData = [4, 88, 140];
@@ -176,11 +182,14 @@ package View.ViewComponent
 		{						
 			var Roller_2:MultiObject = Get("Roller_2");
 			var control:MultiObject = Get("Roller_Num");
+			_model.putValue("roll_symble", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+			_model.putValue("roll_idx", [0, 1, 2, 3]);
 			control.CleanList();
 			control.put_item_reference(Roller_2.ItemList[0]["_num2_0"]);
 			control.put_item_reference(Roller_2.ItemList[0]["_num2_1"]);
 			control.put_item_reference(Roller_2.ItemList[0]["_num2_2"]);
 			control.put_item_reference(Roller_2.ItemList[0]["_num2_3"]);
+			
 			
 			return true;
 		}
@@ -277,7 +286,7 @@ package View.ViewComponent
 		   //change po 
 		   	if ( mc.y < -140) 
 			{	
-				utilFun.Log("_excute = " +_excute);
+				//utilFun.Log("_excute = " +_excute);
 				//utilFun.Log("change y = " +GetSingleItem("Roller_Num",0).y);
 				//utilFun.Log("change y = " +GetSingleItem("Roller_Num",1).y);
 				//utilFun.Log("change y = " +GetSingleItem("Roller_Num",2).y);
@@ -285,7 +294,7 @@ package View.ViewComponent
 				//
 						
 				var arr:Array  = _opration.array_Item_loop("roll_idx");
-				//utilFun.Log("arr = " + arr);
+				utilFun.Log("arr = " + arr);
 				//utilFun.Log("arr3 y = " +GetSingleItem("Roller_Num", arr[2]).y);
 				//utilFun.Log("arr2 = " + _speed[arr[2]]); 
 				
@@ -293,9 +302,11 @@ package View.ViewComponent
 				mc.y = GetSingleItem("Roller_Num", arr[2]).y + 140 -_speed[arr[2]];
 				
 				
+				var symble:Array  = _opration.array_Item_loop("roll_symble");
 				var toMc:MovieClip = mc as MovieClip;
-				var frame:int = arr[3];
+				var frame:int = symble[3];
 				if ( frame == 0) frame = 10;
+				utilFun.Log("frame = " + frame);
 				toMc.gotoAndStop(frame);
 				
 				
