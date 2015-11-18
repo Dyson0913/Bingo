@@ -29,14 +29,19 @@ package View.ViewComponent
 		public const lottymsg:String = "lotty_msg";	
 		public const Dark:String = "Dark";	
 		public const Roller_2:String = "Roller";
-		public const Roller_Num:String = "RollerNum";
+		public const Roller_Num:String = "testque";
+		//public const Roller_Num:String = "RollerNum";
 		
 		public const switchbtn:String = "switch_btn";
-		private var blur:BlurFilter = new BlurFilter();
+		private var blur:BlurFilter = new BlurFilter();		
+		private var _excute:Array   = [0,0,0,0];
 		private var _speed:Array   = [1,1,1,1];
 		private var _acum:Array  = [1, 1, 1, 1];
 		private var _dec:Array = [0, 0, 0, 0];
 		private var _count:int = 0;
+		
+		private var _stop:Boolean = false;
+		private var _stop_count:int = 0;
 		
 		public function Visual_themes() 
 		{
@@ -76,6 +81,7 @@ package View.ViewComponent
 			setFrame("lottymsg", 1);
 			
 			_model.putValue("roll_idx", [0, 1, 2, 3]);			
+			_count = 0;
 			//test roller
 			var Roller_Num:MultiObject = create("Roller_Num",  [Roller_Num]);
 			Roller_Num.CustomizedData = [4, 88, 140];
@@ -87,7 +93,7 @@ package View.ViewComponent
 			GetSingleItem("Roller_Num",1).gotoAndStop(1);
 			GetSingleItem("Roller_Num", 2).gotoAndStop(2);
 			GetSingleItem("Roller_Num", 3).gotoAndStop(3);			
-			roller();
+			//roller();
 		
 			blur = new BlurFilter(0,0,1);
 			//畫面按鈕,在押暗後生成,才按的到
@@ -115,21 +121,12 @@ package View.ViewComponent
 					//
 			//
 			//utilFun.Log(" first " + _opration.array_Item_loop("roll_idx") );		
-			//y: -139 * N,
-			//var N:int = 9;
-			//Tweener.addTween(GetSingleItem("Roller_2")["_num_"+arr[0]], { y: -1390, time:2, transition:"easeInQuart" } );
-			//Tweener.addTween(GetSingleItem("Roller_2")["_num_"+arr[1]], { y: -1390 * 2, time:2, transition:"easeInQuart", onComplete:this.fuzzy } );
 			
-			//_regular.Call
 		   //_tool.SetControlMc(Roller_2.container);
 		   //_tool.y = 200;
 			//add(_tool);
 			
 			GetSingleItem("_view")["_CurBal"].visible = true;
-			_count = 0;
-			
-			
-			
 		}
 		
 			public function fake_reaction(e:Event, idx:int):Boolean
@@ -144,27 +141,41 @@ package View.ViewComponent
 		public function roller():void
 		{
 			var arr = 	_model.getValue("roll_idx");
-			utilFun.Log(" roller =" + arr );			
+			utilFun.Log(" roller =" + arr );
+			
+		
 			Tweener.addTween(GetSingleItem("Roller_Num", arr[0]), { time:10,   transition:"linear", onUpdate:this.reset, onUpdateParams:[GetSingleItem("Roller_Num",arr[0]), arr[0]] } );		
 			Tweener.addTween(GetSingleItem("Roller_Num",arr[1]), {  time:10, transition:"linear",onUpdate:this.reset,onUpdateParams:[GetSingleItem("Roller_Num",arr[1]),arr[1]] } );		
 			Tweener.addTween(GetSingleItem("Roller_Num",arr[2]), {  time:10, transition:"linear", onUpdate:this.reset, onUpdateParams:[GetSingleItem("Roller_Num", arr[2]),arr[2]] } );		
 			Tweener.addTween(GetSingleItem("Roller_Num",arr[3]), {  time:10, transition:"linear",onUpdate:this.reset,onUpdateParams:[GetSingleItem("Roller_Num",arr[3]),arr[3]] } );		
-			
+			_regular.Call
 		}
+		
 		
 		public function reset(mc:DisplayObjectContainer,idx:int):void
 		{
+			//if ( _stop) return;
+			//if ( _excute[idx] == 17) 
+			//{
+				//utilFun.Log("y excute stop"  + " y =" +GetSingleItem("Roller_Num", idx).y + " idx ="+idx );				
+				//return;
+			//}
+			//utilFun.Log("_excute = " +_excute);
 			if ( _speed[idx] == 0) 
 			{
 				Tweener.pauseTweens(GetSingleItem("Roller_Num", idx));
+				  utilFun.Log("y stop"  + " y =" +GetSingleItem("Roller_Num", idx).y);
 				utilFun.Log("re move listen= " +idx + " mc " + mc.y);
 				
 				return;
 			}
-		   
-		   mc.y  -= _speed[idx];
+		   //
+			//var delta:Number = 0;
+			//delta = Math.max( -140 - mc.y, _speed[idx]);
+			//else delta = _speed[idx];
+		   mc.y  -= _speed[idx];		   
 		   _speed[idx] += _acum[idx];
-		    utilFun.Log("y = " + _speed[idx]  + " idx =" +idx);
+		  
 		  if ( _speed[idx] <= 0 ) _speed[idx] = 0;
 		   //top speed
 		   if ( _speed[idx] >= 30)   _speed[idx] = 30;		  
@@ -177,20 +188,34 @@ package View.ViewComponent
 			   _dec[idx] = 0;
 		   }
 		   
-		   if ( _speed[idx] > 20) blur.blurY =  30 ;
-		   else blur.blurY =  0 ;
-			mc.filters = [blur];
+		   //if ( _speed[idx] > 20) blur.blurY =  30 ;
+		   //else blur.blurY =  0 ;
+			//mc.filters = [blur];
 		   //
-			if ( mc.y < -140) 
-			{				
-				mc.y = 420 ;				
+			_excute[idx] += 1;
+		   //change po 
+		   	if ( mc.y < -140) 
+			{	
+					utilFun.Log("_excute = " +_excute);
+				//utilFun.Log("change y = " +GetSingleItem("Roller_Num",0).y);
+				//utilFun.Log("change y = " +GetSingleItem("Roller_Num",1).y);
+				//utilFun.Log("change y = " +GetSingleItem("Roller_Num",2).y);
+				//utilFun.Log("change y = " +GetSingleItem("Roller_Num",3).y);
+				//
+						
 				var arr:Array  = _opration.array_Item_loop("roll_idx");
 				utilFun.Log("arr = " + arr);
+				utilFun.Log("arr3 y = " +GetSingleItem("Roller_Num", arr[2]).y);
+				utilFun.Log("arr2 = " + _speed[arr[2]]); 
+				//最後一個還未減最後一次的位移,需要再 - arr[2]才是最後一個的位置
+				mc.y = GetSingleItem("Roller_Num", arr[2]).y+140 -_speed[arr[2]];
 				var toMc:MovieClip = mc as MovieClip;
 				var frame:int = arr[3];
 				if ( frame == 0) frame = 10;
 				toMc.gotoAndStop(frame);
-				//start condi
+				_stop_count++;
+				//if( _stop_count ==1) _stop = true;
+				//start  dec speed condi
 				if ( arr[0] == 0) 
 				{
 					_count ++;
@@ -203,26 +228,10 @@ package View.ViewComponent
 				}
 				
 			}
+		   
+		   
 		}
 		
-		public function fuzzy():void
-		{
-			var arr:Array = _model.getValue("roll_idx");			
-			GetSingleItem("Roller_2")["_num_"+arr[0]].gotoAndStop(2);
-			GetSingleItem("Roller_2")["_num_"+arr[1]].gotoAndStop(2);
-			
-			
-			var N:int = 9;
-			Tweener.addTween(GetSingleItem("Roller_2")["_num_1"], { y: -139 *N, time:2, transition:"easeInQuart", onComplete:this.fuzzyag } );		
-			
-		}
-		
-		public function fuzzyag():void
-		{
-			GetSingleItem("Roller_2")["_num_1"].y = 0;
-			var N:int = 9;
-			Tweener.addTween(GetSingleItem("Roller_2")["_num_1"], { y: -139 *N, time:2, transition:"easeInQuart", onComplete:this.fuzzyag } );		
-		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "specail_round")]
 		public function sp():void
