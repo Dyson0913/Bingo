@@ -61,6 +61,7 @@ package
 		public var _ticket:Visual_ticket = new Visual_ticket();
 		public var _Bigwin_Msg:Visual_Bigwin_Msg = new Visual_Bigwin_Msg();
 		public var _Bigwin_Effect:Visual_Bigwin_Effect = new Visual_Bigwin_Effect();
+		public var _Roller:Visual_Roller = new Visual_Roller();
 		
 		public var _settle:Visual_Settle = new Visual_Settle();
 		public var _roomItem:Visual_RoomSelect = new Visual_RoomSelect();

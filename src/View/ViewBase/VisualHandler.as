@@ -44,8 +44,10 @@ package View.ViewBase
 		
 		protected function changeBG(name:String):void
 		{
-			utilFun.Clear_ItemChildren(GetSingleItem("_view"));
-			GetSingleItem("_view").addChild(utilFun.GetClassByString(name) );
+			var view:MultiObject = Get("_view");
+			view.CleanList();
+			view.resList = [name];
+			view.Create_(1, "_view");
 		}
 		
 		//only for same view clean item
