@@ -52,13 +52,7 @@ package View.GameView
 			_roomItem.init();
 			
 			
-		}			 
-		
-		
-		private function connet():void
-		{				
-			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.CHOOSE_ROOM));		
-		}
+		}	
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]
 		override public function ExitView(View:Intobject):void

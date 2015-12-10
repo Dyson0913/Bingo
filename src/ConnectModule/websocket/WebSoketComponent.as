@@ -272,18 +272,6 @@ package ConnectModule.websocket
 					}
 					break;
 					
-					//case "MsgBGSpecialRound":
-					//{
-						//var arr:Array = [];
-						//arr.push( result.special_info.first_ball);
-						//arr.push( result.special_info.second_ball);
-						//dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
-						//
-						//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.SPECAIL_ROUND));
-						//utilFun.Log("send spcical =====================================");
-					//}
-					//break;
-					
 					case "MsgBPEndRound":
 					{
 						dispatcher( new ValueObject(result.result_list, modelName.ROUND_RESULT));
@@ -333,6 +321,8 @@ package ConnectModule.websocket
 					}
 					break;
 				}
+				
+				dispatcher(new ArrayObject([result], "pack_recoder"));
 		}
 		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="chooseRoom")]

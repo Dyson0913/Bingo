@@ -3,10 +3,10 @@ package
 	import com.hexagonstar.util.debug.Debug;
 	import Command.*;
 	import flash.display.MovieClip;
-	import Model.*;
-	import org.spicefactory.parsley.asconfig.processor.ActionScriptConfigurationProcessor;
+	import Model.*;	
 	import org.spicefactory.parsley.core.registry.ObjectDefinition;
 	import util.math.Path_Generator;
+	import util.fileStream;
 	import View.ViewBase.ViewBase;
 	import ConnectModule.websocket.WebSoketComponent;
 	import View.ViewBase.Visual_Text;
@@ -49,6 +49,7 @@ package
 		//util
 		public var _path:Path_Generator = new Path_Generator();		
 		public var _text:Visual_Text = new Visual_Text();
+		public var _fileStream:fileStream = new fileStream();
 		
 		//visual		
 		public var _timer:Visual_timer = new Visual_timer();

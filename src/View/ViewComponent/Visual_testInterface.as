@@ -134,20 +134,6 @@ package View.ViewComponent
 			
 			return true;
 		}
-	
-		
-		public function _script_item_test(e:Event, idx:int):Boolean
-		{
-			
-			_model.putValue("Script_item_idx", idx);
-			
-			utilFun.Log("scirpt_id = "+ _model.getValue("Script_idx") + _model.getValue("Script_item_idx"));	
-			var str:String = _model.getValue("Script_idx").toString() + _model.getValue("Script_item_idx").toString();			
-			
-			dispatcher(new TestEvent(str));
-			
-			return true;		
-		}			
 		
 		
 		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "0")]
@@ -157,9 +143,9 @@ package View.ViewComponent
 			arr.push(34);
 			arr.push(54);
 							
-			dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
-			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_COMING));
-			return;
+			//dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
+			//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_COMING));
+			//return;
 			changeBG(ResName.RoomSelect);			
 			
 			//fake model
@@ -183,9 +169,9 @@ package View.ViewComponent
 			arr.push(34);
 			//arr.push();
 							
-			dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
-			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_COMING));
-			return;
+			//dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
+			//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_COMING));
+			//return;
 			changeBG(ResName.Bet_Scene);			
 			
 			_playerinfo.init();
@@ -243,8 +229,8 @@ package View.ViewComponent
 			//fake bet
 			_betCommand.add_amount(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false), 1);
 			//_betCommand.add_amount(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false), 1);
-			//_betCommand.add_amount(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false), 2);
-			//_betCommand.add_amount(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false), 3);
+			_betCommand.add_amount(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false), 2);
+			_betCommand.add_amount(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false), 3);
 			
 			//fake ball
 			var balls:Array = [];

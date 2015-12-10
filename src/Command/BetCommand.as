@@ -106,7 +106,8 @@ package Command
 			if ( CONFIG::debug ) 
 			{
 				//fake bet proccess
-				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
 			}
 			else
 			{
@@ -304,8 +305,10 @@ package Command
 			
 			dispatcher(new ModelEvent(WebSoketInternalMsg.BET_UPDATE));
 			
+			//for bet test ,open ball need remove to sim bet action
 			utilFun.SetTime(simulat_upate, 0.1);
-			
+			//FOR TEXT
+			//_Actionmodel.dropMsg();
 			
 			
 		}
@@ -315,17 +318,17 @@ package Command
 		
 			if ( CONFIG::debug ) 
 			{
-				utilFun.Log("simulat_upate ");
-				var bet_ob:Object = _Actionmodel.excutionMsg();
-				var is_bet:Array = _model.getValue("is_betarr");
-				var num:int  = is_bet.length;						
-				is_bet.splice(bet_ob["betType"], 0, 1);
-				
-				utilFun.Log("fake push is_bet ="+is_bet);
-				_model.putValue("is_betarr", is_bet);						
-				
-				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
-				utilFun.Log("send info =");
+				//utilFun.Log("simulat_upate ");
+				//var bet_ob:Object = _Actionmodel.excutionMsg();
+				//var is_bet:Array = _model.getValue("is_betarr");
+				//var num:int  = is_bet.length;						
+				//is_bet.splice(bet_ob["betType"], 0, 1);
+				//
+				//utilFun.Log("fake push is_bet ="+is_bet);
+				//_model.putValue("is_betarr", is_bet);						
+				//
+				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
+				//utilFun.Log("send info =");
 			}	
 			
 			//TODO test need to move to here 
@@ -340,8 +343,7 @@ package Command
 		}
 		
 		public function get_my_betlist():Array
-		{		
-			 _Bet_info.getValue("self")
+		{			 
 			return _Bet_info.getValue("self");		
 		}
 		
