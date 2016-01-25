@@ -70,7 +70,7 @@ package View.ViewComponent
 			bet_sub.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			bet_sub.Create_by_list(12,  [ResName.Bet_sub], 0 , 0, 1, 0, 47, "Coin_");		
 			bet_sub.mousedown = Panel_sub_plus_condition;
-			bet_sub.mouseup = _betCommand.empty_reaction;
+			bet_sub.mouseup =  empty_reaction;
 			//
 			var bet_add:MultiObject = prepare("betamount_add", new MultiObject(), GetSingleItem("_view").parent.parent);
 			bet_add.container.x = 1685.85;
@@ -78,7 +78,7 @@ package View.ViewComponent
 			bet_add.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			bet_add.Create_by_list(12,  [ResName.Bet_add], 0 , 0, 1, 0, 47, "Coin_");					
 			bet_add.mousedown = Panel_add_plus_condition;
-			bet_add.mouseup = _betCommand.empty_reaction;	
+			bet_add.mouseup = empty_reaction;	
 			//
 			var cancel_bet:MultiObject = prepare("cancel_bet", new MultiObject(), GetSingleItem("_view").parent.parent);
 			cancel_bet.container.x = 974;
@@ -86,7 +86,7 @@ package View.ViewComponent
 			cancel_bet.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			cancel_bet.Create_by_list(1,  [Cancel_ALLBet_Btn], 0 , 0, 1, 0, 0, "Coin_");					
 			cancel_bet.mousedown = _betCommand.cancel_allbet;			
-			cancel_bet.mouseup = _betCommand.empty_reaction;		
+			cancel_bet.mouseup = empty_reaction;		
 			
 			//bet			
 			var betPan:MultiObject = prepare("betZone", new MultiObject(), GetSingleItem("_view").parent.parent);
@@ -279,10 +279,10 @@ package View.ViewComponent
 			Get("betzone").mousedown = add_plus_condition;			
 			
 			Get("betamount_sub").mousedown = Panel_sub_plus_condition;
-			Get("betamount_sub").mouseup = _betCommand.empty_reaction;
+			Get("betamount_sub").mouseup = empty_reaction;
 			
 			Get("betamount_add").mousedown = add_plus_condition;
-			Get("betamount_add").mouseup = _betCommand.empty_reaction;	
+			Get("betamount_add").mouseup = empty_reaction;	
 			
 		}
 		

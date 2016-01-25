@@ -68,23 +68,45 @@ package View.ViewComponent
 			lottymsg.container.y = 300;
 			setFrame("lottymsg", 1);
 			
-			//畫面按鈕,在押暗後生成,才按的到
-			var switchbtn:MultiObject = create("switchbtn", [Res_switchbtn]);
-			switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			
-			//switchbtn.mousedown = start_roller;
-			switchbtn.mouseup = _betCommand.empty_reaction;
-			switchbtn.rollout = _betCommand.empty_reaction;
-			switchbtn.rollover = _betCommand.empty_reaction;
-			switchbtn.container.x = 1770;
-			switchbtn.container.y = 1000;
-			switchbtn.Create_(1, "switchbtn");
-			
+			//自己無押注,不產生切換鈕
+			if ( _betCommand.get_my_betlist().length != 0) 
+			{
+				//畫面按鈕,在押暗後生成,才按的到
+				var switchbtn:MultiObject = create("switchbtn", [Res_switchbtn]);
+				switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			
+				switchbtn.mousedown = switch_panel;
+				switchbtn.mouseup = empty_reaction;
+				switchbtn.rollout = empty_reaction;
+				switchbtn.rollover = empty_reaction;
+				switchbtn.container.x = 1770;
+				switchbtn.container.y = 1000;
+				switchbtn.Create_(1, "switchbtn");
+			}			
 			
 		    //_tool.SetControlMc(Roller_Num.container);
 		    //_tool.y = 200;
 			//add(_tool);
 			
 			GetSingleItem("_view")["_CurBal"].visible = true;
+		}
+		
+		public function switch_panel(e:Event, idx:int):Boolean
+		{
+			var pan_75ball:MultiObject = Get("ball_pan");
+			var ticket:MultiObject = Get("ticket");
+			if ( pan_75ball.container.visible )
+			{
+			   pan_75ball.container.visible = false;
+			   ticket.container.visible = true;
+			}
+			else
+			{
+				pan_75ball.container.visible = true;
+			   ticket.container.visible = false;
+			}
+			
+			
+			return true;
 		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "specail_round")]

@@ -158,6 +158,7 @@ package ConnectModule.websocket
 								dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );		
 								//triger timer,
 								dispatcher(new ModelEvent("display"));
+								dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
 							}
 							else if (  state == gameState.END_BET )
 							{
@@ -284,14 +285,6 @@ package ConnectModule.websocket
 					
 					case "MsgBGNewRound":
 					{
-						//new betinfo
-						var arrlist:Array = result.table_bet_info;													
-						var is_bet:Array = _model.getValue("is_betarr");
-						var num:int  = arrlist.length;						
-						is_bet.length = 0;
-						is_bet = arrlist;
-						_model.putValue("is_betarr", is_bet);
-						
 						//self betlist
 						//[{"table_no":5,"total_bet_amount":200},{"table_no":7, "total_bet_amount":500}]
 						dispatcher( new ValueObject(result.bet_list, modelName.SELF_BET));
@@ -303,13 +296,6 @@ package ConnectModule.websocket
 						//triger timer,
 						dispatcher(new ModelEvent("display"));
 												
-						//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
-						
-					}	
-					break;
-					
-					case "MsgBGNewRound":
-					{
 						var arrlist:Array = result.table_bet_info;													
 						var is_bet:Array = _model.getValue("is_betarr");
 						var num:int  = arrlist.length;						
@@ -318,8 +304,10 @@ package ConnectModule.websocket
 						_model.putValue("is_betarr", is_bet);
 						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
-					}
+						
+					}	
 					break;
+					
 				}
 				
 				dispatcher(new ArrayObject([result], "pack_recoder"));

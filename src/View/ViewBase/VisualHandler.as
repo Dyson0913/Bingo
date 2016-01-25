@@ -4,6 +4,7 @@ package View.ViewBase
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import Model.Model;
 	import Command.*;
 	import Interface.ViewComponentInterface;
@@ -88,6 +89,11 @@ package View.ViewBase
 			sp.name = name + "_con";
 			ob.setContainer(sp);
 			return utilFun.prepare(name,ob , _viewcom.currentViewDI , container);
+		}
+		
+		public function empty_reaction(e:Event, idx:int):Boolean
+		{
+			return true;
 		}
 		
 		//========================= better way		

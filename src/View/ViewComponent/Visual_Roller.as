@@ -28,7 +28,6 @@ package View.ViewComponent
 		//public const Roller_Num:String = "testque";
 		public const Roller_Num:String = "RollerNum";
 		
-		public const Res_switchbtn:String = "switch_btn";
 		private var mapping_model_name:Array = ["Roller_Num","Roller2"];
 		
 		private var _stop_roll_name;
@@ -72,46 +71,14 @@ package View.ViewComponent
 			Roller2.put_item_reference(Roller_2.ItemList[0]["_num2_0"]);
 			Roller2.put_item_reference(Roller_2.ItemList[0]["_num2_1"]);
 			Roller2.put_item_reference(Roller_2.ItemList[0]["_num2_2"]);
-			Roller2.put_item_reference(Roller_2.ItemList[0]["_num2_3"]);
+			Roller2.put_item_reference(Roller_2.ItemList[0]["_num2_3"]);		
 			
-			//var switchbtn_2:MultiObject = create("switchbtn_a", [Res_switchbtn]);
-			//switchbtn_2.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			
-			//switchbtn_2.mousedown = stop_roller;
-			//switchbtn_2.mouseup = _betCommand.empty_reaction;
-			//switchbtn_2.rollout = _betCommand.empty_reaction;
-			//switchbtn_2.rollover = _betCommand.empty_reaction;
-			//switchbtn_2.container.x = 1770;
-			//switchbtn_2.container.y = 900;
-			//switchbtn_2.Create_(1, "switchbtn_a");
-			
-			roller_model();
-			
-			//var switchbtn_b:MultiObject = create("switchbtn_b", [Res_switchbtn]);
-			//switchbtn_b.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			
-			//switchbtn_b.mousedown = change_roller;
-			//switchbtn_b.mouseup = _betCommand.empty_reaction;
-			//switchbtn_b.rollout = _betCommand.empty_reaction;
-			//switchbtn_b.rollover = _betCommand.empty_reaction;
-			//switchbtn_b.container.x = 1770;
-			//switchbtn_b.container.y = 800;
-			//switchbtn_b.Create_(1, "switchbtn_b");
-			
-		
+			roller_model();		
 		}
 		
 		public function start_roller(e:Event, idx:int):Boolean
 		{			
 			//roller();
-			return true;
-		}
-		
-		
-		
-		public function stop_roller(e:Event, idx:int):Boolean
-		{		
-			//setdata(mapping_model_name[0]);			
-			//setdata(mapping_model_name[1]);			
-			//setdata(_stop_roll_name);			
 			return true;
 		}
 		

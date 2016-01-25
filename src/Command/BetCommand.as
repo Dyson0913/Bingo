@@ -253,12 +253,7 @@ package Command
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_NO_SIGN));
 			
 			return true;
-		}
-		
-		public function empty_reaction(e:Event, idx:int):Boolean
-		{
-			return true;
-		}
+		}		
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "Betresult")]
 		public function accept_bet():void

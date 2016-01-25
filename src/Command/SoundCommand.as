@@ -150,12 +150,12 @@ package Command
 			}
 			if ( CMD[0] == "MUTE")
 			{
-				_mute == true;
+				_mute = true;				
 			}
 			
 			if ( CMD[0] == "RESUME")
 			{
-				_mute == false;
+				_mute = false;				
 			}
 		}
 		
@@ -178,14 +178,14 @@ package Command
 		[MessageHandler(type="Model.valueObject.StringObject",selector="sound")]
 		public function playSound(sound:StringObject):void
 		{
-			if ( _mute == true ) return;
+			if ( _mute  ) return;
 			SoundAS.playFx(sound.Value);			
 		}
 		
 		[MessageHandler(type="Model.valueObject.StringObject",selector="loop_sound")]
 		public function loop_sound(sound:StringObject):void
 		{
-			if ( _mute == true ) return;
+			if ( _mute ) return;
 			SoundAS.playLoop(sound.Value);
 		}
 	}
