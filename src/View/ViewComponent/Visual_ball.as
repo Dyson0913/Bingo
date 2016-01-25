@@ -317,12 +317,11 @@ package View.ViewComponent
 		}
 		
 		public function panballFun(mc:MovieClip, idx:int, scalesize:Array):void
-		{
-			//TODO combination setting ,like scale ,set test ,splite to reuse
+		{			
 			utilFun.scaleXY(mc, scalesize[0], scalesize[0]);
 			mc.gotoAndStop( Math.ceil( (idx + 1) / 15) ) ;
 			mc.visible = false;
-			utilFun.SetText(mc["ballNum"], utilFun.Format(idx+1 , 2) );
+			utilFun.SetText(mc["ballNum"], utilFun.Format(idx+1 , 1) );
 			
 		}
 		
@@ -341,8 +340,8 @@ package View.ViewComponent
 			
 			//big ball
 			var BallNum:int = _model.getValue("Curball");
-			Get(modelName.Open_Ball_Num).container.visible = true;
-			utilFun.SetText(GetSingleItem(modelName.Open_Ball_Num)["ballNum"] , BallNum.toString());
+			Get(modelName.Open_Ball_Num).container.visible = true;			
+			utilFun.SetText(GetSingleItem(modelName.Open_Ball_Num)["ballNum"] , utilFun.Format(BallNum,1));
 			GetSingleItem(modelName.Open_Ball_Num).gotoAndStop( Math.ceil( BallNum / 15) ) ;		
 			
 			if( BallNum  >=1 && BallNum <=15) dispatcher(new StringObject("sound_bingo_b","sound" ) );
@@ -368,7 +367,7 @@ package View.ViewComponent
 			Get("small_ball_arrow").container.visible = true;
 			for (var i:int = open3ball.length; i >0 ; i--)
 			{			
-				utilFun.SetText(GetSingleItem("small_ball",i-1)["ballNum"], utilFun.Format(open3ball[i-1], 2) );				
+				utilFun.SetText(GetSingleItem("small_ball",i-1)["ballNum"], utilFun.Format(open3ball[i-1], 1) );				
 				GetSingleItem("small_ball",i-1).gotoAndStop( Math.ceil( open3ball[i-1] / 15) ) ;
 			}
 			
@@ -419,7 +418,7 @@ package View.ViewComponent
 			utilFun.scaleXY(openball, 1, 1);
 		
 			
-			utilFun.SetText( openball["ballNum"], utilFun.Format( BallDisPlayIdx, 2 ));
+			utilFun.SetText( openball["ballNum"], utilFun.Format( BallDisPlayIdx, 1 ));
 			Tweener.addTween(openball, { scaleX:_sball_scale, scaleY:_sball_scale, x: xPos, y:yPos, time:1 } );
 			
 		}
@@ -452,7 +451,7 @@ package View.ViewComponent
 				var xPos:int = (( BallIdx  % 15 )) *  _sball_x_diff;
 				var yPos:int  = Math.floor( BallIdx / 15 )*  _sball_y_diff;				
 				var openball:MovieClip = GetSingleItem("opan_pan_ball", BallIdx);
-				utilFun.SetText( openball["ballNum"], utilFun.Format( BallDisPlayIdx, 2 ));
+				utilFun.SetText( openball["ballNum"], utilFun.Format( BallDisPlayIdx, 1 ));
 				
 				openball.visible = true;
 				openball.gotoAndStop( Math.ceil( BallDisPlayIdx / 15 ) );

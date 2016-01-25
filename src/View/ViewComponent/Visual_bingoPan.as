@@ -43,7 +43,7 @@ package View.ViewComponent
 			bingo_pan.container.y = 751.9;
 			bingo_pan.Create_by_list(1, [ResName.bingo_pan], 0, 0, 1, 0, 0, "time_");
 			
-			utilFun.SetText( bingo_pan.ItemList[0]["_panNum"]["tableNo"], "2");
+			utilFun.SetText( bingo_pan.ItemList[0]["_panNum"]["tableNo"], "01");
 			
 			bingo_pan.ItemList[0]["_pan_amount"].x = -180.6
 			bingo_pan.ItemList[0]["_pan_amount"].y = -25.9;
@@ -109,7 +109,7 @@ package View.ViewComponent
 			{				
 				if ( rowNum >=3 && colNum == 2 )  myidx -= 1;
 				if ( colNum >= 3)	 myidx -= 1;
-				str = CustomizedData[myidx];				
+				str = CustomizedData[myidx];
 				mc["_text"].textColor = color;
 				utilFun.SetText( mc["_text"], str);	
 				
@@ -127,7 +127,7 @@ package View.ViewComponent
 			var tableNo:int = bet_ob["betType"];			
 			
 			//桌號
-			utilFun.SetText( GetSingleItem("bingo_pan")["_panNum"]["tableNo"], String( tableNo));			
+			utilFun.SetText( GetSingleItem("bingo_pan")["_panNum"]["tableNo"], utilFun.Format(tableNo,2));
 			
 			
 			//押注額 			

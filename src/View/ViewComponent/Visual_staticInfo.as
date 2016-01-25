@@ -308,8 +308,9 @@ package View.ViewComponent
 				//utilFun.Log("mc.numChildren 1= " + mc.getChildAt(2));		
 				//utilFun.Log("mc.numChildren 1= " + mc.getChildAt(2).name);		
 			}
-		
-			utilFun.SetText(mc["tableNo"], String( bet["table_no"]) );		
+			
+			
+			utilFun.SetText(mc["tableNo"], utilFun.Format( int( bet["table_no"]), 2) );		
 			
 			var rowmax:int;
 			var rowdis:int;
@@ -353,8 +354,8 @@ package View.ViewComponent
 			//TODO sort to first?
 			if ( _betCommand.get_my_betlist().length != 0) 
 			{
-				var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);
-				if ( table.indexOf( bet["table_no"]) != -1) mc.gotoAndStop(2);
+				var frame:int = _betCommand.get_bet_frame(bet["table_no"]);				
+				mc.gotoAndStop(frame);				
 			}
 		}
 		

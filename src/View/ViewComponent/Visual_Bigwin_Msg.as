@@ -131,14 +131,10 @@ package View.ViewComponent
 		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void
 		{
 			//utilFun.scaleXY(mc, 0.7, 0.7);			
-			utilFun.SetText(mc["tableNo"], bingo_recode[idx]);
+			utilFun.SetText(mc["tableNo"], utilFun.Format( bingo_recode[idx], 2));			
 			
-			var arr:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
-			if ( arr.indexOf(bingo_recode[idx]) !=-1)
-			{
-				mc.gotoAndStop(2);
-			}
-			else mc.gotoAndStop(4);
+			var frame:int = _betCommand.get_bet_frame(bingo_recode[idx]);				
+			mc.gotoAndStop(frame);			
 		}
 		
 	}

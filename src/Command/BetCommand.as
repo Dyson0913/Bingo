@@ -33,6 +33,11 @@ package Command
 		public static var Bet_idx:String = "bet_idx";
 		public static var TotalBet:String = "total_amount";
 		
+		public static const no_one_bet:int = 1;
+		public static const self_bet:int = 2;
+		public static const self_last_bet:int = 3;
+		public static const someone_bet:int = 4;
+		
 		public function BetCommand() 
 		{
 			
@@ -81,7 +86,8 @@ package Command
 				
 				//over bet limit
 				var coin_list:Array  = _model.getValue("Bet_coin_List");
-				if ( bet_list[find_idx][Bet_idx] +1 >= coin_list.length) return false
+				var idx:int = parseInt(bet_list[find_idx][Bet_idx] ) + 1;
+				if ( idx >= coin_list.length) return false
 				
 				bet_list[find_idx][Bet_idx] += 1;				
 				_Bet_info.putValue("self", bet_list);
@@ -94,11 +100,11 @@ package Command
 		
 		public function bet(e:Event, betType:int):Boolean
 		{
-			if (_Actionmodel.length() != 0)
-			{
-				utilFun.Log("too quick forbiden");
-				return false;
-			}
+			//if (_Actionmodel.length() != 0)
+			//{
+				//utilFun.Log("too quick forbiden");
+				//return false;
+			//}
 			var betob:Object = betOb(betType);			
 			//return true;
 			dispatcher( new ActionEvent(betob, "bet_action"));
@@ -463,6 +469,20 @@ package Command
 						
 			 return bet;
 		}
+		
+		public function get_bet_frame(table_no:int):int
+		{
+			var betstate:Array = _model.getValue("is_betarr");
+			
+			if ( betstate[table_no] == 0) return BetCommand.no_one_bet;
+			
+			var mybet:Array =  get_my_bet_info(BetCommand.Table);				
+			if ( mybet.indexOf(table_no) == -1)  return BetCommand.someone_bet;
+			else return BetCommand.self_bet;
+			
+			//TODO BetCommand.self_last_bet;			
+		}
+		
 		
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "clearn")]

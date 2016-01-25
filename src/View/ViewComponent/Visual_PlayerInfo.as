@@ -61,7 +61,7 @@ package View.ViewComponent
 		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void
 		{
 			utilFun.scaleXY(mc, 0.7, 0.7);
-			var str:String = idx >= bingo_recode.length ? "" : bingo_recode[idx];
+			var str:String = idx >= bingo_recode.length ? "" : utilFun.Format(bingo_recode[idx],2);
 			utilFun.SetText(mc["tableNo"], str);
 			
 			if ( idx == 0) mc["tableNo"].textColor = 0xFF0000;

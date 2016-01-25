@@ -41,6 +41,11 @@ package Model
 			return msg;
 		}
 		
+		public function cleanMsg():void
+		{
+			_queue.length = 0;			
+		}
+		
 		public function length():int
 		{
 			return _queue.length;

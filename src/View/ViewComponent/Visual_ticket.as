@@ -80,7 +80,7 @@ package View.ViewComponent
 			//_tool.SetControlMc(pan.container);
 			//add(_tool);
 			
-			utilFun.SetText( mc["_panNum"]["tableNo"], String( tableid[idx]));			
+			utilFun.SetText( mc["_panNum"]["tableNo"], utilFun.Format(tableid[idx],2));
 			
 			
 			var amount:Array = _betCommand.get_my_bet_info(BetCommand.TotalBet);
@@ -216,7 +216,7 @@ package View.ViewComponent
 				if ( idx == 0) mc["_start"].visible = true;
 			}
 			
-			utilFun.SetText( mc["_panNum"]["tableNo"], String( tableid[idx]));
+			utilFun.SetText( mc["_panNum"]["tableNo"], utilFun.Format(tableid[idx],2));
 			var amount:Array = _betCommand.get_my_bet_info(BetCommand.TotalBet);
 			
 			//amount

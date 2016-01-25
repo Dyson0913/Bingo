@@ -26,6 +26,9 @@ package View.ViewComponent
 		[Inject]
 		public var _text:Visual_Text;
 		
+		[Inject]
+		public var _Actionmodel:ActionQueue;
+		
 		public const Cancel_ALLBet_Btn:String = "Cancel_ALL_Bet_Btn";
 		
 		public function Visual_betZone() 
@@ -103,6 +106,12 @@ package View.ViewComponent
 		
 		public function add_plus_condition(e:Event, tableNo:int):Boolean
 		{
+			if (_Actionmodel.length() != 0)
+			{
+				utilFun.Log("add click too quick forbiden");
+				return false;
+			}
+			
 			//other player 
 			var betstate:Array = _model.getValue("is_betarr");
 			if ( betstate[tableNo] == 1)
@@ -144,6 +153,12 @@ package View.ViewComponent
 		
 		public function Panel_sub_plus_condition(e:Event, idx:int):Boolean
 		{
+			if (_Actionmodel.length() != 0)
+			{
+				utilFun.Log("cancel too quick forbiden");
+				return false;
+			}
+			
 			//convert from item idx to Tableno
 			var table:Array = _betCommand.get_my_bet_info(BetCommand.Table);			
 			if (table[idx] == undefined) return false;
@@ -167,8 +182,8 @@ package View.ViewComponent
 		public function BetListFun(mc:MovieClip, idx:int, IsBetInfo:Array):void
 		{
 			utilFun.scaleXY(mc, 0.7, 0.7);			
-			var str:String = idx >= IsBetInfo.length ? "" : IsBetInfo[idx];			
-			utilFun.SetText( mc["tableNo"],str );	
+			var str:String = idx >= IsBetInfo.length ? "" : utilFun.Format(IsBetInfo[idx] , 2);			
+			utilFun.SetText( mc["tableNo"], str );	
 			
 		}
 		

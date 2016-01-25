@@ -17,6 +17,9 @@ package View.ViewComponent
 	 */
 	public class Visual_Hintmsg  extends VisualHandler
 	{
+		[Inject]
+		public var _Actionmodel:ActionQueue;
+		
 		
 		[Inject]
 		public var _betCommand:BetCommand;
@@ -50,8 +53,9 @@ package View.ViewComponent
 		}	
 		
 		public function change():void
-		{
+		{			
 			dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );
+			_Actionmodel.cleanMsg();
 		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "CreditNotEnough")]
