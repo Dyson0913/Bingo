@@ -22,16 +22,11 @@ package View.ViewComponent
 		[Inject]
 		public var _betCommand:BetCommand;
 		
-		[Inject]
-		public var _text:Visual_Text
-		
 		private var _sball_x_diff:Number = 88;
 		private var _sball_y_diff:Number =  85;
 		private var _sball_scale:Number =  0.4;
 		
-		private var _hint:Boolean;
-		private var _barmove:Boolean;
-		private var _barmove2:Boolean;
+		private var _hint:Boolean;		
 		
 		private var temp_ball:String = "tempball";
 		
@@ -104,8 +99,6 @@ package View.ViewComponent
 			listenpai.container.visible = false;
 			//
 			_hint = false;
-			_barmove = false;
-			_barmove2 = false;
 			
 			
 			//免洗球
@@ -369,27 +362,7 @@ package View.ViewComponent
 			{			
 				utilFun.SetText(GetSingleItem("small_ball",i-1)["ballNum"], utilFun.Format(open3ball[i-1], 1) );				
 				GetSingleItem("small_ball",i-1).gotoAndStop( Math.ceil( open3ball[i-1] / 15) ) ;
-			}
-			
-			//開球倍率 (525 572)
-			var OpenBallList:Array = _model.getValue("openBalllist");
-			//Get("multibyball_bg").container.visible = true;
-			if ( OpenBallList.length +1 > 55 )
-			{
-				if ( !_barmove)
-				{
-					//Tweener.addTween(GetSingleItem("multibyball_bg"), { y:GetSingleItem("multibyball_bg").y + 45, time:1 } ); 
-					//_barmove = true;
-				}
-			}
-			if ( OpenBallList.length +1 > 61)  
-			{
-				if ( !_barmove2)
-				{
-					//Tweener.addTween(GetSingleItem("multibyball_bg"), { y:GetSingleItem("multibyball_bg").y + 45, time:1 } ); 
-					//_barmove2 = true;
-				}
-			}
+			}			
 			
 			//聽牌提示
 			var best_list:Array = _model.getValue("best_list");

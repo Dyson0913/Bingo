@@ -1,6 +1,7 @@
 package Command 
 {
 	import Model.Model;
+	import util.DI;
 	import util.utilFun;
 	import View.Viewutil.*;
 	
@@ -82,6 +83,14 @@ package Command
 			
 			_model.putValue(data_name, data);
 			return _model.getValue(data_name);
+		}
+		
+		//get some DI mapping value
+		public function  getMappingValue(data_name:*, mapping_name:*):*
+		{
+			var Di:DI = _model.getValue(data_name);
+			return Di.getValue(mapping_name);
+			
 		}
 	}
 

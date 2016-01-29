@@ -61,6 +61,9 @@ package View.GameView
 		[Inject]
 		public var _Roller:Visual_Roller;
 		
+		[Inject]
+		public var _replayer:Visual_package_replayer;
+		
 		public function OpenBallView()  
 		{
 			utilFun.Log("OpenBallView");
@@ -91,6 +94,9 @@ package View.GameView
 			
 			_themes.init();
 			_Roller.init();
+			
+			//FORTEST
+			//_replayer.init();
 		}
 		
 		[MessageHandler(type = "Model.valueObject.Intobject",selector="LeaveView")]

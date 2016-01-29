@@ -58,9 +58,6 @@ package View.ViewComponent
 		public var _settle:Visual_Settle;	
 		
 		[Inject]
-		public var _text:Visual_Text;
-		
-		[Inject]
 		public var _ball:Visual_ball;
 		
 		[Inject]
@@ -87,9 +84,10 @@ package View.ViewComponent
 		[Inject]
 		public var _Roller:Visual_Roller;
 		
+		[Inject]
+		public var _fileStream:fileStream;
+		
 		private var _script_item:MultiObject;
-		
-		
 		
 		public function Visual_testInterface() 
 		{
@@ -97,12 +95,13 @@ package View.ViewComponent
 		}
 		
 		public function init():void
-		{			
-			
+		{						
+			_model.putValue("test_init", false);
 			_betCommand.bet_init();
 			_model.putValue("history_win_list", []);				
 			_model.putValue("result_Pai_list", []);
 			_model.putValue("game_round", 1);			
+			_model.putValue("Script_idx", 0);
 			
 			var temp:Array = [];
 			for (var i:int = 0; i < 100;i++)
@@ -111,30 +110,65 @@ package View.ViewComponent
 			}
 			_model.putValue("is_betarr",temp);		
 			
+			
+			var script:DI = new DI();
+			script.putValue("選桌",0);
+			script.putValue("下注",1);
+			script.putValue("開球",2);
+			script.putValue("結算",3);			
+			script.putValue("封包",4);
+			script.putValue("單一功能測試",5);
+			
+			_model.putValue("name_map", script);
+			
 			//腳本
-			var script_list:MultiObject = prepare("script_list", new MultiObject() ,GetSingleItem("_view").parent.parent );			
+			var script_list:MultiObject = create("script_list", [ResName.Paninfo_font]);	
 			script_list.MouseFrame = utilFun.Frametype(MouseBehavior.ClickBtn);			
 			script_list.stop_Propagation = true;
-			script_list.mousedown = script_list_test;			
-			script_list.CustomizedData = [{size:18},"選桌","下注","開球","結算"]
+			script_list.mousedown = script_list_test;
+			script_list.CustomizedData = [ { size:18 },"選桌","下注", "開球","開牌", "結算","封包","單一功能測試"];
 			script_list.CustomizedFun = _text.textSetting;			
-			script_list.Create_by_list(script_list.CustomizedData.length -1, [ResName.Paninfo_font], 0, 0, script_list.CustomizedData.length - 1, 100, 20, "Btn_");
-			
-			_model.putValue("Script_idx", 0);
+			script_list.Posi_CustzmiedFun = _regular.Posi_Row_first_Setting;
+			script_list.Post_CustomizedData = [6, 100, 50];			
+			script_list.Create_(script_list.CustomizedData.length -1,"script_list");			
 			
 		}				
 		
 		public function script_list_test(e:Event, idx:int):Boolean
-		{
-			utilFun.Log("script_list_test=" + idx);
-			_model.putValue("Script_idx", idx);		
+		{			
 			
-			dispatcher(new TestEvent(_model.getValue("Script_idx").toString()));
+			var clickname:String = GetSingleItem("script_list", idx).getChildByName("Dy_Text").text;
+			var idx:int = _opration.getMappingValue("name_map",clickname);
+			if (clickname == "封包") 
+			{
+				view_init();
+				_model.putValue(modelName.GAMES_STATE,gameState.NEW_ROUND);			
+				dispatcher(new ModelEvent("update_state"));
+			
+				dispatcher(new TestEvent(idx.toString()));
+				return true;
+			}
 			
 			
+			view_init();
+			dispatcher(new TestEvent(idx.toString()));
 			return true;
 		}
 		
+		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "4")]
+		public function pack_sim():void
+		{
+			_fileStream.load();
+		}
+		
+		public function view_init():void		
+		{
+			if ( _model.getValue("test_init")) return;
+			changeBG(ResName.Bet_Scene);
+			
+			
+			_model.putValue("test_init",true);
+		}
 		
 		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "0")]
 		public function betScript():void

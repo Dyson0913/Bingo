@@ -5,12 +5,12 @@ package
 	import flash.display.MovieClip;
 	import Model.*;	
 	import org.spicefactory.parsley.core.registry.ObjectDefinition;
-	import util.math.Path_Generator;
-	import util.fileStream;
+	import util.math.Path_Generator;	
 	import View.ViewBase.ViewBase;
 	import ConnectModule.websocket.WebSoketComponent;
 	import View.ViewBase.Visual_Text;
 	import View.ViewComponent.*;
+	import View.Viewutil.Visual_package_replayer;
 	
 	import View.GameView.*;
 	/**
@@ -50,6 +50,7 @@ package
 		public var _path:Path_Generator = new Path_Generator();		
 		public var _text:Visual_Text = new Visual_Text();
 		public var _fileStream:fileStream = new fileStream();
+		public var _replayer:Visual_package_replayer = new Visual_package_replayer();
 		
 		//visual		
 		public var _timer:Visual_timer = new Visual_timer();

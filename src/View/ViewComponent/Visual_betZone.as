@@ -24,9 +24,6 @@ package View.ViewComponent
 		public var _betCommand:BetCommand;
 		
 		[Inject]
-		public var _text:Visual_Text;
-		
-		[Inject]
 		public var _Actionmodel:ActionQueue;
 		
 		public const Cancel_ALLBet_Btn:String = "Cancel_ALL_Bet_Btn";

@@ -30,9 +30,7 @@ package View.ViewComponent
 		
 		private var _first_table:int = -1;
 		private var _first_rest:int = 0;
-		
-		[Inject]
-		public var _text:Visual_Text;
+		private var _first_amount:int = 0;
 		
 		public function Visual_ticket() 
 		{
@@ -51,13 +49,19 @@ package View.ViewComponent
 			ticket.CustomizedFun = info_initFun;
 			ticket.CustomizedData =  table;			
 			ticket.container.x = 470;
-			ticket.container.y = 590;
+			ticket.container.y = 572;
 			ticket.Create_by_list(totalshow, [ResName.bingo_pan], 0, 0, 3, 470, 0, "time_");
 			
 			//_tool.SetControlMc(ticket.container);
+			//_tool.x = 100;
+			//_tool.y = 500;
 			//add(_tool);
 			
 			_model.putValue("openBalllist", []);
+			_first_table = -1;
+			_first_rest = 0;
+			_first_amount = 0;
+		
 		}
 		
 		public function info_initFun(mc:MovieClip, idx:int, tableid:Array):void
@@ -72,7 +76,7 @@ package View.ViewComponent
 			//cell
 			var pan:MultiObject = prepare("select_pan"+idx, new MultiObject(), mc);	
 			pan.CustomizedFun = PanMatrixCustomizedFun;
-			pan.CustomizedData = balls[idx]; // select pan_num
+			pan.CustomizedData = balls[tableid[idx]]; // select pan_num
 			pan.container.x = 50;
 			pan.container.y = 33;
 			pan.Create_by_list(25, [ResName.bingo_pancell_new], 0, 0, 5, 63, 63, "time_");
@@ -134,10 +138,11 @@ package View.ViewComponent
 			
 			var BallNum:int = _model.getValue("Curball");			
 			
-			var openballist:Array = _model.getValue("openBalllist");
-			openballist.push(BallNum);		
-			//_model.putValue("openBalllist",openballist);
-			
+			//己經含正在開的球
+			var openballist:Array = _model.getValue("openBalllist");			
+			//var arr:Array = [];
+			//arr.push.apply(arr, BallNum);
+			//openballist.push(BallNum);
 			//utilFun.Log("pick best  1 ");
 			//pick best 3
 			var best:Array = best3_pan(openballist);
@@ -158,53 +163,44 @@ package View.ViewComponent
 				best3.push(best[0]);
 			}
 			_best_len = best.length;
-			//utilFun.Log("pick best  over ");
-			//open ball ani			
-			//TODO show min start
-			var tableNo:Array = [];
-			var openball:Array = openballist.concat();
+			
+			
+			var openballed:Array = openballist.concat();
 			var balls:Array = _model.getValue("ballarr");
 			var len:int = Get("ticket").ItemList.length;
 			var totalshow:int = Math.min(best3.length, len);	
 			
-			openball.pop();
-			//utilFun.Log("openball = "+openballist);
-			//utilFun.Log("openball pop= "+openball);
+			//己經開過的球,要pop掉currentball
+			openballed.pop();
+			
 			for ( var i:int = 0; i < totalshow ; i++)
 			{				
 				//change pan number
 				Get("select_pan" + i).CustomizedData  = balls[best3[i]["tableNo"]];
 				Get("select_pan" + i).CustomizedFun = PanMatrixCustomizedFun;	
-				Get("select_pan" + i).FlushObject();				
-				//open num mark
+				Get("select_pan" + i).FlushObject();
 				
-				Get("select_pan" + i).CustomizedData  = openball;
+				//opened num mark
+				Get("select_pan" + i).CustomizedData  = openballed;
 				Get("select_pan" + i).CustomizedFun = PanBallcolor;	
 				Get("select_pan" + i).FlushObject();				
+				
 				//new num mark
 				Get("select_pan" + i).CustomizedFun = SelfPanBallAni;
-				Get("select_pan" + i).FlushObject();				
+				Get("select_pan" + i).FlushObject();
 				
-				//var arr:Array = Get("select_pan" + i).CustomizedData;			
-				//var count:int = 24;
-				//for (  var k:int = 0; k < openballist.length ; k++)
-				//{
-					//if ( arr.indexOf(openballist[k] ) != -1) count--;
-				//}				
 				utilFun.SetText( Get("ticket").ItemList[i]["_rest_ball"], best3[i]["rest"]);				
-				tableNo.push( best3[i]["tableNo"]);
 				
 			}			
 			
-			//pan amount and tableno
-			//utilFun.Log("new table = "+ tableNo);
+			//盤號及金額更新			
 			Get("ticket").CustomizedFun = update_paninfo;
-			Get("ticket").CustomizedData =  tableNo;			
+			Get("ticket").CustomizedData =  best3;			
 			Get("ticket").FlushObject();
 			
 		}
 		
-		public function update_paninfo(mc:MovieClip, idx:int, tableid:Array):void
+		public function update_paninfo(mc:MovieClip, idx:int, best3:Array):void
 		{		
 			if( _best_len >=2) 
 			{
@@ -216,20 +212,20 @@ package View.ViewComponent
 				if ( idx == 0) mc["_start"].visible = true;
 			}
 			
-			utilFun.SetText( mc["_panNum"]["tableNo"], utilFun.Format(tableid[idx],2));
-			var amount:Array = _betCommand.get_my_bet_info(BetCommand.TotalBet);
+			var table_no:int = best3[idx]["tableNo"];
+			utilFun.SetText( mc["_panNum"]["tableNo"], utilFun.Format(table_no, 2));
 			
-			//amount
+			var amount:int = best3[idx]["amount"];			
 			utilFun.Clear_ItemChildren(mc["_pan_amount"]);
-			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, amount[idx]]);		
+			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, amount]);		
 		}
 		
 		public function best3_pan(openballist:Array):Array
 		{
-			var tableNo:Array =  _betCommand.get_my_bet_info(BetCommand.Table);			
+			var tableNo:Array =  _betCommand.get_my_bet_info(BetCommand.Table);
+			var amount:Array = _betCommand.get_my_bet_info(BetCommand.TotalBet);
 			var Table_len:int = tableNo.length;
-			//utilFun.Log("Table_len = "+ Table_len);
-			//utilFun.Log("openballist = "+ openballist);
+			
 			var balls:Array = _model.getValue("ballarr");
 			var myticket_restball_num:Array = [];
 			for ( var i:int = 0; i < Table_len ; i++)
@@ -247,7 +243,8 @@ package View.ViewComponent
 				{
 					var table_and_rest:Object;			
 					table_and_rest = { "tableNo": tableNo[i], 											
-												 "rest":  count										 
+												 "rest":  count,
+												 "amount":amount[i]
 											   };
 					
 					myticket_restball_num.push(table_and_rest);
@@ -282,6 +279,7 @@ package View.ViewComponent
 			{
 				_first_table = myticket_restball_num[0]["tableNo"];
 				_first_rest = myticket_restball_num[0]["rest"];
+				_first_amount = myticket_restball_num[0]["amount"];
 				//utilFun.Log("_first Tb="+_first_table + " rest = "+ _first_rest);
 			}
 			else	if (_first_table != -1)
@@ -290,16 +288,33 @@ package View.ViewComponent
 				//utilFun.Log("check _first_rest="+_first_rest + " sort first = "+ myticket_restball_num[0]["rest"] );
 				if (  (_first_rest -2) == myticket_restball_num[0]["rest"] )
 				{
+					//最少被別盤拿走  ex :最少:1   myticket_restball_num =3,2
+					
+					//把原本最少的加入 myticket_restball_num,
+						var origin_less:Object;			
+					origin_less = { "tableNo": _first_table, 											
+												 "rest":  _first_rest,
+												  "amount":_first_amount
+											   };
+					
+					
+					//最少的記錄下來
 					_first_table = myticket_restball_num[0]["tableNo"];
 					_first_rest = myticket_restball_num[0]["rest"];
+					_first_amount = myticket_restball_num[0]["amount"];
 					//utilFun.Log("new  Tb="+_first_table + " rest = "+ _first_rest);
+					
+					//再sort 一次
+					myticket_restball_num.push(origin_less);
+					myticket_restball_num.sort(order);
 				}
 				else 
 				{
 					//沒有就把目前最少球數的放回第一個
 					var table_and_rest:Object;			
 					table_and_rest = { "tableNo": _first_table, 											
-												 "rest":  _first_rest										 
+												 "rest":  _first_rest,
+												  "amount":_first_amount
 											   };
 					
 					myticket_restball_num.unshift(table_and_rest);

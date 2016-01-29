@@ -36,6 +36,9 @@ package View.ViewBase
 		[Inject]
 		public var _opration:DataOperation;
 		
+		[Inject]
+		public var _text:Visual_Text;
+		
 		public var _tool:AdjustTool;
 		
 		public function VisualHandler() 

@@ -112,7 +112,9 @@ package Command
 			if ( CONFIG::debug ) 
 			{
 				//fake bet proccess
+				
 				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+				//FORTEST
 				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
 			}
 			else
@@ -160,7 +162,8 @@ package Command
 			if ( CONFIG::debug ) 
 			{
 				//fake bet proccess
-				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_NO_SIGN));
+				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
 			}
 			else
 			{
@@ -433,8 +436,9 @@ package Command
 			var bet:Array = _model.getValue(modelName.SELF_BET);
 			if ( bet.length == 0) return;
 			
-			var bet_list:Array = _Bet_info.getValue("self");
 			
+			var bet_list:Array = _Bet_info.getValue("self");
+			utilFun.Log("batch_rebet = "+batch_rebet)
 			for ( var i:int = 0; i < bet.length ; i++)
 			{
 				var bet_ob:Object = create_dir_ob(bet[i]["table_no"], bet[i]["total_bet_amount"]);
@@ -444,6 +448,8 @@ package Command
 				utilFun.Log("put in = "+ bet_ob[Table]);
 				_model.putValue("last_bet_idx", bet_ob[Table]);				
 			}
+			
+			utilFun.Log("after batch_rebet = "+bet_list)
 			
 			dispatcher(new ModelEvent(WebSoketInternalMsg.BET_UPDATE));
 		}
@@ -485,7 +491,7 @@ package Command
 		{			
 			var bet_list:Array = _Bet_info.getValue("self");
 			
-			if ( bet_list.length == 0 ) return;
+			if ( bet_list.length == 0 ) return;			
 		}
 	}
 

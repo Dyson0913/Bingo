@@ -5,9 +5,11 @@ package ConnectModule.websocket
 	import com.worlize.websocket.WebSocketMessage
 	import com.worlize.websocket.WebSocketErrorEvent
 	import com.adobe.serialization.json.JSON	
+	import Command.BetCommand;
 	import Command.ViewCommand;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.net.registerClassAlias;
 	import flash.utils.ByteArray;
 	import flash.system.Security;
@@ -38,6 +40,9 @@ package ConnectModule.websocket
 		
 		[Inject]
 		public var _model:Model;
+		
+		[Inject]
+		public var _betCommand:BetCommand;
 		
 		private var websocket:WebSocket;
 	
@@ -154,8 +159,10 @@ package ConnectModule.websocket
 							
 							if ( state == gameState.NEW_ROUND)
 							{
+								//FORTEST
 								_model.putValue("chang_order",1);
 								dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );		
+								
 								//triger timer,
 								dispatcher(new ModelEvent("display"));
 								dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
@@ -170,7 +177,12 @@ package ConnectModule.websocket
 								_model.putValue("chang_order", 0);								
 								 
 								dispatcher(new Intobject(modelName.openball, ViewCommand.SWITCH) );	
-								_model.putValue("openBalllist", result.open_info.opened_history);
+								
+								_model.putValue("Curball", parseInt(result.open_info.current_ball) );						
+								var history_ball:Array = result.open_info.opened_history;
+								var arr:Array = [];						
+								arr.push.apply(arr, history_ball);								
+								_model.putValue("openBalllist",history_ball);
 								dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.HALF_ENTER_UPDATE));
 							}
 								
@@ -199,9 +211,14 @@ package ConnectModule.websocket
 						}
 						
 						_model.putValue("Curball", parseInt(result.open_info.current_ball) );						
-						_model.putValue("waitting_ball",result.open_info.waitting_ball);
-						var arr:Array = result.open_info.opened_history;
-						_model.putValue("opened_ball_num", arr.length +1 );
+						_model.putValue("waitting_ball", result.open_info.waitting_ball);
+						
+						var history:Array = result.open_info.opened_history;
+						var arr:Array = [];						
+						arr.push.apply(arr, history);
+						arr.push(parseInt(result.open_info.current_ball));
+						//第一包開球 不包含在歷史記錄裡   "opened_history": [], "current_ball": 75
+						_model.putValue("opened_ball_num", arr.length  );
 						_model.putValue("openBalllist", arr);
 						_model.putValue("best_remain", parseInt(result.open_info.best_remain) );
 						_model.putValue("second_remain", parseInt(result.open_info.second_remain) );
@@ -237,6 +254,14 @@ package ConnectModule.websocket
 					case "MsgPlayerDecBet":
 					case "MsgPlayerBet":
 					{
+						//FORTEST
+						//if ( result.bet_amount )
+						//{
+							//utilFun.Log("get pack bet");
+							//_betCommand.add_amount(new MouseEvent(MouseEvent.MOUSE_DOWN, true, false), result.table_no);
+							//break;
+						//}
+						
 						if (result.result == 0)
 						{
 							//押注結果
@@ -258,14 +283,7 @@ package ConnectModule.websocket
 						var is_bet:Array = _model.getValue("is_betarr");
 						var num:int  = arrlist.length;						
 						is_bet.length = 0;
-						is_bet = arrlist;
-						//for ( i = 0; i < num ; i++)
-						//{							
-							//is_bet.push(arrlist[i]);
-							//utilFun.Log("item  ="+arrlist[i]);
-							//
-						//}	
-						//utilFun.Log("push is_bet ="+is_bet);
+						is_bet = arrlist;					
 						_model.putValue("is_betarr", is_bet);
 						
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
@@ -291,8 +309,13 @@ package ConnectModule.websocket
 						
 						dispatcher(new ValueObject(  result.game_round, "game_round") );
 						utilFun.Log("new rount go to betview");
-						dispatcher(new ValueObject(  result.remain_time, modelName.REMAIN_TIME) );		
+						dispatcher(new ValueObject(  result.remain_time, modelName.REMAIN_TIME) );
+						
+						//FORTEST
 						dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );		
+						
+					
+						
 						//triger timer,
 						dispatcher(new ModelEvent("display"));
 												
@@ -306,8 +329,7 @@ package ConnectModule.websocket
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STATE_UPDATE));
 						
 					}	
-					break;
-					
+					break;		
 				}
 				
 				dispatcher(new ArrayObject([result], "pack_recoder"));
@@ -372,6 +394,7 @@ package ConnectModule.websocket
 		
 		public function SendMsg(msg:Object):void 
 		{
+			dispatcher(new ArrayObject([msg], "pack_recoder"));
 			var jsonString:String = JSON.encode(msg);
 			utilFun.Log("jsonString "+ jsonString);
 			websocket.sendUTF(jsonString);

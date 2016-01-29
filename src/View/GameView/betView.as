@@ -46,10 +46,12 @@ package View.GameView
 		public var _bingo:Visual_bingoPan;
 		
 		[Inject]
-		public var _test:Visual_testInterface;
+		public var _visual_test:Visual_testInterface;
 		
 		[Inject]
 		public var _betCommand:BetCommand;
+		
+		
 		
 		public function betView()  
 		{
@@ -64,6 +66,7 @@ package View.GameView
 			//清除前一畫面
 			
 			//loop view
+			
 			if ( _model.getValue("chang_order") ) this.parent.swapChildrenAt(3, 2);		
 			
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
@@ -80,8 +83,11 @@ package View.GameView
 			
 			_bingo.init();
 			
-			//auto bet
-			//_betCommand.re_bet();			
+			//FORTEST
+			//_visual_test.init();	
+			
+			
+			//auto bet	
 			_betCommand.batch_rebet();
 		}
 		

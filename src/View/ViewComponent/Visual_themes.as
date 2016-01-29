@@ -68,9 +68,9 @@ package View.ViewComponent
 			lottymsg.container.y = 300;
 			setFrame("lottymsg", 1);
 			
-			//自己無押注,不產生切換鈕
+			//自己無押注,不產生切換鈕	
 			if ( _betCommand.get_my_betlist().length != 0) 
-			{
+			{				
 				//畫面按鈕,在押暗後生成,才按的到
 				var switchbtn:MultiObject = create("switchbtn", [Res_switchbtn]);
 				switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			

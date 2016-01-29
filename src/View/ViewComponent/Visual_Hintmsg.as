@@ -49,7 +49,7 @@ package View.ViewComponent
 			GetSingleItem(modelName.HINT_MSG).gotoAndStop(_frame_Stop_bet);	
 			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 2, 2, _regular.Fadeout);		
 			
-			Tweener.addCaller(this, { time:2 , count: 1 , transition:"linear",onComplete: this.change } );
+			Tweener.addCaller(this, { time:1.5 , count: 1 , transition:"linear",onComplete: this.change } );
 		}	
 		
 		public function change():void
