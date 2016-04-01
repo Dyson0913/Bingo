@@ -5,6 +5,7 @@ package ConnectModule.websocket
 	import com.worlize.websocket.WebSocketMessage
 	import com.worlize.websocket.WebSocketErrorEvent
 	import com.adobe.serialization.json.JSON	
+	import Command.BetDelayCommand;
 	import Command.BetCommand;
 	import Command.ViewCommand;
 	import flash.display.MovieClip;
@@ -42,6 +43,8 @@ package ConnectModule.websocket
 		public var _model:Model;
 		
 		[Inject]
+		public var _betDelayCommnad:BetDelayCommand;
+
 		public var _betCommand:BetCommand;
 		
 		private var websocket:WebSocket;
@@ -76,7 +79,15 @@ package ConnectModule.websocket
 			}
 			else if ( event.type == WebSocketEvent.CLOSED)
 			{
-				utilFun.Log("Connected close="+ event.type );
+				utilFun.Log("Connected close=" + event.type );
+				if (_model.getValue("lobby_disconnect") ==  false) {
+					//通知大廳遊戲斷線
+					var lobbyevent:Function =  _model.getValue(modelName.HandShake_chanel);			
+					if ( lobbyevent != null)
+					{
+						lobbyevent(_model.getValue(modelName.Client_ID), ["GameDisconnect"]);			
+					}		
+				}
 			}
 		}
 		
@@ -106,6 +117,9 @@ package ConnectModule.websocket
 			   var result:Object  = _MsgModel.getMsg();
 			   
 			   if (result.game_type != "Bingo") return;
+			   if ( result.game_type != _model.getValue(modelName.Game_Name) ) return;
+			   
+			   dispatcher(new ArrayObject([result], "pack_recoder"));
 			   
 				switch(result.message_type)
 				{
@@ -190,24 +204,27 @@ package ConnectModule.websocket
 					break;
 					
 					case "MsgBGOpenBall":
-					{
-						if ( result.sub_state == "BingoSpecialOpenState")
+					{						
+						if ( result.sub_state == "BingoBigSpecialOpenState" || result.sub_state == "BingoSmallSpecialOpenState")
 						{
-							//no ball notify
-							if ( result.first_ball == undefined)
+							//recode spical_type							
+							if ( result["special_open_info"]  == undefined)
 							{
+								if( result.sub_state == "BingoBigSpecialOpenState")	dispatcher( new ValueObject(1, modelName.SPCIAL_FRAME_THOUSAND));
+								if( result.sub_state == "BingoSmallSpecialOpenState")	dispatcher( new ValueObject(2, modelName.SPCIAL_FRAME_THOUSAND));							
 								dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.SPECAIL_ROUND));
 								break;
 							}
 							
-							
+							//result.special_open_info.special_current_ball
+							//result.special_open_info.special_opened_history
 							var arr:Array = [];
-							if ( result.first_ball != "") arr.push( result.first_ball);
-							if ( result.second_ball != "") arr.push( result.second_ball);
+							arr.push.apply(arr, result.special_open_info.special_opened_history);
+							arr.push.apply(arr, [ result.special_open_info.special_current_ball]);											
 							
 							dispatcher( new ValueObject(arr, modelName.SPCIAL_BALL));	
 						   dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_COMING));
-							break;						   
+						   	break;					
 						}
 						
 						_model.putValue("Curball", parseInt(result.open_info.current_ball) );						
@@ -228,7 +245,7 @@ package ConnectModule.websocket
 						dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BALL_UPDATE));
 					}
 					
-					break;
+					break;				
 					
 					case "MsgBPState": 
 					{
@@ -264,15 +281,18 @@ package ConnectModule.websocket
 						
 						if (result.result == 0)
 						{
+							_betDelayCommnad.betSucessHandler(result.id);
+							
 							//押注結果
 							dispatcher(new ValueObject( result.room_no, "bet_room_num") );
 							dispatcher(new ValueObject(  result.result, "bet_result") );
 							
-							dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+							//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
 						}
 						else
 						{
 							//error code
+							_betDelayCommnad.betFailHandler(result.id);
 						}
 					}
 					break;
@@ -306,6 +326,7 @@ package ConnectModule.websocket
 						//self betlist
 						//[{"table_no":5,"total_bet_amount":200},{"table_no":7, "total_bet_amount":500}]
 						dispatcher( new ValueObject(result.bet_list, modelName.SELF_BET));
+						_betDelayCommnad.setSelfBet(result.bet_list);
 						
 						dispatcher(new ValueObject(  result.game_round, "game_round") );
 						utilFun.Log("new rount go to betview");
@@ -332,7 +353,7 @@ package ConnectModule.websocket
 					break;		
 				}
 				
-				dispatcher(new ArrayObject([result], "pack_recoder"));
+				
 		}
 		
 		[MessageHandler(type="ConnectModule.websocket.WebSoketInternalMsg",selector="chooseRoom")]
@@ -343,7 +364,7 @@ package ConnectModule.websocket
 			                              "timestamp":1111,
 											"message_type":"MsgBGPlayerEnterRoom", 
 			                               "game_id":_model.getValue("game_id"),
-										   "game_type":"Bingo",										
+										   "game_type":_model.getValue(modelName.Game_Name),										
 										   "game_round":_model.getValue("game_round"),							
 											"room_no":_model.getValue("room_num")
 											};
@@ -361,7 +382,7 @@ package ConnectModule.websocket
 			                                "timestamp":1111,
 											"message_type":"MsgPlayerBet", 
 			                               "game_id":_model.getValue("game_id"),
-										   "game_type":"Bingo",										
+										   "game_type":_model.getValue(modelName.Game_Name),										
 										   "game_round":_model.getValue("game_round"),
 											"room_no":_model.getValue("room_num"),
 											"table_no":  ob["betType"],
@@ -381,7 +402,7 @@ package ConnectModule.websocket
 			                                "timestamp":1111,
 											"message_type":"MsgPlayerDecBet", 
 			                               "game_id":_model.getValue("game_id"),
-										   "game_type":"Bingo",										
+										   "game_type":_model.getValue(modelName.Game_Name),										
 										   "game_round":_model.getValue("game_round"),
 											"room_no":_model.getValue("room_num"),
 											"table_no":  ob["betType"],

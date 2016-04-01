@@ -9,9 +9,12 @@ package Model
 		[Selector]
 		public var selector:String
 		
-		public function ModelEvent(select:String) 
+		public var Value:*;
+		
+		public function ModelEvent(select:String, ...args) 
 		{			
-			selector = select;		
+			selector = select;
+			Value = args;
 		}
 		
 	}

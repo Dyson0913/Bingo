@@ -78,8 +78,8 @@ package View.ViewComponent
 			bet_add.mouseup = empty_reaction;	
 			//
 			var cancel_bet:MultiObject = prepare("cancel_bet", new MultiObject(), GetSingleItem("_view").parent.parent);
-			cancel_bet.container.x = 974;
-			cancel_bet.container.y = 984;
+			cancel_bet.container.x = 1024;
+			cancel_bet.container.y = 1034;
 			cancel_bet.MouseFrame = utilFun.Frametype(MouseBehavior.Customized,[0,0,2,1]);
 			cancel_bet.Create_by_list(1,  [Cancel_ALLBet_Btn], 0 , 0, 1, 0, 0, "Coin_");					
 			cancel_bet.mousedown = _betCommand.cancel_allbet;			
@@ -103,6 +103,14 @@ package View.ViewComponent
 		
 		public function add_plus_condition(e:Event, tableNo:int):Boolean
 		{
+			var muti_betZone:MultiObject = Get("betZone");
+			for (var i:int = 0; i < muti_betZone.ItemList.length; i++ ) {
+				GetSingleItem("betZone", i)["pan_mask"].visible = false;
+			}
+			GetSingleItem("betZone", tableNo)["pan_mask"].visible = true;
+			
+			dispatcher(new ModelEvent("update_bingoPanNum", tableNo));
+			
 			if (_Actionmodel.length() != 0)
 			{
 				utilFun.Log("add click too quick forbiden");
@@ -132,6 +140,7 @@ package View.ViewComponent
 				{
 					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_FULL_HINT));
 					return false;
+					
 				}
 			}
 			
@@ -196,13 +205,20 @@ package View.ViewComponent
 			var IsBetInfo:Array  = data[0];
 			if ( IsBetInfo[idx] != 1) return;
 			
-			var frame:int = color_setting(idx,data[1]);			
+			var frame:int = color_setting(idx, data[1]);			
+			
+			if (frame == 6) {
+				mc["pan_mask"].visible = false;
+			}
+			
 			mc.gotoAndStop(frame);
 			if ( frame == 5) mc["tableNo"].textColor = 0x666666;
 		}
 		
 		public function BetListini(mc:MovieClip,idx:int,data:Array):void
 		{			
+			mc["pan_mask"].visible = false;
+			
 			utilFun.SetText(mc["tableNo"], utilFun.Format(idx, 2));
 			//1,無人 2為自己, 3自己最後一注,4,為他人			
 			
@@ -215,8 +231,14 @@ package View.ViewComponent
 			var arr:Array  = data[1];		
 			if ( IsBetInfo[idx] != 1) return;	
 			
-			var frame:int = color_setting(idx,data[1]);			
+			var frame:int = color_setting(idx, data[1]);	
+			if (frame == 3) {
+				frame = 2;
+			}else if (frame == 6) {
+				mc["pan_mask"].visible = false;
+			}
 			mc.gotoAndStop(frame);
+			
 			if ( frame == 5) mc["tableNo"].textColor = 0x666666;
 		}
 		
@@ -231,7 +253,9 @@ package View.ViewComponent
 			}
 			
 			//點別人己下的盤
-			if (mylast_bet == idx) return 6;
+			if (mylast_bet == idx) {
+				return 6;
+			}
 			
 			return 5;
 		}
@@ -273,16 +297,29 @@ package View.ViewComponent
 		[MessageHandler(type = "Model.ModelEvent", selector = "display")]
 		public function display():void
 		{			
-			Get("betzone").mousedown = add_plus_condition;			
+			Get("betZone").mousedown = add_plus_condition;			
 			
 			Get("betamount_sub").mousedown = Panel_sub_plus_condition;
 			Get("betamount_sub").mouseup = empty_reaction;
 			
-			Get("betamount_add").mousedown = add_plus_condition;
+			Get("betamount_add").mousedown = Panel_add_plus_condition;
 			Get("betamount_add").mouseup = empty_reaction;	
 			
 		}
 		
+		[MessageHandler(type = "Model.ModelEvent", selector = "openCancelBet")]
+		public function disopenCancelBet():void
+		{			
+			Get("cancel_bet").mousedown = _betCommand.cancel_allbet;
+			Get("cancel_bet").mouseup = empty_reaction;
+		}
+		
+		[MessageHandler(type = "Model.ModelEvent", selector = "closeCancelBet")]
+		public function closeCancelBet():void
+		{			
+			Get("cancel_bet").mousedown = null;
+			Get("cancel_bet").mouseup = null;			
+		}
 		
 	}
 	

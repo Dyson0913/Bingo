@@ -16,6 +16,12 @@ package View.ViewComponent
 	 */
 	public class Visual_timer  extends VisualHandler
 	{
+		[Inject]
+		public var _betTimer:Visual_betTimer;
+		
+		[Inject]
+		public var _betZone:Visual_betZone;
+		
 		public function Visual_timer() 
 		{
 			
@@ -54,6 +60,11 @@ package View.ViewComponent
 				return;
 			}
 			
+			if (time == 0) {
+				_betZone.forbidden();
+				_betTimer.StopCurrentTimer();
+			}
+			
 			var arr:Array = utilFun.arrFormat(time, 2);			
 			//utilFun.Log("arr ="+arr);
 			if ( arr[0] == 0 ) arr[0] = 10;
@@ -64,7 +75,7 @@ package View.ViewComponent
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "hide")]
 		public function timer_hide():void
-		{			
+		{
 			//Get(modelName.REMAIN_TIME).container.visible = false;
 		}
 		

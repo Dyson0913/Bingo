@@ -56,9 +56,7 @@ package View.Viewutil
 		
 		//元件命名
 		private var _ItemName:String;		
-		private var _contido:Boolean;
-		
-		
+		private var _contido:Boolean;		
 		
 		public function MultiObject() 
 		{
@@ -280,7 +278,7 @@ package View.Viewutil
 				if ( MouseFrame[0] != 0) ItemList[i].addEventListener(MouseEvent.ROLL_OUT, eventListen);
 				if ( MouseFrame[1] != 0) ItemList[i].addEventListener(MouseEvent.ROLL_OVER, eventListen);
 				if ( MouseFrame[2] != 0) ItemList[i].addEventListener(MouseEvent.MOUSE_DOWN, eventListen);
-				if ( MouseFrame[3] != 0) ItemList[i].addEventListener(MouseEvent.MOUSE_UP, eventListen);
+				if ( MouseFrame[3] != 0) ItemList[i].addEventListener(MouseEvent.MOUSE_UP, eventListen);			
 			}
 		}
 		
@@ -299,7 +297,7 @@ package View.Viewutil
 		}
 		
 		public function eventListen(e:Event):void
-		{
+		{			
 			var idx:int = Getidx(e.currentTarget.name);
 			switch (e.type)
 			{

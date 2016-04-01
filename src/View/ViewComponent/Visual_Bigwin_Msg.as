@@ -67,6 +67,7 @@ package View.ViewComponent
 		
 		public function pan_set(mc:MovieClip, idx:int, tablelist:Array):void
 		{				
+			mc["pan_mask"].visible = false;
 			mc.visible = false;
 			
 		}
@@ -127,6 +128,7 @@ package View.ViewComponent
 		
 		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void
 		{
+			mc["pan_mask"].visible = false;
 			//utilFun.scaleXY(mc, 0.7, 0.7);			
 			utilFun.SetText(mc["tableNo"], utilFun.Format( bingo_recode[idx], 2));			
 			

@@ -55,8 +55,8 @@ package View.ViewComponent
 			var totalball_info:MultiObject = prepare("total_ball_info", new MultiObject(), GetSingleItem("_view").parent.parent);
 			totalball_info.CustomizedFun = _text.textSetting;
 			totalball_info.CustomizedData = [{size:40,color:0xCCCCCC}, ""];			
-			totalball_info.container.x = -45;
-			totalball_info.container.y = 89;
+			totalball_info.container.x = -55;
+			totalball_info.container.y = 110;
 			totalball_info.Create_by_list(1, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
 			
 			//最佳盤
@@ -73,10 +73,21 @@ package View.ViewComponent
 			public_second_pan.container.y = 368.8;
 			public_second_pan.Create_by_list(26, [ResName.BetButton], 0, 0, 13, 106.25, 80, "time_");
 			
-			//_tool.SetControlMc(myroom.container);
-			//_tool.y = 200;
-			//add(_tool);
-		
+			//局號
+			var round_code:int = _model.getValue("game_round");			
+			var round:MultiObject = prepare("game_round", new MultiObject(), GetSingleItem("_view").parent.parent);
+			round.CustomizedFun = _text.textSetting;
+			round.CustomizedData = [ { size:24, color:0xFFFFFF }, "局號: ", round_code.toString()];
+			round.Posi_CustzmiedFun = _regular.Posi_Row_first_Setting;
+			round.Post_CustomizedData = [2, 60, 0];
+			round.container.x = 1732;
+			round.container.y = 65;			
+			round.Create_by_list(2, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
+			
+			
+			utilFun.Clear_ItemChildren(GetSingleItem("total_ball_info"));
+			Get("total_ball_info").CustomizedData =  [{size:40,color:0xCCCCCC, align:TextFormatAlign.CENTER}, String( 3)];		
+			Get("total_ball_info").FlushObject();
 		}
 		
 		public function info_initFun(mc:MovieClip, idx:int, scalesize:Array):void
@@ -186,6 +197,7 @@ package View.ViewComponent
 		
 		public function pan_set(mc:MovieClip, idx:int, tablelist:Array):void
 		{				
+			mc["pan_mask"].visible = false;
 			mc.visible = false;			
 		}
 		
@@ -372,15 +384,34 @@ package View.ViewComponent
 			Get("myroom").container.visible = false;
 			Get("total_ball_info").container.visible = false;
 			
+			_model.putValue("temp_pan_info_0", GetSingleItem("best_pan_info", 0)["_text"].text);
+			_model.putValue("temp_pan_info_2", GetSingleItem("best_pan_info", 2)["_text"].text);
+			
 			utilFun.SetText(GetSingleItem("best_pan_info", 0)["_text"], "" );
 			utilFun.SetText(GetSingleItem("best_pan_info", 2)["_text"], "" );
 			
-			utilFun.SetText(GetSingleItem("best_pan_info", 1)["_text"], "");			
-			utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], "");
+			_model.putValue("temp_pan_info_1", GetSingleItem("best_pan_info", 1)["_text"].text);
+			_model.putValue("temp_pan_info_3", GetSingleItem("best_pan_info", 3)["_text"].text);
 			
+			utilFun.SetText(GetSingleItem("best_pan_info", 1)["_text"], "");			
+			utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], "");			
 			
 			Get("public_best_pan_info").CleanList()			
 			Get("public_second_pan_info").CleanList();			
+			
+		}
+		
+		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "win_hint")]
+		public function settle():void
+		{
+			//播獎結束,還原顥示資料			
+			utilFun.SetText(GetSingleItem("best_pan_info", 0)["_text"], _model.getValue("temp_pan_info_0") );
+			utilFun.SetText(GetSingleItem("best_pan_info", 2)["_text"], _model.getValue("temp_pan_info_2") );
+						
+			utilFun.SetText(GetSingleItem("best_pan_info", 1)["_text"], _model.getValue("temp_pan_info_1"));			
+			utilFun.SetText(GetSingleItem("best_pan_info", 3)["_text"], _model.getValue("temp_pan_info_3"));			
+			
+			Get("myroom").container.visible = true;
 			
 		}
 		

@@ -217,6 +217,7 @@ package View.ViewComponent
 			
 			var amount:int = best3[idx]["amount"];			
 			utilFun.Clear_ItemChildren(mc["_pan_amount"]);
+
 			_text.textSetting_s(mc["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, amount]);		
 		}
 		

@@ -11,7 +11,7 @@ package Model
 		public static const Client_ID:int = Num++;
 		public static const HandShake_chanel:int = Num++;
 		public static const Domain_Name:int = Num++;
-		
+		public static const Game_Name:int = Num++;
 		public static const LOGIN_INFO:int = Num++;
 		
 		public static const CREDIT:int = Num++;
@@ -43,6 +43,7 @@ package Model
 		
 		
 		public static const SPCIAL_BALL:int = Num++;		
+		public static const SPCIAL_FRAME_THOUSAND:int = Num++;				
 		public static const SELF_BET:int = Num++;		
 		
 		

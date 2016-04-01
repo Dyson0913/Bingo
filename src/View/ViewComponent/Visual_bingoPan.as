@@ -46,7 +46,18 @@ package View.ViewComponent
 			bingo_pan.ItemList[0]["_pan_amount"].y = -25.9;
 			_text.textSetting_s(bingo_pan.ItemList[0]["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, ""]);
 		
-			//_tool.SetControlMc(bingo_pan.ItemList[0]["_pan_amount"]);
+			//局號
+			var round_code:int = _model.getValue("game_round");			
+			var round:MultiObject = prepare("game_round", new MultiObject(), GetSingleItem("_view").parent.parent);
+			round.CustomizedFun = _text.textSetting;
+			round.CustomizedData = [ { size:24, color:0xFFFFFF }, "局號: ", round_code.toString()];
+			round.Posi_CustzmiedFun = _regular.Posi_Row_first_Setting;
+			round.Post_CustomizedData = [2, 60, 0];
+			round.container.x = 1742;
+			round.container.y = 75;			
+			round.Create_by_list(2, [ResName.Paninfo_font], 0, 0, 1, 0, 0, "time_");
+			
+			//_tool.SetControlMc(round.container);
 			//_tool.y = 200;
 			//add(_tool);
 		}
@@ -110,18 +121,17 @@ package View.ViewComponent
 				mc["_text"].textColor = color;
 				utilFun.SetText( mc["_text"], str);	
 				
-				
-				
 			}
 					
 		}
 		
-		[MessageHandler(type = "Model.ModelEvent", selector = "bet_list_update")]		
-		public function select_pan():void
+		[MessageHandler(type = "Model.ModelEvent", selector = "update_bingoPanNum")]		
+		public function select_pan(msg:ModelEvent):void
 		{
 			
 			var bet_ob:Object = _Actionmodel.excutionMsg();
-			var tableNo:int = bet_ob["betType"];			
+			//var tableNo:int = bet_ob["betType"];			
+			var tableNo:int = msg.Value;
 			
 			//桌號
 			utilFun.SetText( GetSingleItem("bingo_pan")["_panNum"]["tableNo"], utilFun.Format(tableNo,2));
@@ -129,7 +139,15 @@ package View.ViewComponent
 			
 			//押注額 			
 			utilFun.Clear_ItemChildren(GetSingleItem("bingo_pan")["_pan_amount"]);
-			_text.textSetting_s(GetSingleItem("bingo_pan")["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, bet_ob["total_amount"]]);
+			
+			var total_amount:int = 0;
+			if (bet_ob == null) {
+				total_amount = 0;
+			}else {
+				total_amount = bet_ob["total_amount"];
+			}
+			
+			_text.textSetting_s(GetSingleItem("bingo_pan")["_pan_amount"], [ { size:40, color:0xB50004, align:_text.align_center }, total_amount]);
 			
 			//var font:Array = [{size:40,color:0xB50004,bold:true,align:_text.align_center}];
 			//font = font.concat(bet_ob["total_amount"]);

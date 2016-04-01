@@ -12,6 +12,7 @@ package View.GameView
 	import Model.*
 	import util.math.Path_Generator;
 	import util.node;
+	import View.ViewBase.Visual_Version;
 	import View.Viewutil.*;
 	import View.ViewBase.ViewBase;
 	import util.*;
@@ -46,11 +47,16 @@ package View.GameView
 		public var _bingo:Visual_bingoPan;
 		
 		[Inject]
-		public var _visual_test:Visual_testInterface;
+		public var _betTimer:Visual_betTimer;
 		
+		[Inject]
+		public var _visual_test:Visual_testInterface;
+
 		[Inject]
 		public var _betCommand:BetCommand;
 		
+		[Inject]
+		public var _Version:Visual_Version;
 		
 		
 		public function betView()  
@@ -83,11 +89,16 @@ package View.GameView
 			
 			_bingo.init();
 			
+			_betTimer.init();
+			
+			_Version.init();
+			
+			//auto bet
+			//_betCommand.re_bet();			
+
 			//FORTEST
 			//_visual_test.init();	
 			
-			
-			//auto bet	
 			_betCommand.batch_rebet();
 		}
 		

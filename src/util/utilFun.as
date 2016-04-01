@@ -71,7 +71,8 @@ package util
 		 */
 		public static function Log(msg:String):void
 		{			
-			if ( CONFIG::debug ) Debug.trace(msg);					
+			//if ( CONFIG::debug ) 
+			Debug.trace(msg);			
 		}
 		
 		/******************** 元件操作功能 ********************/

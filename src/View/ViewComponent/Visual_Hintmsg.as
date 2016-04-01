@@ -61,15 +61,24 @@ package View.ViewComponent
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "CreditNotEnough")]
 		public function no_credit():void
 		{						
-			GetSingleItem(modelName.HINT_MSG).gotoAndStop(3);
-			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 2, 2, _regular.Fadeout);
+			GetSingleItem(modelName.HINT_MSG).gotoAndStop(4);
+			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 1, 0.5, Fadeout1);
+		}
+		
+		public function Fadeout1(mc:MovieClip, a:int, t:int):void
+		{
+			Tweener.addTween(mc, {alpha:a, time:t,  onCompleteParams:[mc], onComplete: goFrameZero});
+		}		
+		
+		private function goFrameZero(mc:MovieClip):void {
+			mc.gotoAndStop(0);
 		}
 		
 		[MessageHandler(type = "ConnectModule.websocket.WebSoketInternalMsg", selector = "betfullHint")]
 		public function betfull():void
 		{			
 			GetSingleItem(modelName.HINT_MSG).gotoAndStop(_frame_uplimit_bet);
-			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG), 2, 2, _regular.Fadeout);
+			_regular.FadeIn( GetSingleItem(modelName.HINT_MSG),  1, 0.5, Fadeout1);
 		}
 		
 	}

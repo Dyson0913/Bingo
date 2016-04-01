@@ -4,6 +4,7 @@ package View.ViewComponent
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import View.ViewBase.VisualHandler;
 	import Model.valueObject.*;
 	import Model.*;
@@ -27,6 +28,10 @@ package View.ViewComponent
 		
 		private var _pageModel:PageStyleModel 
 		
+		private var _width_dis:Number;
+		
+		private var _room:MultiObject;
+		
 		public function Visual_RoomSelect() 
 		{
 			
@@ -34,30 +39,57 @@ package View.ViewComponent
 		
 		public function init():void
 		{			
+			_width_dis = 128;
+			var tabob:Array = _model.getValue("SelectRoomInfo");
 			
-			var tabob:Object = _model.getValue("SelectRoomInfo");
-			var spider:MultiObject = prepare("spider", new MultiObject()  , GetSingleItem("_view").parent.parent);
-			spider.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			
-			spider.mousedown = select_room;
-			spider.rollover = test_reaction;
-			spider.rollout = test_reaction;
-			spider.mouseup = test_reaction;
-			spider.CustomizedData = [tabob];
-			spider.CustomizedFun = table_setting_Setting;
-			spider.Posi_CustzmiedFun = Posi_Setting;
-			spider.Post_CustomizedData = [15, 125, 124];
-			spider.Create_by_list(100, [ResName.roomitem], 0, 0, 15, 125, 124, "time_");
-			spider.container.x = 24.8
-			spider.container.y = 160.6			
-			spider.customized();
+			_room = prepare("spider", new MultiObject()  , GetSingleItem("_view").parent.parent);
+			_room.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 1, 1, 1]);		
+			_room.mousedown = select_room;
+			_room.CustomizedData = [tabob];
+			_room.CustomizedFun = table_setting_Setting;
+			_room.Posi_CustzmiedFun = Posi_Setting;
+			_room.Post_CustomizedData = [15, _width_dis, 131];
+			_room.Create_by_list(100, [ResName.roomitem], 0, 0, 15, 125, 124, "time_");
+			_room.container.x = 99.85;
+			_room.container.y = 210.3 - 6;
+			_room.customized();
+			utilFun.scaleXY(_room.container, 0.9, 0.9);
+			
+			var _sencer:MultiObject = prepare("roomsencer", new MultiObject()  , GetSingleItem("_view").parent.parent);
+			_sencer.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			
+			_sencer.mousedown = room_sencer;
+			_sencer.rollover = room_sencer;
+			_sencer.rollout = room_sencer;
+			_sencer.mouseup = room_sencer;
+			_sencer.Posi_CustzmiedFun = Posi_Setting;
+			_sencer.Post_CustomizedData = [15, _width_dis, 131];
+			_sencer.Create_by_list(100, [ResName.R_roomSencer], 0, 0, 15, 125, 124, "time_");
+			_sencer.container.x = 113.85;
+			_sencer.container.y = 214.3 - 6;
+			_sencer.customized();
+			utilFun.scaleXY(_sencer.container, 0.9, 0.9);
 			
 			_pageModel = new PageStyleModel();
 			_pageModel.UpDateModel(_model.getValue("SelectRoomInfo"), 100);			
 			
-			//_tool.SetControlMc(spider.container);
+			var lobbyhint:MultiObject = create("lobby_hint", ["lobby_hint"]);
+			lobbyhint.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [0, 0, 1, 0]);	
+			lobbyhint.container.y = 250;
+			lobbyhint.Create_(1,"lobby_hint");
+			lobbyhint.mousedown = table_true;
+			
+			//_tool.SetControlMc(lobbyhint.container);
+			//_tool.y = 200;
 			//add(_tool);		
 			
 		}			
+		
+		public function table_true(e:Event, idx:int):Boolean
+		{			
+			var lobby_hint:MultiObject = Get("lobby_hint");
+			lobby_hint.container.visible = !lobby_hint.container.visible;				
+			return true;
+		}
 		
 		public function select_room(e:Event, idx:int):Boolean
 		{
@@ -68,10 +100,42 @@ package View.ViewComponent
 			return true;
 		}
 		
-		public function test_reaction(e:Event, idx:int):Boolean
-		{			
-			return true;
+		public function room_sencer(e:Event,idx:int):Boolean
+		{	
+			if ( e.type == MouseEvent.ROLL_OVER)
+			{
+				var mc:MovieClip = _room.ItemList[idx]["_room"];
+				var frame:int = mc.currentFrame ;
+				_room.ItemList[idx].gotoAndStop(2);	
+				_room.ItemList[idx]["_room"].gotoAndStop(frame);
+				return false;
+			}
+			
+			if ( e.type == MouseEvent.ROLL_OUT)
+			{
+				var mc:MovieClip = _room.ItemList[idx]["_room"];
+				var frame:int = mc.currentFrame ;
+				_room.ItemList[idx].gotoAndStop(1);	
+				_room.ItemList[idx]["_room"].gotoAndStop(frame);
+				return false;
+			}
+			
+			if ( e.type == MouseEvent.MOUSE_DOWN)
+			{
+				var ob:Object = _pageModel.GetOneDate(idx);
+				utilFun.Log("ob.roomnUm = "+ob.room_no);
+				_model.putValue("room_num", ob.room_no);
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.CHOOSE_ROOM));
+				return true;
+			}
+			
+			//var betzone:MultiObject = Get("spider");
+			//var mc:MovieClip = betzone.ItemList[idx];
+			//mc.dispatchEvent(new MouseEvent(e.type, true, false));			
+			
+			return true;			
 		}
+		
 		
 		public function reaction(e:Event, idx:int):Boolean
 		{
@@ -95,32 +159,31 @@ package View.ViewComponent
 			Get("spider").customized();
 		}
 		
-		public function arror_turn(mc:MovieClip, idx:int, data:Array):void
-		{
-			if ( idx == 1) mc.rotationY = 180;
-			
-		}
-		
 		public function table_setting_Setting(mc:MovieClip, idx:int, data:Array):void
 		{
 			var oblist:Object = data[0];
 			
 			var item:Object = oblist[idx];		
-			mc["tableNo"].text = utilFun.Format(parseInt(item.room_no),2);
-			mc["PeopleNo"].text = item.bet_tables;
+			//mc["tableNo"].text = utilFun.Format(parseInt(item.room_no),2);
+			//mc["PeopleNo"].text = item.bet_tables;	
+			var room_no:int = item.room_no ;
+			var room_bet_table:int = item.bet_tables ;
 			
-			//var row:int = Math.floor( idx / 15) ;
-			//if ( row ==1)
-		//	if (row == 1 || row == 3 ) mc.x = 120.3 + (idx % 10) * 160;			
-		}
-		
-		public function Posi_Colum_first_Setting(mc:MovieClip, idx:int, data:Array):void
-		{			
-			var ColumnCnt:int = data[0];
-			var xdiff:int = data[1];
-			var ydiff:int = data[2];
-			mc.x = ( Math.floor(idx / ColumnCnt) * data[1]);		
-			mc.y = (idx % ColumnCnt * ydiff);
+			var arr:Array = utilFun.arrFormat(room_no, 2);
+			if ( arr[0] == 0 ) arr[0] = 10;
+			if ( arr[1] == 0 ) arr[1] = 10;
+			mc["room_num_0"].gotoAndStop(arr[0]);
+			mc["room_num_1"].gotoAndStop(arr[1]);
+			
+			arr = utilFun.arrFormat(room_bet_table, 2);
+			if ( arr[0] == 0 ) arr[0] = 10;
+			if ( arr[1] == 0 ) arr[1] = 10;
+			mc["man_num_0"].gotoAndStop(arr[0]);
+			mc["man_num_1"].gotoAndStop(arr[1]);
+			
+			if ( idx % 3 == 0) mc["_room"].gotoAndStop(1);
+			if ( idx % 3 == 1) mc["_room"].gotoAndStop(2);
+			if ( idx % 3 == 2) mc["_room"].gotoAndStop(3);
 		}
 		
 		public function Posi_Setting(mc:MovieClip, idx:int, data:Array):void
@@ -130,12 +193,12 @@ package View.ViewComponent
 			var ydiff:int = data[2];
 			
 			var x_shift:Number = 0;
-			if ( Math.floor(idx / rowCnt) == 1) x_shift = 125 / 2 * 1;
-			if ( Math.floor(idx / rowCnt) == 2) x_shift = 125 / 2 * 4;
-			if ( Math.floor(idx / rowCnt) == 3) x_shift = 125 / 2 * 5;
-			if ( Math.floor(idx / rowCnt) == 4) x_shift = 125 / 2 * 8;
-			if ( Math.floor(idx / rowCnt) == 5) x_shift = 125 / 2 * 9;
-			if ( Math.floor(idx / rowCnt) == 6) x_shift = 125 / 2 * 10;
+			if ( Math.floor(idx / rowCnt) == 1) x_shift = _width_dis / 2 * 1;
+			if ( Math.floor(idx / rowCnt) == 2) x_shift = _width_dis / 2 * 4;
+			if ( Math.floor(idx / rowCnt) == 3) x_shift = _width_dis / 2 * 5;
+			if ( Math.floor(idx / rowCnt) == 4) x_shift = _width_dis / 2 * 8;
+			if ( Math.floor(idx / rowCnt) == 5) x_shift = _width_dis / 2 * 9;
+			if ( Math.floor(idx / rowCnt) == 6) x_shift = _width_dis / 2 * 10;
 			
 			if ( idx == 29) 
 			{
@@ -144,36 +207,36 @@ package View.ViewComponent
 			//row3
 			else if (idx == 43)
 			{
-				mc.x = (45 % rowCnt * xdiff )  + (125 / 2 ) * 1;				
+				mc.x = (45 % rowCnt * xdiff )  + (_width_dis / 2 ) * 1;				
 			}
 			else if (idx == 44)
 			{
-				mc.x = (45 % rowCnt * xdiff )  + (125 / 2 ) * 3;				
+				mc.x = (45 % rowCnt * xdiff )  + (_width_dis / 2 ) * 3;				
 			}
 			//row5
 			else if (idx == 57 || idx ==58 || idx ==59)
 			{
-				mc.x = (60 % rowCnt * xdiff )  + (125  ) * (idx-56);				
+				mc.x = (60 % rowCnt * xdiff )  + (_width_dis  ) * (idx-56);				
 			}		
 			else if (idx == 71)
 			{
-				mc.x = (75 % rowCnt * xdiff )  + (125 / 2 ) * 1;
+				mc.x = (75 % rowCnt * xdiff )  + (_width_dis / 2 ) * 1;
 			}
 			else if (idx == 72)
 			{
-				mc.x = (75 % rowCnt * xdiff )  + (125 / 2 ) * 3;
+				mc.x = (75 % rowCnt * xdiff )  + (_width_dis / 2 ) * 3;
 			}
 			else if (idx == 73)
 			{
-				mc.x = (75 % rowCnt * xdiff )  + (125 / 2 ) * 5;
+				mc.x = (75 % rowCnt * xdiff )  + (_width_dis / 2 ) * 5;
 			}
 			else if (idx == 74)
 			{
-				mc.x = (75 % rowCnt * xdiff )  + (125 / 2 ) * 7;
+				mc.x = (75 % rowCnt * xdiff )  + (_width_dis / 2 ) * 7;
 			}
 			else if (idx == 85 || idx == 86 || idx ==87 || idx ==88 || idx ==89)
 			{
-				mc.x = (90 % rowCnt * xdiff )  + (125  ) * (idx-85);
+				mc.x = (90 % rowCnt * xdiff )  + (_width_dis  ) * (idx-85);
 			}
 			
 			else mc.x = (idx % rowCnt * xdiff ) +x_shift;

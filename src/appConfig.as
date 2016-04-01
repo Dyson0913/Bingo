@@ -9,6 +9,7 @@ package
 	import View.ViewBase.ViewBase;
 	import ConnectModule.websocket.WebSoketComponent;
 	import View.ViewBase.Visual_Text;
+	import View.ViewBase.Visual_Version;
 	import View.ViewComponent.*;
 	import View.Viewutil.Visual_package_replayer;
 	
@@ -45,12 +46,14 @@ package
 		public var _betcom:BetCommand = new BetCommand();
 		public var _regular:RegularSetting = new RegularSetting();
 		public var _sound:SoundCommand = new SoundCommand();
+		public var _betDelayCommand:BetDelayCommand = new BetDelayCommand();
 		
 		//util
 		public var _path:Path_Generator = new Path_Generator();		
 		public var _text:Visual_Text = new Visual_Text();
 		public var _fileStream:fileStream = new fileStream();
 		public var _replayer:Visual_package_replayer = new Visual_package_replayer();
+		public var _Version:Visual_Version = new Visual_Version();
 		
 		//visual		
 		public var _timer:Visual_timer = new Visual_timer();
@@ -64,11 +67,13 @@ package
 		public var _Bigwin_Msg:Visual_Bigwin_Msg = new Visual_Bigwin_Msg();
 		public var _Bigwin_Effect:Visual_Bigwin_Effect = new Visual_Bigwin_Effect();
 		public var _Roller:Visual_Roller = new Visual_Roller();
+		public var _betTimer:Visual_betTimer = new Visual_betTimer();
+		public var _strem:Visual_stream = new Visual_stream();
 		
 		public var _settle:Visual_Settle = new Visual_Settle();
 		public var _roomItem:Visual_RoomSelect = new Visual_RoomSelect();
 		public var _themes:Visual_themes = new Visual_themes();
-		
+
 		//test
 		public var _test:Visual_testInterface = new Visual_testInterface();
 		public var _primitive:Visual_primitive = new Visual_primitive();

@@ -11,6 +11,9 @@ package View.ViewComponent
 	import Res.ResName;
 	import caurina.transitions.Tweener;
 	
+	import flash.text.TextFormat;
+	import 	flash.text.TextFormatAlign;
+	
 	/**
 	 * playerinfo present way
 	 * @author ...
@@ -39,19 +42,29 @@ package View.ViewComponent
 			
 			var arr:Array = _model.getValue(modelName.BINGO_TABLE);
 			var history:Array = _model.getValue(modelName.BINGO_HISTORY);
-			arr = arr.concat(history);
-			if ( arr.length > 5) 
+			
+			//arr = [13, 25, 39];
+			
+			if ( arr.length > 10) 
 			{
-				var len:int = arr.length -5;
-				arr = arr.slice(0, 5);
+				arr = arr.slice(0, 10);
 			}
-			_model.putValue(modelName.BINGO_HISTORY,arr);
+			
+			//history = [ [1,2,3,4,5,6],[1,2,3,4,5,6],[7,8,9,10,11,12,13],[10],[10],[10],[10],[10],[10],[10] ];
+			
+			if (history.length >= 10) {
+					history.shift();
+			}
+			
+			history.push(arr);
+			_model.putValue(modelName.BINGO_HISTORY, history);
+			
 			var bingo_recode:MultiObject = prepare("bingo_recode", new MultiObject(), GetSingleItem("_view").parent.parent);	
 			bingo_recode.CustomizedFun = BetListini
 			bingo_recode.CustomizedData = _model.getValue(modelName.BINGO_HISTORY);
-			bingo_recode.container.x = 564;
+			bingo_recode.container.x = 374;
 			bingo_recode.container.y = 970;		
-			bingo_recode.Create_by_list(5, [ResName.BetButton], 0, 0, 5, 75, 0, "time_");
+			bingo_recode.Create_by_list(10, [ResName.BetButton], 0, 0, 10, 75, 0, "time_");
 			
 			//_tool.SetControlMc(bingo_recode.container);
 			//_tool.SetControlMc(bingo_recode.ItemList[1]);
@@ -60,8 +73,62 @@ package View.ViewComponent
 		
 		public function BetListini(mc:MovieClip,idx:int,bingo_recode:Array):void
 		{
+			mc["pan_mask"].visible = false;
+			
 			utilFun.scaleXY(mc, 0.7, 0.7);
-			var str:String = idx >= bingo_recode.length ? "" : utilFun.Format(bingo_recode[idx],2);
+			if (bingo_recode.length > idx && bingo_recode[idx].length > 0) {
+				
+				var str:String = "";
+				var myFormat:TextFormat = new TextFormat();
+				
+				for (var i:int = 0; i <  bingo_recode[idx].length; i++) {
+					bingo_recode[idx][i] = utilFun.Format(bingo_recode[idx][i], 2);
+				}
+				
+				if (bingo_recode[idx].length == 1) {
+					str = bingo_recode[idx][0];
+				}else if (bingo_recode[idx].length == 2) {
+					str = bingo_recode[idx][0] + "." +  bingo_recode[idx][1];
+					myFormat.size = 38;
+					mc["tableNo"].x = -2;
+					mc["tableNo"].width = 120;
+					myFormat.align = TextFormatAlign.LEFT;
+
+				}else if (bingo_recode[idx].length == 3) {
+					str = bingo_recode[idx][0] + "." +  bingo_recode[idx][1] + "\n"  + bingo_recode[idx][2];
+					myFormat.size = 25;
+					mc["tableNo"].height = 100;
+					mc["tableNo"].width = 100;
+					mc["tableNo"].x = 10;
+					mc["tableNo"].y = 2;
+					myFormat.align = TextFormatAlign.LEFT;
+					
+				}else if(bingo_recode[idx].length == 4) {
+					str = bingo_recode[idx][0] + "." +  bingo_recode[idx][1] + "\n" + bingo_recode[idx][2] + "." + bingo_recode[idx][3];
+					myFormat.size = 25;
+					mc["tableNo"].height = 100;
+					mc["tableNo"].width = 100;
+					mc["tableNo"].x = 10;
+					mc["tableNo"].y = 2;
+					myFormat.align = TextFormatAlign.LEFT;
+					
+				}else if(bingo_recode[idx].length > 4){
+					str = bingo_recode[idx][0] + "." +  bingo_recode[idx][1] + "\n" + bingo_recode[idx][2] + "." + bingo_recode[idx][3] + "..";
+					myFormat.size = 25;
+					mc["tableNo"].height = 100;
+					mc["tableNo"].width = 100;
+					mc["tableNo"].x = 10;
+					mc["tableNo"].y = 2;
+					myFormat.align = TextFormatAlign.LEFT;
+					
+				}
+			
+				mc["tableNo"].defaultTextFormat = myFormat;
+			}else {
+				str = "";
+			}
+			
+			
 			utilFun.SetText(mc["tableNo"], str);
 			
 			if ( idx == 0) mc["tableNo"].textColor = 0xFF0000;

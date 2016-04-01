@@ -1,5 +1,7 @@
 package Command 
 {
+	import com.adobe.images.JPGEncoder;
+	import ConnectModule.websocket.WebSoketComponent;
 	import ConnectModule.websocket.WebSoketInternalMsg;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -9,6 +11,7 @@ package Command
 	import util.DI;
 	import util.utilFun;
 	import View.GameView.*;
+	import com.adobe.serialization.json.JSON
 	/**
 	 * user bet action
 	 * @author hhg4092
@@ -26,6 +29,12 @@ package Command
 		
 		[Inject]
 		public var _model:Model;
+		
+		[Inject]
+		public var _betDelayCommand:BetDelayCommand;
+		
+		[Inject]
+		public var _socket:WebSoketComponent;
 		
 		public var _Bet_info:DI = new DI();
 		
@@ -58,6 +67,8 @@ package Command
 			_model.putValue("last_bet_idx", -1);
 			_model.putValue("bet_history", []);
 			_Bet_info.putValue("self", [] ) ;
+			
+			_betDelayCommand.init();
 		}
 		
 		
@@ -77,7 +88,8 @@ package Command
 		}
 		
 		public function add_amount(e:Event, table:int):Boolean
-		{			
+		{			 
+			
 			var find_idx:int = Find_Bet_type_idx(table);
 			
 			if ( find_idx != -1)
@@ -88,9 +100,23 @@ package Command
 				var coin_list:Array  = _model.getValue("Bet_coin_List");
 				var idx:int = parseInt(bet_list[find_idx][Bet_idx] ) + 1;
 				if ( idx >= coin_list.length) return false
+				var bet_amount:int = coin_list[idx] - coin_list[idx-1];
+				//檢查餘額(加分)
+				if (_model.getValue(modelName.CREDIT) < bet_amount) {
+					//餘額不足訊息
+					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.NO_CREDIT));
+					return false;
+				}
 				
 				bet_list[find_idx][Bet_idx] += 1;				
 				_Bet_info.putValue("self", bet_list);
+			}else {
+				//檢查餘額(買盤)
+				if (_model.getValue(modelName.CREDIT) < 100) {
+					//餘額不足訊息
+					dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.NO_CREDIT));
+					return false;
+				}
 			}
 			
 			return bet(e, table);
@@ -109,19 +135,8 @@ package Command
 			//return true;
 			dispatcher( new ActionEvent(betob, "bet_action"));
 			
-			if ( CONFIG::debug ) 
-			{
-				//fake bet proccess
-				
-				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
-				//FORTEST
-				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
-			}
-			else
-			{
-				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET));
-			}
-			
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+
 			return true;
 		}
 		
@@ -159,17 +174,8 @@ package Command
 			//return true;
 			dispatcher( new ActionEvent(betob, "bet_action"));
 			
-			if ( CONFIG::debug ) 
-			{
-				//fake bet proccess
-				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_NO_SIGN));
-				//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
-			}
-			else
-			{
-				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_NO_SIGN));
-			}
-			
+			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
+
 			return true;
 		}
 		
@@ -244,16 +250,18 @@ package Command
 				utilFun.Log("no bet  return ");
 				return false;			
 			}
-			for ( var i:int = 0; i < n; i++)
+			
+			while(bet_list.length > 0)
 			{
-				var bet:Object = bet_list[i];				
+				var bet:Object = bet_list[0];				
 				bet[Bet_idx] = 0 ;
 				var sub_betob:Object   = betOb_with_no_sign(bet["betType"]);			
 				
 				dispatcher( new ActionEvent(sub_betob, "bet_action"));
 				
+				dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BETRESULT));
 			}		
-			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_NO_SIGN));
+			//dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_NO_SIGN));
 			
 			return true;
 		}		
@@ -309,11 +317,13 @@ package Command
 			
 			dispatcher(new ModelEvent(WebSoketInternalMsg.BET_UPDATE));
 			
-			//for bet test ,open ball need remove to sim bet action
-			utilFun.SetTime(simulat_upate, 0.1);
-			//FOR TEXT
-			//_Actionmodel.dropMsg();
+			//延遲送單
+			_betDelayCommand.newDelayTask(bet_ob);
 			
+			//for bet test ,open ball need remove to sim bet action
+			//utilFun.SetTime(simulat_upate, 0.1);
+			//FOR TEXT
+			_Actionmodel.dropMsg();
 			
 		}
 		
@@ -336,7 +346,7 @@ package Command
 			}	
 			
 			//TODO test need to move to here 
-			_Actionmodel.dropMsg();
+			//_Actionmodel.dropMsg();
 			if ( _Actionmodel.length() != 0) 
 			{
 				utilFun.Log("dropMsg ");

@@ -28,9 +28,7 @@ package View.ViewComponent
 		//public const Roller_Num:String = "testque";
 		public const Roller_Num:String = "RollerNum";
 		
-		private var mapping_model_name:Array = ["Roller_Num","Roller2"];
-		
-		private var _stop_roll_name;
+		private var mapping_model_name:Array = ["Roller_Num","Roller2"];		
 		
 		private var blur:BlurFilter = new BlurFilter();
 		
@@ -74,25 +72,42 @@ package View.ViewComponent
 			Roller2.put_item_reference(Roller_2.ItemList[0]["_num2_3"]);		
 			
 			roller_model();		
-		}
-		
-		public function start_roller(e:Event, idx:int):Boolean
-		{			
-			//roller();
-			return true;
-		}
-		
-		public function change_roller(e:Event, idx:int):Boolean
-		{						
-			_stop_roll_name = mapping_model_name[1];
-			return true;
-		}	
+		}		
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "lotty_first_ok")]
+		public function first_ball_ok():void
+		{
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);
+			setdata(mapping_model_name[0], ball.length - 1);
+			
+			var data:Array = _model.getValue(mapping_model_name[0] + "_roll_symble");
+			utilFun.Log("data 1= "+ data);
+			_model.putValue(mapping_model_name[0] + "_temp",data.concat());
+		}
+		
+		[MessageHandler(type = "Model.ModelEvent", selector = "lotty_sec_ok")]
 		public function fist_ball_ok():void
-		{			
-			setdata(mapping_model_name[0],0);
-			setdata(mapping_model_name[1],0);			
+		{						
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
+			setdata(mapping_model_name[1], ball.length - 1);			
+				
+			var data:Array = _model.getValue(mapping_model_name[1] + "_roll_symble");
+			utilFun.Log("data 2= "+ data);
+			_model.putValue(mapping_model_name[1] + "_temp",data.concat());
+		}
+		
+		[MessageHandler(type = "Model.ModelEvent", selector = "lotty_second_one_ok")]
+		public function lotty_second_one_ok():void
+		{
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
+			setdata(mapping_model_name[0], ball.length-1);			
+		}
+		
+		[MessageHandler(type = "Model.ModelEvent", selector = "lotty_second_two_ok")]
+		public function lotty_second_two_ok():void
+		{
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
+			setdata(mapping_model_name[1], ball.length-1);			
 		}
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "pan_ok")]		
@@ -112,10 +127,18 @@ package View.ViewComponent
 			var arr = 	_model.getValue(rollerName + "_roll_idx");			
 			//utilFun.Log(" roller =" + arr );			
 			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);				
-			var balls:String  = ball[ball_idx];
-			var ballarr:Array = balls.split("");
-			var num:int = ballarr[mapping_model_name.indexOf(rollerName)];			
-			var data:Array = [num - 1 , num, num + 1, num + 2];			
+			
+			//old way ,just to ball
+			//var balls:String  = ball[ball_idx];
+			//var ballarr:Array = balls.split("");
+			//var num:int = ballarr[mapping_model_name.indexOf(rollerName)];			
+			
+			//new way,one by one
+			var balls:String  = ball[ball_idx];		
+			var num:int = parseInt(balls);
+			if ( num == 0) num = 10;
+			
+			var data:Array = [num - 1 == -1?  9 : num - 1, num, num + 1, num + 2];			
 			GetSingleItem(rollerName,arr[0]).gotoAndStop(data[0]);
 			GetSingleItem(rollerName,arr[1]).gotoAndStop(data[1]);
 			GetSingleItem(rollerName, arr[2]).gotoAndStop(data[2]);
@@ -133,12 +156,17 @@ package View.ViewComponent
 			GetSingleItem(rollerName, arr[2]).y = 280;
 			GetSingleItem(rollerName, arr[3]).y = 420;
 			
-			if (ball_idx !=1) utilFun.SetTime(reset_roller, 1);
+			//if (ball_idx !=1) utilFun.SetTime(reset_roller, 1);
 		}
 			
+		[MessageHandler(type = "Model.ModelEvent", selector = "reset_roller")]
 		public function reset_roller():void
 		{
-			roller_model();
+			roller_model();		
+			utilFun.Log("reset data 0= "+ _model.getValue(mapping_model_name[0] + "_temp"));
+			utilFun.Log("reset data 1= "+ _model.getValue(mapping_model_name[1] + "_temp"));
+			_model.putValue(mapping_model_name[0] + "_roll_symble", _model.getValue(mapping_model_name[0] + "_temp"));							
+			_model.putValue(mapping_model_name[1] + "_roll_symble", _model.getValue(mapping_model_name[1] + "_temp"));
 			roller(mapping_model_name[0]);
 			roller(mapping_model_name[1]);
 		}
@@ -149,10 +177,10 @@ package View.ViewComponent
 			utilFun.Log(" rollerName =" + rollerName );
 			utilFun.Log(" roller =" + arr );
 					
-			Tweener.addTween(GetSingleItem(rollerName, arr[0]), { time:10,   transition:"linear", onUpdate:this.reset, onUpdateParams:[GetSingleItem(rollerName,arr[0]), arr[0],rollerName] } );		
-			Tweener.addTween(GetSingleItem(rollerName,arr[1]), {  time:10, transition:"linear",onUpdate:this.reset,onUpdateParams:[GetSingleItem(rollerName,arr[1]),arr[1],rollerName] } );		
-			Tweener.addTween(GetSingleItem(rollerName,arr[2]), {  time:10, transition:"linear", onUpdate:this.reset, onUpdateParams:[GetSingleItem(rollerName, arr[2]),arr[2],rollerName] } );		
-			Tweener.addTween(GetSingleItem(rollerName,arr[3]), {  time:10, transition:"linear",onUpdate:this.reset,onUpdateParams:[GetSingleItem(rollerName,arr[3]),arr[3],rollerName] } );			
+			Tweener.addTween(GetSingleItem(rollerName, arr[0]), { time:15,   transition:"linear", onUpdate:this.reset, onUpdateParams:[GetSingleItem(rollerName,arr[0]), arr[0],rollerName] } );		
+			Tweener.addTween(GetSingleItem(rollerName,arr[1]), {  time:15, transition:"linear",onUpdate:this.reset,onUpdateParams:[GetSingleItem(rollerName,arr[1]),arr[1],rollerName] } );		
+			Tweener.addTween(GetSingleItem(rollerName,arr[2]), {  time:15, transition:"linear", onUpdate:this.reset, onUpdateParams:[GetSingleItem(rollerName, arr[2]),arr[2],rollerName] } );		
+			Tweener.addTween(GetSingleItem(rollerName,arr[3]), {  time:15, transition:"linear",onUpdate:this.reset,onUpdateParams:[GetSingleItem(rollerName,arr[3]),arr[3],rollerName] } );			
 		}
 		
 		
@@ -281,8 +309,7 @@ package View.ViewComponent
 				_model.putValue(mapping_model_name[i] + "_excute_times", [0, 0, 0, 0]);
 				_model.putValue(mapping_model_name[i] + "_stopCount", -1);
 				_model.putValue(mapping_model_name[i] + "_roll_symble", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);				
-			}
-			_stop_roll_name = mapping_model_name[0];
+			}			
 		}
 		
 	}

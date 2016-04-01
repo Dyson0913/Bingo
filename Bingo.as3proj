@@ -54,6 +54,7 @@
   <libraryPaths>
     <element path="lib\LibGen.swc" />
     <element path="lib\SoundAS.swc" />
+    <element path="lib\asuuid.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

@@ -50,9 +50,9 @@ package View.ViewComponent
 			besthint.container.y = 81.95;			
 			
 			//押暗
-			//var DarkItem:MultiObject = create("Dark",  [Dark]);			
-			//DarkItem.Create_(1, "Dark");
-			//GetSingleItem("Dark")["_bg"].alpha = 0;
+			var DarkItem:MultiObject = create("Dark",  [Dark]);			
+			DarkItem.Create_(1, "Dark");
+			GetSingleItem("Dark")["_bg"].alpha = 0;
 			
 			//金幣泉
 			var bigwinfire:MultiObject = create("lotty_fire", [bigwinfire]);
@@ -83,8 +83,8 @@ package View.ViewComponent
 				switchbtn.Create_(1, "switchbtn");
 			}			
 			
-		    //_tool.SetControlMc(Roller_Num.container);
-		    //_tool.y = 200;
+		  //_tool.SetControlMc(Get("game_round").container);
+			//_tool.y = 200;
 			//add(_tool);
 			
 			GetSingleItem("_view")["_CurBal"].visible = true;
@@ -114,8 +114,14 @@ package View.ViewComponent
 		{
 			GetSingleItem("besthint").gotoAndStop(2);
 			//TODO wintype _wintype
-			//GetSingleItem("besthint")[" _wintype"].gotoAndStop(2);
+			var frame:int =  _model.getValue(modelName.SPCIAL_FRAME_THOUSAND);
+			GetSingleItem("besthint")["_wintype"].gotoAndStop(frame);		
 			
+			//光暉效果
+			GetSingleItem("besthint")["_wintype"]["_win_effect"].gotoAndStop(frame);
+			//_regular.Twinkle_by_JumpFrame(GetSingleItem("besthint")["_win_effect"], 30, 90, 2, 3);
+			
+			//四週跑燈
 			_regular.Twinkle_by_JumpFrame(GetSingleItem("besthint"), 30, 90, 2, 3);
 			
 			GetSingleItem("second_hint").gotoAndStop(2);
@@ -140,48 +146,100 @@ package View.ViewComponent
 		[MessageHandler(type = "Model.ModelEvent", selector = "lotty_first_ok")]
 		public function fist_ball_ok():void
 		{
-			//TODO first ball no
 			GetSingleItem("second_hint").gotoAndStop(3);
-			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
-			GetSingleItem("second_hint")["lobbyNum"].text = ball[0];
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);	
+			var frame:int =  ball[ball.length - 1];
+			if ( frame == 0) frame = 10;
+			GetSingleItem("second_hint")["_num_0"].gotoAndStop(frame);
+			GetSingleItem("second_hint")["_num_1"].gotoAndStop(12);
+			//GetSingleItem("second_hint")["lobbyNum"].text = ball[ball.length-1];
+		}
+		
+		[MessageHandler(type = "Model.ModelEvent", selector = "lotty_sec_ok")]
+		public function sec_ball_ok():void
+		{
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);
+			var frame:int =  ball[ball.length - 2];
+			if ( frame == 0) frame = 10;
+			GetSingleItem("second_hint")["_num_0"].gotoAndStop(frame);
+			frame  =  ball[ball.length - 1];
+			if ( frame == 0) frame = 10;
+			GetSingleItem("second_hint")["_num_1"].gotoAndStop(frame);
 			
+			//GetSingleItem("second_hint")["lobbyNum"].text = ball_s;		
 			
-			
-			//wait seoncball
 			utilFun.SetTime(myse, 1);
-			
 		}
 		
 		public function myse():void
 		{
 			GetSingleItem("second_hint").gotoAndStop(4);
+			
+			//reset roller
+			GetSingleItem("Roller_2")["_title"].gotoAndStop(2);
+			dispatcher(new ModelEvent("reset_roller"));
+			
+			//reset ball
+			var lottyball:MultiObject = Get("lottyball");
+			lottyball.CleanList();
+			lottyball.Create_by_list(1, [ResName.lottyball], 0 , 0, 2, 1880 , 0, "Bet_");
+			lottyball.container.x = 30.6;
+			lottyball.container.y = 541.75;			
+			
+			
 			//dispatcher(new ModelEvent("pick_seond_ball"));
 		}
+		
+		[MessageHandler(type = "Model.ModelEvent", selector = "lotty_second_one_ok")]
+		public function sec_first():void
+		{			
+			GetSingleItem("second_hint").gotoAndStop(5);
+			
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
+			var frame:int =  ball[ball.length - 1];
+			if ( frame == 0) frame = 10;
+			GetSingleItem("second_hint")["_num_2"].gotoAndStop(frame);		
+			GetSingleItem("second_hint")["_num_3"].gotoAndStop(12);
+			
+			//GetSingleItem("second_hint")["panNum"].text = ball[ball.length-1];			
+		}
+		
+		[MessageHandler(type = "Model.ModelEvent", selector = "lotty_second_two_ok")]
+		public function lotty_second_two_ok():void
+		{
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
+			var frame:int =  ball[ball.length - 2];
+			if ( frame == 0) frame = 10;
+			GetSingleItem("second_hint")["_num_2"].gotoAndStop(frame);
+			frame  =  ball[ball.length - 1];
+			GetSingleItem("second_hint")["_num_3"].gotoAndStop(frame);
+			
+			//GetSingleItem("second_hint")["panNum"].text =  ball_s;
+			
+			pan_ok();
+		}
+		
 		
 		[MessageHandler(type = "Model.ModelEvent", selector = "pan_ok")]		
 		public function pan_ok():void
 		{			
-			GetSingleItem("Dark")["_bg"].alpha = 0.5;
-			GetSingleItem("second_hint").gotoAndStop(5);
-			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
-			GetSingleItem("second_hint")["panNum"].text = ball[1];
+			GetSingleItem("Dark")["_bg"].alpha = 0.5;		
 			
 			//fire			
 			//TODO wintype _wintype
-			GetSingleItem("lottymsg").gotoAndStop(2);			
+			var frame:int =  _model.getValue(modelName.SPCIAL_FRAME_THOUSAND);
+			GetSingleItem("lottymsg").gotoAndStop(frame+1);			
 			//GetSingleItem("lottymsg").gotoAndStop(1);
 			
-			
-			var lo:int = ball[0];
-			var arr:Array = utilFun.arrFormat(lo, 2);			
+			var ball:Array = _model.getValue(modelName.SPCIAL_BALL);			
+			var arr:Array = [ball[0], ball[1]];			
 			if ( arr[0] == 0 ) arr[0] = 10;
 			if ( arr[1] == 0 ) arr[1] = 10;
 			GetSingleItem("lottymsg")["_num_0"].gotoAndStop(arr[0]);
 			GetSingleItem("lottymsg")["_num_1"].gotoAndStop(arr[1]);
 			
-			//pan
-			var lo2:int = ball[1];
-			var arr2:Array = utilFun.arrFormat(lo2, 2);			
+			//pan			
+			var arr2:Array = [ball[2], ball[3]];		
 			if ( arr2[0] == 0 ) arr2[0] = 10;
 			if ( arr2[1] == 0 ) arr2[1] = 10;
 			GetSingleItem("lottymsg")["_num_2"].gotoAndStop(arr2[0]);

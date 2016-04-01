@@ -13,23 +13,25 @@ package Res
 		
 		public static const roomitem:String = "room_item";
 		
+		
 		public static const popBall:String = "fakeBall";
 		public static const lottyball:String = "lotty_ball";
 		public static const secondhint:String = "second_hint";
 		public static const besthint:String = "best_hint";
 		
-		
+		public static const R_roomNo:String = "R_room_no";
+		public static const R_roomMan_num:String = "R_room_man_num";
+		public static const R_roomSencer:String = "R_room_sencer";
 		
 		//bet view
 		public static const BetButton:String = "BetTableBtn";
 		public static const sys_num:String = "_msg_num";
 		public static const Bet_Pan_Num:String = "betPannum";
-		public static const Bet_amount_bg:String = "bet_grid";
-		public static const Bet_amount_num:String = "bet_num_small";
+		public static const Bet_amount_bg:String = "bet_grid";		
 		public static const Bet_add:String = "add";
 		public static const Bet_sub:String = "sub";
-		
-		
+		public static const Bet_timer:String = "bet_timer";
+		public static const Bet_cancel:String = "bet_cancel";
 		
 		public static const Ball:String = "DynamicBall";
 		public static const Ballforfour:String = "Ballist";
@@ -51,8 +53,6 @@ package Res
 		
 		public static const Hint:String = "HintMsg";	
 		public static const Winhint:String = "win_hint";	
-		
-
 		
 		public function ResName() 
 		{
