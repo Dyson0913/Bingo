@@ -329,8 +329,7 @@ package View.ViewComponent
 			utilFun.scaleXY(mc, scalesize[0], scalesize[0]);
 			mc.gotoAndStop( Math.ceil( (idx + 1) / 15) ) ;
 			mc.visible = false;
-			utilFun.SetText(mc["ballNum"], utilFun.Format(idx+1 , 1) );
-			
+			utilFun.SetText(mc["ballNum"], utilFun.Format(idx+1 , 1) );			
 		}
 		
 		public function pl(BallNum:int):void

@@ -409,6 +409,30 @@ package Command
 			_model.putValue("bet_history", history);
 			
 			_Bet_info.putValue("self", bet_list);
+			
+			//記錄歷史記錄  TODO //目前只記錄一局,之後server傳真的過來
+			//var round_code:int = _model.getValue("game_round");
+			//_model.getValue("SomeOne_bet");  //賣出
+			//_model.getValue("NoOne_bet"); //內盤
+			//var tableNo:Array = _model.getValue(modelName.BINGO_TABLE); //--2,賓果盤號
+		   	//_model.getValue("openBalllist"); //--5.球數
+			//_model.getValue("Curball" );    //--6.賓果球
+			//
+			
+			//var history_recode:Array = _model.getValue("history_opened_ball");
+			//var history_ob:Object;
+			//history_ob = { "round": _model.getValue("game_round"), 											
+			            //"bingo_pan":  _model.getValue(modelName.BINGO_TABLE),		
+						//"out_pan":_model.getValue("NoOne_bet"),
+						//"in_pan":_model.getValue("SomeOne_bet"),
+						//"total_openball": 	_model.getValue("openBalllist"),
+						//"bingo_ball": 	_model.getValue("Curball" )
+									   //};
+									   //
+			//history_recode.push(history_ob);
+			//_model.putValue("history_opened_ball", history_recode);		
+			
+			
 		}
 		
 		//"result_list": [{"bet_type": "5,5", "settle_amount": 9000, "odds": 90, "win_state": "WSBingo", "bet_amount": 100.0}]

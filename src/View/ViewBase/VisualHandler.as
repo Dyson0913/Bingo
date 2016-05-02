@@ -12,6 +12,8 @@ package View.ViewBase
 	import Model.*;
 	import View.Viewutil.AdjustTool;
 	import View.Viewutil.MultiObject;
+	import Res.ResName;
+	import flash.utils.getQualifiedClassName;
 	
 	/**
 	 * handle display item how to presentation
@@ -39,11 +41,24 @@ package View.ViewBase
 		[Inject]
 		public var _text:Visual_Text;
 		
+		public var _myContain:MultiObject;
+		
 		public var _tool:AdjustTool;
 		
 		public function VisualHandler() 
 		{
 			_tool = new AdjustTool();
+		}
+		
+		public function create_container():void
+		{
+			//var my:MultiObject = create(
+			var name:String = getQualifiedClassName(this);
+			var arr:Array = utilFun.Regex_Match(name,/(.+)::(.+)/);			
+			var myContain:MultiObject = create(arr[2] + "_Contain", [ResName.empty])
+			utilFun.Log("my_container = " + arr[2] + "_Contain");
+			myContain.Create_(1,arr[2] + "_Contain");
+			_myContain = myContain;			
 		}
 		
 		protected function changeBG(name:String):void

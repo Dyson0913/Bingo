@@ -71,6 +71,9 @@ package View.GameView
 		[Inject]
 		public var _Version:Visual_Version
 		
+		[Inject]
+		public var _hisotry:Visual_hisotry;
+		
 		public function OpenBallView()  
 		{
 			utilFun.Log("OpenBallView");
@@ -91,7 +94,7 @@ package View.GameView
 			var view:MultiObject = prepare("_view", new MultiObject() , this);
 			view.Create_by_list(1, [ResName.Openball_Scene], 0, 0, 1, 0, 0, "a_");	
 			
-			_staticinfo.init();
+			
 			_ball.init();
 			
 			_ticket.init();	
@@ -99,7 +102,10 @@ package View.GameView
 			_Bigwin_Msg.init();
 			_Bigwin_Effect.init();
 			
+			_staticinfo.init();
 			_themes.init();
+			
+			_hisotry.init();
 			_Roller.init();
 			
 			_Version.init();

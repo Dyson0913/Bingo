@@ -185,6 +185,7 @@ package View.ViewComponent
 				}
 			}
 			
+			_model.putValue("SomeOne_bet", Cnt);
 			_model.putValue("NoOne_bet", (len - Cnt));
 			return Cnt;
 		}

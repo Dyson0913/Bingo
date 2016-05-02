@@ -90,6 +90,12 @@ package View.ViewComponent
 		[Inject]
 		public var _strem:Visual_stream;
 		
+		[Inject]
+		public var _hisotry:Visual_hisotry;
+		
+		[Inject]
+		public var _page_arrow:Visual_page_arrow;
+		
 		private var _script_item:MultiObject;
 		
 		[Inject]
@@ -138,7 +144,7 @@ package View.ViewComponent
 			script_list.Post_CustomizedData = [6, 100, 50];			
 			script_list.Create_(script_list.CustomizedData.length -1,"script_list");			
 			
-			script_list.container.y = 100;
+			
 		}				
 		
 		public function script_list_test(e:Event, idx:int):Boolean
@@ -171,8 +177,8 @@ package View.ViewComponent
 		public function view_init():void		
 		{
 			if ( _model.getValue("test_init")) return;
-			changeBG(ResName.Bet_Scene);
 			
+		
 			
 			_model.putValue("test_init",true);
 		}
@@ -277,11 +283,17 @@ package View.ViewComponent
 			_model.putValue("game_round", 1);
 			_model.putValue("room_num", 3);
 			
+			changeBG(ResName.Openball_Scene);
 			
+			_page_arrow.init();
 			_ball.init();
+			
 			_staticinfo.init();
+			_themes.init();
 			
+			_hisotry.init();
 			
+			//view_init();
 			
 		}
 		
@@ -290,7 +302,7 @@ package View.ViewComponent
 			dispatcher( new WebSoketInternalMsg(WebSoketInternalMsg.BET_STOP_HINT));
 		}
 		
-		[MessageHandler(type = "View.Viewutil.TestEvent", selector = "2")]
+		//[MessageHandler(type = "View.Viewutil.TestEvent", selector = "2")]
 		public function settleScript():void
 		{
 			changeBG(ResName.Openball_Scene);

@@ -73,7 +73,8 @@ package
 		public var _settle:Visual_Settle = new Visual_Settle();
 		public var _roomItem:Visual_RoomSelect = new Visual_RoomSelect();
 		public var _themes:Visual_themes = new Visual_themes();
-
+		public var _hisotry:Visual_hisotry = new Visual_hisotry();
+		public var _page_arrow:Visual_page_arrow = new Visual_page_arrow();
 		//test
 		public var _test:Visual_testInterface = new Visual_testInterface();
 		public var _primitive:Visual_primitive = new Visual_primitive();

@@ -63,7 +63,7 @@ package
 			{
 				Debug.monitor(stage);
 			}
-			
+			Debug.monitor(stage);
 			//no thing ,ok
 			_context  = ActionScriptContextBuilder.build(appConfig);
 			

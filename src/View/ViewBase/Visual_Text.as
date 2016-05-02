@@ -56,6 +56,12 @@ package View.ViewBase
 			mc.addChild(str);
 		}
 		
+		public function text_update(mc:MovieClip, idx:int, data:Array):void
+		{
+			var Text:TextField = mc.getChildByName("Dy_Text") as TextField;
+			Text.text = data[idx];
+		}
+		
 		public function colortextSetting(mc:MovieClip, idx:int, data:Array):void
 		{			
 			var textColor:uint = 0xFFFFFF;
@@ -66,6 +72,12 @@ package View.ViewBase
 			var str:TextField = dynamic_text(data[idx + 1], ob);
 			str.name = "Dy_Text";
 			mc.addChild(str);
+		}
+		
+		public function color_update(mc:MovieClip, idx:int, data:Array):void
+		{
+			var Text:TextField = mc.getChildByName("Dy_Text") as TextField;			
+			Text.textColor = data[idx];			
 		}
 		
 		public function dynamic_text(text:String,para:Object):TextField

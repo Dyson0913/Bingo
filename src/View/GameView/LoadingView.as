@@ -94,6 +94,11 @@ package View.GameView
 			//_model.putValue("ballarr",balls);
 			//_model.putValue("table", table_no);
 			
+			//TODO 沒經過betview不會有,沒押注也不會有
+			_model.putValue("SomeOne_bet", 0);
+			_model.putValue("NoOne_bet", 0);
+			_model.putValue("history_opened_ball", []);		
+			
 			dispatcher(new Intobject(modelName.Loading, ViewCommand.SWITCH));			
 			//dispatcher(new Intobject(modelName.Bet, ViewCommand.SWITCH) );			
 		}
@@ -110,7 +115,7 @@ package View.GameView
 			
 			if ( CONFIG::debug ) 
 			{
-				_test.init();				
+				_test.init();
 			}else {
 				utilFun.SetTime(connet, 0.1);
 			}

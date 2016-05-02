@@ -235,7 +235,7 @@ package View.ViewComponent
 		
 		private function playback():void
 		{
-			utilFun.Log((++counter) + " Buffer length: " + netStreamObj.bufferLength);
+			//utilFun.Log((++counter) + " Buffer length: " + netStreamObj.bufferLength);
 			
 				var idx:int = _model.getValue("current_Serial");
 			var sp:Sprite = _model.getValue("stream_container").getValue(idx.toString());

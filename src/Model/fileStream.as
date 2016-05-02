@@ -81,7 +81,7 @@ package Model
 			file_saving(packhead,"pack_round_"+ _model.getValue("game_round").toString());
 		}
 		
-		public function file_saving(fileContent:String, filename:String)
+		public function file_saving(fileContent:String, filename:String):void
 		{
 			//local saving
 			//var file:FileReference = new FileReference();		

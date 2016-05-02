@@ -205,6 +205,24 @@ package View.Viewutil
 			}
 		}
 		
+		public function FlushObject_bydata():void
+		{
+			var ItemNum:int = ItemList.length;
+			var dataNum:int = CustomizedData.length;
+			for (var i:int = 0 ; i < ItemNum; i++)
+			{			
+				if (CustomizedFun != null)
+				{
+					if ( i >= dataNum ) ItemList[i].visible = false;
+					else 
+					{
+						ItemList[i].visible = true;
+						CustomizedFun(ItemList[i], i,CustomizedData);
+					}
+				}
+			}
+		}
+		
 		public function exclusive(idx:int,gotoFrame:int):void
 		{
 			for (var i:int = 0; i < _ItemList.length; i++)

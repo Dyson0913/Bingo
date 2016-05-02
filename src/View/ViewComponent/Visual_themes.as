@@ -38,14 +38,16 @@ package View.ViewComponent
 		
 		public function init():void
 		{
-			var secondhint:MultiObject = prepare("second_hint", new MultiObject()  , GetSingleItem("_view").parent.parent);
-			secondhint.Create_by_list(1, [ResName.secondhint], 0, 0, 1, 0, 0, "time_");
+			create_container();
+			
+			var secondhint:MultiObject = create("second_hint",[ResName.secondhint],_myContain.container);
+			secondhint.Create_(1, "second_hint");
 			secondhint.container.x = 458.6; 
 			secondhint.container.y = 381.7;			
 			
 			
-			var besthint:MultiObject = prepare("besthint", new MultiObject()  , GetSingleItem("_view").parent.parent);
-			besthint.Create_by_list(1, [ResName.besthint], 0, 0, 1, 0, 0, "time_");
+			var besthint:MultiObject = create("besthint",  [ResName.besthint], _myContain.container);
+			besthint.Create_(1, "besthint");
 			besthint.container.x = 417.9;
 			besthint.container.y = 81.95;			
 			
@@ -68,44 +70,55 @@ package View.ViewComponent
 			lottymsg.container.y = 300;
 			setFrame("lottymsg", 1);
 			
-			//自己無押注,不產生切換鈕	
-			if ( _betCommand.get_my_betlist().length != 0) 
-			{				
-				//畫面按鈕,在押暗後生成,才按的到
-				var switchbtn:MultiObject = create("switchbtn", [Res_switchbtn]);
-				switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			
-				switchbtn.mousedown = switch_panel;
-				switchbtn.mouseup = empty_reaction;
-				switchbtn.rollout = empty_reaction;
-				switchbtn.rollover = empty_reaction;
-				switchbtn.container.x = 1770;
-				switchbtn.container.y = 1000;
-				switchbtn.Create_(1, "switchbtn");
-			}			
-			
-		  //_tool.SetControlMc(Get("game_round").container);
-			//_tool.y = 200;
-			//add(_tool);
+			//畫面按鈕,在押暗後生成,才按的到
+			var switchbtn:MultiObject = create("switchbtn", [Res_switchbtn]);
+			switchbtn.MouseFrame = utilFun.Frametype(MouseBehavior.Customized, [1, 2, 2, 1]);			
+			switchbtn.mousedown = switch_panel;
+			switchbtn.mouseup = empty_reaction;
+			switchbtn.rollout = empty_reaction;
+			switchbtn.rollover = empty_reaction;
+			switchbtn.container.x = 1770;
+			switchbtn.container.y = 1000;
+			switchbtn.Create_(1, "switchbtn");
 			
 			GetSingleItem("_view")["_CurBal"].visible = true;
+			
 		}
 		
 		public function switch_panel(e:Event, idx:int):Boolean
 		{
-			var pan_75ball:MultiObject = Get("ball_pan");
-			var ticket:MultiObject = Get("ticket");
-			if ( pan_75ball.container.visible )
+			var panellist:Array = _model.getValue("switchpanel");
+			var hand_control:MultiObject = Get("Visual_themes_Contain") ;
+			var switch_idx:int = _model.getValue("switchpanel_idx");
+			switch_idx = (switch_idx + 1) % panellist.length;
+			utilFun.Log("swfi = "+switch_idx);
+				
+			for (var i:int = 0; i < panellist.length; i++)
 			{
-			   pan_75ball.container.visible = false;
-			   ticket.container.visible = true;
+				var mu:MultiObject = panellist[i];
+				if ( i == switch_idx) 
+				{
+					mu.container.visible = true;
+					
+					//歷史記錄開啟,     最佳,次佳盤,非互斥顥示,必須手動hide
+					//1 for testinterface 2 for real server
+					if ( switch_idx == 1)
+					{						
+						hand_control.container.visible = false;
+						dispatcher(new ModelEvent("history_show"));
+					}
+					else {
+						hand_control.container.visible = true;
+						dispatcher(new ModelEvent("history_hide"));
+					}
+				}
+				else 
+				{
+					mu.container.visible = false;				
+					
+				}
 			}
-			else
-			{
-				pan_75ball.container.visible = true;
-			   ticket.container.visible = false;
-			}
-			
-			
+			_model.putValue("switchpanel_idx", switch_idx);		
 			return true;
 		}
 		
